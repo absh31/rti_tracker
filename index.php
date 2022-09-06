@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+<?php
+include "header.php";
+?>
     Navbar
     <br>
     Rules & Information
