@@ -36,14 +36,14 @@
         }
 
         h4 {
-            color: #bd362c;
-            font-weight: bold;
-            font-family: Helvetica, sans-serif;
+            /* color: #bd362c; */
+            font-weight: 800;
+            /* font-family: Helvetica, sans-serif; */
         }
 
         h5 {
-            color: #bd362c;
-            font-weight: 500;
-            font-family: Helvetica, sans-serif;
+            /* color: #bd362c; */
+            font-weight: 800;
+            /* font-family: Helvetica, sans-serif; */
         }
     </style>

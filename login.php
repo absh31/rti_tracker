@@ -1,11 +1,15 @@
 <script src='https://www.google.com/recaptcha/api.js'></script>
 <?php
 include "header.php";
+include "nav.php";
 ?>
-<body>
-    <div id="page">
+<div class="row">
     <div class="col-md-4 mx-auto my-5">
-        <h2 class="dept-title">Authority Login</h2>
+        <div class="row">
+            <div class="col text-center">
+                <h4 class="text-dark" style="font-weight: 500;">Authority Login</h4>
+            </div>
+        </div>
         <div class="px-3 mb-4 pt-3 apply" style="border: 1px solid #003865;">
             <!-- <h4 class="headingsall bg-light"></h4> -->
             <form method="post" action="./Backend/logon.php">
@@ -17,7 +21,7 @@ include "header.php";
                         <option value="Nodal Officer">Nodal Officer</option>
                         <option value="Department Officer">Department Officer</option>
                         <option value="Appellate Officer">Appellate Officer</option>
-    
+
                     </select>
                 </div>
                 <div class="mt-3 headingsall">
@@ -38,6 +42,6 @@ include "header.php";
             </form>
         </div>
     </div>
-    </div>
-    <div class="space" style="margin-bottom: 5.75%;"></div>
+</div>
+<div class="space" style="margin-bottom: 5.75%;"></div>
 </body>
