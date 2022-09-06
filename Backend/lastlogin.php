@@ -26,7 +26,7 @@ function lastlogin($type, $uname, $pass)
         $sql->bindParam(3, $uname);
         $sql->bindParam(4, $pass);
         if ($sql->execute()) {
-            echo "<script>window.open('../Node/dashboard.php','_self')</script>";
+            echo "<script>window.open('../Nodal/dashboard.php','_self')</script>";
         } else {
             echo "<script>alert('Something went wrong! Please try again later.')</script>";
             echo "<script>window.open('../logout.php','_self')</script>";

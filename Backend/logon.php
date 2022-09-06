@@ -26,7 +26,7 @@ if (isset($_POST['AuthLogin'])) {
                 $sql = $conn->prepare("SELECT * FROM tbladmin WHERE `admin_username` = ? AND `admin_password` = ?");
 
             } elseif ($type == 'Nodal Officer') {
-                $url = '../Node/dashboard.php';
+                $url = '../Nodal/dashboard.php';
                 $sql = $conn->prepare("SELECT * FROM tblnodal WHERE `nodal_username` = ? AND `nodal_password` = ?");
 
             } elseif ($type == 'Department Officer') {

@@ -2,11 +2,11 @@
 session_start();
 include "../header.php";
 include '../connection.php';
-if ((isset($_SESSION['username']) && isset($_SESSION['auth'])) && ($_SESSION['auth'] == 'Admin')) {
+include "nav.php";
+if ((isset($_SESSION['username']) && isset($_SESSION['auth'])) && ($_SESSION['auth'] == 'Nodal Officer')) {
     // echo '<br>absh Admin<br>';
     // echo '<br/><a href="../logout.php" >Log Out</a>';
 ?>
-<body>
     
 </body>
 <?php
