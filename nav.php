@@ -19,23 +19,23 @@ if ($_SERVER['PHP_SELF'] != '/rti_tracker/login.php') {
                         <a id="home-nav" class="nav-link" aria-current="page" href="index.php">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a id="home-nav" class="nav-link" aria-current="page" href="submit_rti.php">Submit RTI</a>
+                        <a id="home-nav" class="nav-link" aria-current="page" href="submitRTI.php">Submit RTI</a>
                     </li>
                     <li class="nav-item">
-                        <a id="list-nav" class="nav-link" href="submit_appeal.php">Submit First Appeal</a>
+                        <a id="list-nav" class="nav-link" href="submitAppeal.php">Submit First Appeal</a>
                     </li>
                     <li class="nav-item">
-                        <a id="resc-nav" class="nav-link" href="view_status.php">View Status</a>
+                        <a id="resc-nav" class="nav-link" href="viewStatus.php">View Status</a>
                     </li>
                     <li class="nav-item">
-                        <a id="cmpltd-nav" class="nav-link" href="view_history.php">View History</a>
+                        <a id="cmpltd-nav" class="nav-link" href="viewHistory.php">View History</a>
                     </li>
                     <li class="nav-item">
-                        <a id="cmpltd-nav" class="nav-link" href="contact_us.php">Contact Us</a>
+                        <a id="cmpltd-nav" class="nav-link" href="contactUs.php">Contact Us</a>
                     </li>
                 </ul>
                 <a href="./login.php">
-                    <button class="btn btn-primary" name="logout" type="submit">Login</button>
+                    <button class="btn btn-primary" name="login" type="submit">Login</button>
                 </a>
             </div>
         </div>

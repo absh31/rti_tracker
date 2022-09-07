@@ -8,7 +8,7 @@ include "nav.php";
         <div class="col-6">
             <h5>Submit First Appeal</h5>
             <p>To submit the first appeal, fill below form with required information. <br>
-            <form method="POST" action="submit_appeal_form.php">
+            <form method="POST" action="submitAppealForm.php">
                 <div class="mb-3">
                     <label for="regno" class="form-label">RTI Request Registered Number</label>
                     <input type="text" class="form-control" id="regno" aria-describedby="emailHelp">

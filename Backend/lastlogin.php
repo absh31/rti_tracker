@@ -1,5 +1,5 @@
 <?php
-function lastlogin($type, $uname, $pass)
+function lastLogin($type, $uname, $pass)
 {
     include '../connection.php';
     date_default_timezone_set("Asia/Calcutta");

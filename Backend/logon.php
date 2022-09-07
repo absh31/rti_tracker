@@ -1,7 +1,7 @@
 <?php
 session_start();
 include '../connection.php';
-include './lastlogin.php';
+include './lastLogin.php';
 if (isset($_POST['AuthLogin'])) {
     if (empty($_POST['g-recaptcha-response'])) {
         echo "<script>alert('Captcha Error. Try Again')</script>";
@@ -51,7 +51,7 @@ if (isset($_POST['AuthLogin'])) {
                 $_SESSION['password'] = $pass;
                 $_SESSION['auth'] = $type;
                 $_SESSION['url'] = $url;
-                lastlogin($type, $uname, $pass);
+                lastLogin($type, $uname, $pass);
             } else {
                 echo "<script>alert('Invalid Credentials')</script>";
                 echo "<script>window.open('../login.php','_self')</script>";
