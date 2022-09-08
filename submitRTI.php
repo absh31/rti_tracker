@@ -2,55 +2,59 @@
 include './header.php';
 include './nav.php';
 ?>
-
-<body>
-    <form method="POST" enctype="multipart/form-data" id="register" action="./Backend/personalRTI.php">
-        <div id="page1">
-            <div class="col-md-8 mx-auto my-5">
-                <div class="alert text-center alert-dismissible fade show" role="alert">
-                    <h2><b>Online RTI Form</b></h2>
-                </div>
-                <h3 class="dept-title">Personal Details</h3>
+<div class="container">
+    <br>
+    <div class="row">
+        <div class="col">
+            <h5>Online RTI Form</h5>
+            <p style="font-size: 20px;">Personal Details</p>
+            <form method="POST" enctype="multipart/form-data" id="register" action="./Backend/personalRTI.php">
                 <div class="px-3 mb-4 pt-3 apply" style="border: 1px solid #003865">
                     <div class="headingsall">
 
                         <div class="col-sm-6 form-group" id="fullNameDiv">
-                            <label for='name'>*Name :</label>
-                            <input type="text" name="name" id="name" class="form-control" required>
+                            <label for='name'><span class="text-danger">*</span> Name :</label>
+                            <input type="text" name="name" onkeyup="validateText(this)" id="name" class="form-control" required>
                         </div>
                     </div>
+                    <br>
                     <div class="headingsall">
 
                         <div class="col-sm-6 form-group" id="emailAddDiv">
-                            <label for='email'>*Email Address :</label>
+                            <label for='email'><span class="text-danger">*</span> Email Address :</label>
                             <input type="email" name="email" id="email" class="form-control" required>
                         </div>
                     </div>
+                    <br>
                     <div class="headingsall">
 
                         <div class="col-sm-6 form-group" id="confirmEmailAddDiv">
-                            <label for='email'>*Confirm Email :</label>
-                            <input type="email" name="confirmEmail" id="confirmEmail" class="form-control" required>
+                            <label for='email'><span class="text-danger">*</span> Confirm Email :</label>
+                            <input type="email" name="confirmEmail" id="confirmEmail" class="form-control" required onkeyup="compareEmail(this)">
+                            <span class="text-danger" style="display: none;" id="hiddenSpan">Email doesn't match!</span>
                         </div>
                     </div>
+                    <br>
                     <div class="headingsall">
 
                         <div class="col-sm-6 form-group" id="mobileDiv">
                             <label for='mobileNumber'>Mobile Number :</label>
-                            <input type="text" name="mobileNumber" id="mobileNumber" class="form-control">
+                            <input type="text" name="mobileNumber" id="mobileNumber" class="form-control" onkeyup="validateNumber(this)">
                         </div>
                     </div>
+                    <br>
                     <div class="headingsall">
 
                         <div class="col-sm-6 form-group" id="phoneDiv">
                             <label for='phoneNumber'>Phone Number :</label>
-                            <input type="text" name="phoneNumebr" id="phoneNumber" class="form-control">
+                            <input type="text" name="phoneNumber" id="phoneNumber" class="form-control" onkeyup="validateNumber(this)">
                         </div>
                     </div>
+                    <br>
                     <div class="headingsall">
 
                         <div class="radio d-md-flex">
-                            <label for="s_name" class="col-form-label">*Gender:</label>
+                            <label for="s_name" class="col-form-label"><span class="text-danger">*</span> Gender:</label>
                             <div class="form-check mx-md-5 my-2">
                                 <input type="radio" name="gender" checked id="maleRadio" value="Male">&nbsp;&nbsp;Male
                             </div>
@@ -63,38 +67,42 @@ include './nav.php';
                         </div>
 
                     </div>
+                    <br>
                     <div class="headingsall">
 
                         <div class="col-sm-6 form-group" id="addressDiv">
-                            <label for='address'>*Address :</label>
-                            <textarea name="address" id="address" class="form-control" required></textarea>
+                            <label for='address'><span class="text-danger">*</span> Address :</label>
+                            <textarea name="address" id="address" class="form-control" required onkeyup="validateTextarea(this)" rows="4"></textarea>
                         </div>
                     </div>
+                    <br>
+                    <br>
                     <div class="headingsall">
 
                         <div class="col-sm-6 form-group" id="pincodeDiv">
-                            <label for='pincode'>*Pincode :</label>
-                            <input type="number" name="pincode" id="pincode" class="form-control" required>
+                            <label for='pincode'><span class="text-danger">*</span> Pincode :</label>
+                            <input type="text" name="pincode" id="pincode" class="form-control" pattern="[0-9]" onkeyup="validateNumber(this)">
                         </div>
                     </div>
+                    <br>
                     <div class="headingsall">
 
                         <div class="radio d-md-flex">
-                            <label for="country" class="col-form-label">*Country:</label>
+                            <label for="country" class="col-form-label"><span class="text-danger">*</span> Country:</label>
                             <div class="form-check mx-md-5 my-2">
-                                <input type="radio" name="country" checked id="indiaRadio" value="India">&nbsp;&nbsp;India
+                                <input type="radio" name="country" onclick="funHide()" checked id="indiaRadio" value="India">&nbsp;&nbsp;India
                             </div>
                             <div class="form-check mx-md-5 my-2">
-                                <input type="radio" name="country" id="otherRadio" value="Other">&nbsp;&nbsp;Other
+                                <input type="radio" name="country" onclick="funShow()" id="otherRadio" value="Other">&nbsp;&nbsp;Other
                             </div>
                         </div>
 
                     </div>
-                    <div class="headingsall">
-
-                        <div class="col-sm-6 form-group" id="countryDiv">
-                            <label for='country'>*Other Country Name:</label>
-                            <input type="text" name="countryName" id="countryName" class="form-control" required>
+                    <div class="headingsall" style="display: none;" id="countryDiv">
+                        <br>
+                        <div class="col-sm-6 form-group">
+                            <label for='country'><span class="text-danger"><span class="text-danger">*</span> </span> Other Country Name:</label>
+                            <input type="text" name="countryName" id="countryName" class="form-control" required onkeyup="validateText(this)">
                         </div>
                     </div>
                     <?php $states  = array(
@@ -131,10 +139,11 @@ include './nav.php';
                         "Puducherry",
                         "Other"
                     ); ?>
+                    <br>
                     <div class="headingsall">
 
                         <div class="col-sm-6 form-group" id="stateDiv">
-                            <label for="usr" class="my-2">*State:</label>
+                            <label for="usr" class="my-2"><span class="text-danger">*</span> State:</label>
                             <!-- <input type="text" onpaste="return validateText(this)" class="form-control" id="State" placeholder="Enter State Name" required> -->
                             <select class="form-control" id="stateSel" name="state" required>
                                 <option value="" disabled selected>Select State</option>
@@ -148,23 +157,25 @@ include './nav.php';
                             </select>
                         </div>
                     </div>
+                    <br>
                     <div class="headingsall">
 
                         <div class="radio d-md-flex">
-                            <label for="status" class="col-form-label">*Status:</label>
+                            <label for="status" class="col-form-label"><span class="text-danger">*</span> Status:</label>
                             <div class="form-check mx-md-5 my-2">
-                                <input type="radio" name="status" checked id="urbanRadio" value="Urban">&nbsp;&nbsp;Uarban
+                                <input type="radio" name="status" checked id="urbanRadio" value="Urban">&nbsp;&nbsp;Urban
                             </div>
                             <div class="form-check mx-md-5 my-2">
-                                <input type="radio" name="status" id="rularRadio" value="Rular">&nbsp;&nbsp;Rular
+                                <input type="radio" name="status" id="ruralrRadio" value="Rural">&nbsp;&nbsp;Rural
                             </div>
                         </div>
 
                     </div>
+                    <br>
                     <div class="headingsall">
 
                         <div class="radio d-md-flex">
-                            <label for="education" class="col-form-label">*Educational Status:</label>
+                            <label for="education" class="col-form-label"><span class="text-danger">*</span> Educational Status:</label>
                             <div class="form-check mx-md-5 my-2">
                                 <input type="radio" name="educationalStatus" checked id="literateRadio" value="Literate">&nbsp;&nbsp;Literate
                             </div>
@@ -174,10 +185,11 @@ include './nav.php';
                         </div>
 
                     </div>
+                    <br>
                     <div class="headingsall">
 
                         <div class="radio d-md-flex">
-                            <label for="education" class="col-form-label">*Education:</label>
+                            <label for="education" class="col-form-label"><span class="text-danger">*</span> Education:</label>
                             <div class="form-check mx-md-5 my-2">
                                 <input type="radio" name="education" checked id="BelowRadio" value="Below">&nbsp;&nbsp;Below 12th
                             </div>
@@ -193,18 +205,81 @@ include './nav.php';
                         </div>
 
                     </div>
+                    <br>
+                    <div class="headingsall">
+                        <div class="col-sm-6 form-group">
+                            <div class="g-recaptcha" data-sitekey="6Lewa-AZAAAAAMS-ZF5qUSZWezNJ1L9wQ5Iu13IU"></div>
+                            <span class="text-danger" id="recaptcha_error"></span>
+                        </div>
+                    </div>
+                    <br>
                     <div class="headingsall">
                         <div class="col-sm-6 form-group">
                             <button type="submit" name="personalRTI" class="btn btn-primary">Submit</button>
                         </div>
                     </div>
-                    <div class="headingsall">
-                        <div class="col-sm-6">
-                            <br>
-                        </div>
-                    </div>
+                    <br>
                 </div>
-            </div>
+            </form>
         </div>
-    </form>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+<script type="text/javascript">
+    const validateText = function(usr) {
+        var regexp = /^[A-Za-z0-9. ]+$/;
+        var input = usr.value
+        if (regexp.test(input)) {
+            return true
+        } else {
+            alert("Special characters are not allowed!")
+            usr.value = null;
+        }
+    }
+
+    const compareEmail = function(usr) {
+        var input1 = document.getElementById("email").value;
+        var input2 = usr.value
+        if (input1 == input2) {
+            document.getElementById("hiddenSpan").style.display = "none";
+        } else {
+            document.getElementById("hiddenSpan").style.display = "block";
+        }
+    }
+
+    const funShow = function() {
+        document.getElementById("countryDiv").style.display = "block";
+    }
+    const funHide = function() {
+        document.getElementById("countryDiv").style.display = "none";
+    }
+
+    const validateNumber = function(usr) {
+        var regexp = /^[0-9 ]+$/;
+        var input = usr.value
+        if (regexp.test(input)) {
+            if (input[0] != 6 && input[0] != 7 && input[0] != 8 && input[0] != 9) {
+                alert("Phone number should start from 6, 7, 8 OR 9!")
+                usr.value = null;
+            } else
+                return true
+        } else {
+            alert("Only numbers are allowed!")
+            usr.value = null;
+        }
+    }
+
+    const validateTextarea = function(usr) {
+        var regexp = /^[A-Za-z0-9.,\w-\n ]+$/;
+        var input = usr.value
+        if (regexp.test(input))
+            return true
+        else {
+            alert("Special characters are not allowed!")
+            usr.value = null;
+        }
+    }
+</script>
 </body>
+
+</html>
