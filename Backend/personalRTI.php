@@ -22,7 +22,7 @@ if(!isset($_POST['personalRTI'])){
     $_SESSION['educationalStatus'] = $_POST['educationalStatus'];
     $_SESSION['education'] = $_POST['education'];
     echo "<script>alert('" . $otp . "')</script>";
-    echo "<script>window.open('../personalVerify.php')</script>";
+    echo "<script>window.open('../personalVerify.php','_self')</script>";
 
 }
 ?>

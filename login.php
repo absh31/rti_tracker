@@ -1,5 +1,6 @@
 <script src='https://www.google.com/recaptcha/api.js'></script>
 <?php
+include './connection.php';
 include "header.php";
 include "nav.php";
 ?>
@@ -17,10 +18,14 @@ include "nav.php";
                     <label name="type">Login Type</label>
                     <select class="form-control" required="required" name="type" id="admin_type">
                         <option value="" disabled selected>Select Login Type</option>
-                        <option value="Admin">Admin</option>
-                        <option value="Nodal Officer">Nodal Officer</option>
-                        <option value="Department Officer">Department Officer</option>
-                        <option value="Appellate Officer">Appellate Officer</option>
+                        <?php
+                        $sql = $conn->prepare("SELECT * FROM `tblrole`");
+                        $sql->execute();
+                        while ($key = $sql->fetch(PDO::FETCH_ASSOC)) {
+                        ?>
+                            <option value="<?php echo $key['role_id']; ?>"><?php echo ucwords($key['role_name']); ?></option>
+                        <?php }
+                        ?>
 
                     </select>
                 </div>

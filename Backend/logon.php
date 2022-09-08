@@ -19,38 +19,17 @@ if (isset($_POST['AuthLogin'])) {
             $uname = htmlspecialchars($_POST['username']);
             $pass = md5($_POST['password']);
             $type = htmlspecialchars($_POST['type']);
-            $url = '';
-
-            if ($type == 'Admin') {
-                $url = '../Admin/dashboard.php';
-                $sql = $conn->prepare("SELECT * FROM tbladmin WHERE `admin_username` = ? AND `admin_password` = ?");
-
-            } elseif ($type == 'Nodal Officer') {
-                $url = '../Nodal/dashboard.php';
-                $sql = $conn->prepare("SELECT * FROM tblnodal WHERE `nodal_username` = ? AND `nodal_password` = ?");
-
-            } elseif ($type == 'Department Officer') {
-                $url = '../Department/dashboard.php';
-                $sql = $conn->prepare("SELECT * FROM tblofficer WHERE `officer_username` = ? AND `officer_password` = ?");
-
-            } elseif ($type == 'Appellate Officer') {
-                $url = '../Appellate/dashboard.php';
-                $sql = $conn->prepare("SELECT * FROM tblappellate WHERE `appellate_username` = ? AND `appellate_password` = ?");
-
-            } else {
-                echo "<script>alert('Bad Request.')</script>";
-                echo "<script>window.open('../login.php','_self')</script>";
-            }
+            $sql = $conn->prepare("SELECT * FROM `tblofficer` WHERE `officer_username` = ? AND `officer_password` = ? AND `officer_role_id` = ?");
 
             $sql->bindParam(1, $uname);
             $sql->bindParam(2, $pass);
+            $sql->bindParam(3, $type);
             $sql->execute();
 
             if ($sql->rowCount() > 0) {
                 $_SESSION['username'] = $uname;
                 $_SESSION['password'] = $pass;
                 $_SESSION['auth'] = $type;
-                $_SESSION['url'] = $url;
                 lastLogin($type, $uname, $pass);
             } else {
                 echo "<script>alert('Invalid Credentials')</script>";
