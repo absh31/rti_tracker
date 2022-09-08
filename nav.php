@@ -4,7 +4,7 @@
     // echo $_SERVER['PHP_SELF'];
     if ($_SERVER['PHP_SELF'] != '/rti_tracker/login.php') {
     ?>
-        <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light" id="navigation">
+        <nav class="navbar sticky-top navbar-expand-lg navbar-dark py-3" id="navigation" style="background-color : black">
             <div class="container-fluid">
                 <!-- <a class="navbar-brand fw-bold" href="./index.php">GURUKRUPA ENTERPRISE</a> -->
                 <a class="navbar-brand" href="index.php" style="font-weight: 800;">
@@ -36,7 +36,7 @@
                         </li>
                     </ul>
                     <a href="./login.php">
-                        <button class="btn btn-primary" name="login" type="submit">Login</button>
+                        <button class="btn btn-outline-light px-4" name="login" type="submit">Login</button>
                     </a>
                 </div>
             </div>

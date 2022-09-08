@@ -14,6 +14,4 @@ include "nav.php";
     </div>
 </div>
 <br>
-</body>
-
-</html>
+<?php include "footer.php" ?>

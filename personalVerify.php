@@ -42,4 +42,5 @@ if (!isset($_SESSION['otp'])) {
         </form>
     <?php
 }
+include "footer.php";
     ?>

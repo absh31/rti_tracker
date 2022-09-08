@@ -97,4 +97,6 @@ if (!isset($_SESSION['otpVerified'])) {
 <?php
 
 }
+
+include "footer.php";
 ?>

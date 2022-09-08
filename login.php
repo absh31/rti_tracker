@@ -49,4 +49,4 @@ include "nav.php";
     </div>
 </div>
 <div class="space" style="margin-bottom: 5.75%;"></div>
-</body>
+<?php include 'footer.php';?>
