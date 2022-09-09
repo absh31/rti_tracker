@@ -8,38 +8,55 @@ if (!isset($_SESSION['otp'])) {
 } else {
 
 ?>
-
-    <body>
-        <form method="POST" enctype="multipart/form-data" id="register" action="./Backend/verifyOTP.php">
-            <div id="page1">
-                <div class="col-md-8 mx-auto my-5">
-                    <div class="alert text-center alert-dismissible fade show" role="alert">
-                        <h2><b>Online RTI Form OTP</b></h2>
+    <form method="POST" enctype="multipart/form-data" id="register" action="./Backend/verifyOTP.php">
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="col text-center">
+                    <h5>Online RTI Form OTP Verification</h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col"></div>
+                <div class="col-lg-3 text-center">
+                    <br>
+                    <div class="headingsall">
+                        <div class="form-group" id="fullNameDiv">
+                            <label for='otp'>Enter OTP :</label>
+                            <br><br>
+                            <input type="text" name="otp" id="otp" class="text-center form-control" required oninput="validateNumber(this)">
+                        </div>
                     </div>
-                    <h3 class="dept-title">Verification</h3>
-                    <div class="px-3 mb-4 pt-3 apply" style="border: 1px solid #003865">
-                        <div class="headingsall">
-
-                            <div class="col-sm-6 form-group" id="fullNameDiv">
-                                <label for='name'>*OTP :</label>
-                                <input type="text" name="otp" id="otp" class="form-control" required>
-                                <br>
-                            </div>
-                        </div>
-                        <div class="headingsall">
-                            <div class="col-sm-6 form-group">
-                                <button type="submit" name="personalRTI" class="btn btn-primary">Submit</button>
-                            </div>
-                        </div>
-                        <div class="headingsall">
-                            <div class="col-sm-6">
-                                <br>
-                            </div>
+                    <br>
+                    <div class="headingsall">
+                        <div class="form-group">
+                            <button type="submit" name="personalRTI" class="btn btn-primary">Verify OTP</button>
                         </div>
                     </div>
                 </div>
+                <div class="col"></div>
             </div>
-        </form>
-    <?php
+        </div>
+        </div>
+    </form>
+    <script>
+        const validateNumber = function(usr) {
+            var regexp = /^[0-9 ]+$/;
+            var input = usr.value
+            if (input != "") {
+                if (regexp.test(input)) {
+                    if (input.length > 6) {
+                        alert("OTP should only have 6 digits!")
+                        usr.value = input.slice(0, 6);
+                    } else
+                        return true
+                } else {
+                    alert("Only numbers are allowed!")
+                    usr.value = null;
+                }
+            }
+        }
+    </script>
+<?php
 }
-    ?>
+?>
