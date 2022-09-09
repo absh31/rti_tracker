@@ -73,7 +73,7 @@ if (!isset($_POST['requestRTI'])) {
                             // includes the period in the extension; do $pos + 1 if you don't want it
                             $ext = substr($docBPL, $pos);
                         }
-                        $docBPL = md5($email) . '_bplCard' . $ext;
+                        $docBPL = md5($appId) . '_bplCard' . $ext;
                         $docBPL_path = "../bplFiles/" . $docBPL;
 
                         if (file_exists($docBPL_path)) {
