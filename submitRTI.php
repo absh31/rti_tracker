@@ -14,7 +14,7 @@ include './nav.php';
 
                         <div class="col-sm-6 form-group" id="fullNameDiv">
                             <label for='name'><span class="text-danger">*</span> Name :</label>
-                            <input type="text" name="name" onkeyup="validateText(this)" id="name" class="form-control" required>
+                            <input type="text" name="name" oninput="validateText(this)" id="name" class="form-control" required>
                         </div>
                     </div>
                     <br>
@@ -30,7 +30,7 @@ include './nav.php';
 
                         <div class="col-sm-6 form-group" id="confirmEmailAddDiv">
                             <label for='email'><span class="text-danger">*</span> Confirm Email :</label>
-                            <input type="email" name="confirmEmail" id="confirmEmail" class="form-control" required onkeyup="compareEmail(this)">
+                            <input type="email" name="confirmEmail" id="confirmEmail" class="form-control" required oninput="compareEmail(this)">
                             <span class="text-danger" style="display: none;" id="hiddenSpan">Email doesn't match!</span>
                         </div>
                     </div>
@@ -39,7 +39,7 @@ include './nav.php';
 
                         <div class="col-sm-6 form-group" id="mobileDiv">
                             <label for='mobileNumber'>Mobile Number :</label>
-                            <input type="text" name="mobileNumber" id="mobileNumber" class="form-control" onkeyup="validateNumber(this)">
+                            <input type="text" name="mobileNumber" id="mobileNumber" class="form-control" oninput="validateNumber(this)">
                         </div>
                     </div>
                     <br>
@@ -47,7 +47,7 @@ include './nav.php';
 
                         <div class="col-sm-6 form-group" id="phoneDiv">
                             <label for='phoneNumber'>Phone Number :</label>
-                            <input type="text" name="phoneNumber" id="phoneNumber" class="form-control" onkeyup="validateNumber(this)">
+                            <input type="text" name="phoneNumber" id="phoneNumber" class="form-control" oninput="validateNumber(this)">
                         </div>
                     </div>
                     <br>
@@ -72,7 +72,7 @@ include './nav.php';
 
                         <div class="col-sm-6 form-group" id="addressDiv">
                             <label for='address'><span class="text-danger">*</span> Address :</label>
-                            <textarea name="address" id="address" class="form-control" required onkeyup="validateTextarea(this)" rows="4"></textarea>
+                            <textarea name="address" id="address" class="form-control" required oninput="validateTextarea(this)" rows="4"></textarea>
                         </div>
                     </div>
                     <br>
@@ -81,7 +81,7 @@ include './nav.php';
 
                         <div class="col-sm-6 form-group" id="pincodeDiv">
                             <label for='pincode'><span class="text-danger">*</span> Pincode :</label>
-                            <input type="text" name="pincode" id="pincode" class="form-control" pattern="[0-9]" onkeyup="validateNumber(this)">
+                            <input type="text" name="pincode" id="pincode" class="form-control" oninput="validatePincode(this)">
                         </div>
                     </div>
                     <br>
@@ -102,42 +102,11 @@ include './nav.php';
                         <br>
                         <div class="col-sm-6 form-group">
                             <label for='country'><span class="text-danger"><span class="text-danger">*</span> </span> Other Country Name:</label>
-                            <input type="text" name="countryName" id="countryName" class="form-control" required onkeyup="validateText(this)">
+                            <input type="text" name="countryName" id="countryName" class="form-control" oninput="validateText(this)">
                         </div>
                     </div>
                     <?php $states  = array(
-                        "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh",
-                        "Goa",
-                        "Gujarat",
-                        "Haryana",
-                        "Himachal Pradesh",
-                        "Jammu & Kashmir",
-                        "Jharkhand",
-                        "Karnataka",
-                        "Kerala",
-                        "Madhya Pradesh",
-                        "Maharashtra",
-                        "Manipur",
-                        "Meghalaya",
-                        "Mizoram",
-                        "Nagaland",
-                        "Odisha",
-                        "Punjab",
-                        "Rajasthan",
-                        "Sikkim",
-                        "Tamil Nadu",
-                        "Tripura",
-                        "Uttarakhand",
-                        "Uttar Pradesh",
-                        "West Bengal",
-                        "Andaman & Nicobar",
-                        "Chandigarh",
-                        "Dadra and Nagar Haveli",
-                        "Daman & Diu",
-                        "Delhi",
-                        "Lakshadweep",
-                        "Puducherry",
-                        "Other"
+                        "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh", "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jammu & Kashmir", "Jharkhand", "Karnataka", "Kerala", "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", "Mizoram", "Nagaland", "Odisha", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu", "Tripura", "Uttarakhand", "Uttar Pradesh", "West Bengal", "Andaman & Nicobar", "Chandigarh", "Dadra and Nagar Haveli", "Daman & Diu", "Delhi", "Lakshadweep", "Puducherry", "Other"
                     ); ?>
                     <br>
                     <div class="headingsall">
@@ -215,7 +184,7 @@ include './nav.php';
                     <br>
                     <div class="headingsall">
                         <div class="col-sm-6 form-group">
-                            <button type="submit" name="personalRTI" class="btn btn-primary">Submit</button>
+                            <button class="btn btn-primary" type="submit" name="personalRTI">Submit</button>
                         </div>
                     </div>
                     <br>
@@ -229,11 +198,47 @@ include './nav.php';
     const validateText = function(usr) {
         var regexp = /^[A-Za-z0-9. ]+$/;
         var input = usr.value
-        if (regexp.test(input)) {
-            return true
-        } else {
-            alert("Special characters are not allowed!")
-            usr.value = null;
+        if (input != "") {
+            if (regexp.test(input)) {
+                return true
+            } else {
+                alert("Special characters are not allowed!")
+                usr.value = null;
+            }
+        }
+    }
+
+    const validateNumber = function(usr) {
+        var regexp = /^[0-9 ]+$/;
+        var input = usr.value
+        if (input != "") {
+            if (regexp.test(input)) {
+                if (input.length > 10) {
+                    alert("Mobile number should contain only 10 digits!")
+                    usr.value = input.slice(0, 10);
+                } else
+                    return true
+            } else {
+                alert("Only numbers are allowed!")
+                usr.value = null;
+            }
+        }
+    }
+
+    const validatePincode = function(usr) {
+        var regexp = /^[0-9 ]+$/;
+        var input = usr.value
+        if (input != "") {
+            if (regexp.test(input)) {
+                if (input.length > 6) {
+                    alert("Pincode should contain only 6 digits!")
+                    usr.value = input.slice(0, 6);
+                } else
+                    return true
+            } else {
+                alert("Only numbers are allowed!")
+                usr.value = null;
+            }
         }
     }
 
@@ -249,34 +254,26 @@ include './nav.php';
 
     const funShow = function() {
         document.getElementById("countryDiv").style.display = "block";
-    }
-    const funHide = function() {
-        document.getElementById("countryDiv").style.display = "none";
+        const input = document.getElementById('countryName');
+        input.setAttribute('required', '');
     }
 
-    const validateNumber = function(usr) {
-        var regexp = /^[0-9 ]+$/;
-        var input = usr.value
-        if (regexp.test(input)) {
-            if (input[0] != 6 && input[0] != 7 && input[0] != 8 && input[0] != 9) {
-                alert("Phone number should start from 6, 7, 8 OR 9!")
-                usr.value = null;
-            } else
-                return true
-        } else {
-            alert("Only numbers are allowed!")
-            usr.value = null;
-        }
+    const funHide = function() {
+        document.getElementById("countryDiv").style.display = "none";
+        const input = document.getElementById('countryName');
+        input.removeAttribute('required')
     }
 
     const validateTextarea = function(usr) {
         var regexp = /^[A-Za-z0-9.,\w-\n ]+$/;
         var input = usr.value
-        if (regexp.test(input))
-            return true
-        else {
-            alert("Special characters are not allowed!")
-            usr.value = null;
+        if (input != "") {
+            if (regexp.test(input))
+                return true
+            else {
+                alert("Special characters are not allowed!")
+                usr.value = null;
+            }
         }
     }
 </script>
