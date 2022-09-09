@@ -94,14 +94,14 @@ if (!isset($_SESSION['otpVerified'])) {
                     <br>
                     <div class="headingsall">
                         <div class="col-sm-6 form-group">
-                            <div class="g-recaptcha" data-sitekey="6Lewa-AZAAAAAMS-ZF5qUSZWezNJ1L9wQ5Iu13IU"></div>
+                            <div class="g-recaptcha" data-theme="dark" data-sitekey="6Lewa-AZAAAAAMS-ZF5qUSZWezNJ1L9wQ5Iu13IU"></div>
                             <span class="text-danger" id="recaptcha_error"></span>
                         </div>
                     </div>
                     <br>
                     <div class="headingsall">
                         <div class="form-group">
-                            <button type="submit" name="requestRTI" class="btn btn-primary">Submit</button>
+                            <button type="submit" name="requestRTI" class="btn btn-dark text-light">Submit</button>
                         </div>
                     </div>
                 </div>

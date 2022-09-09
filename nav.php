@@ -36,7 +36,7 @@
                         </li>
                     </ul>
                     <a href="./login.php">
-                        <button class="btn btn-primary" name="login" type="submit">Login</button>
+                        <button class="btn text-light border-light" name="login" type="submit">Login</button>
                     </a>
                 </div>
             </div>

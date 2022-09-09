@@ -38,11 +38,11 @@ include "nav.php";
                     <input name="password" type="password" class="form-control" required="required">
                 </div>
                 <div class="form-group mt-3">
-                    <div class="g-recaptcha" data-sitekey="6Lewa-AZAAAAAMS-ZF5qUSZWezNJ1L9wQ5Iu13IU"></div>
+                    <div class="g-recaptcha" data-theme="dark" data-sitekey="6Lewa-AZAAAAAMS-ZF5qUSZWezNJ1L9wQ5Iu13IU"></div>
                     <span class="text-danger" id="recaptcha_error"></span>
                 </div>
                 <div class="col-md-6 mx-auto my-3 text-center">
-                    <input type="submit" name="AuthLogin" class="btn btn-primary py-2 px-5" value="Login" />
+                    <input type="submit" name="AuthLogin" class="btn btn-dark text-light py-2 px-5" value="Login" />
                 </div>
             </form>
         </div>

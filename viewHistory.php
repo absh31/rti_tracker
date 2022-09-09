@@ -19,15 +19,18 @@ include "nav.php";
                     <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
                 </div>
                 <div class="mb-3">
-                    <div class="g-recaptcha" data-sitekey="6Lewa-AZAAAAAMS-ZF5qUSZWezNJ1L9wQ5Iu13IU"></div>
+                    <div class="g-recaptcha" data-theme="dark" data-sitekey="6Lewa-AZAAAAAMS-ZF5qUSZWezNJ1L9wQ5Iu13IU"></div>
                     <span class="text-danger" id="recaptcha_error"></span>
                 </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-dark text-light">Submit</button>
             </form>
         </div>
     </div>
 </div>
 <br>
+<?php
+include './footer.php';
+?>
 </body>
 
 </html>

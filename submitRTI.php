@@ -177,14 +177,14 @@ include './nav.php';
                     <br>
                     <div class="headingsall">
                         <div class="col-sm-6 form-group">
-                            <div class="g-recaptcha" data-sitekey="6Lewa-AZAAAAAMS-ZF5qUSZWezNJ1L9wQ5Iu13IU"></div>
+                            <div class="g-recaptcha" data-theme="dark" data-sitekey="6Lewa-AZAAAAAMS-ZF5qUSZWezNJ1L9wQ5Iu13IU"></div>
                             <span class="text-danger" id="recaptcha_error"></span>
                         </div>
                     </div>
                     <br>
                     <div class="headingsall">
                         <div class="col-sm-6 form-group">
-                            <button class="btn btn-primary" type="submit" name="personalRTI">Submit</button>
+                            <button class="btn btn-dark text-light" type="submit" name="personalRTI">Submit</button>
                         </div>
                     </div>
                     <br>
@@ -193,6 +193,10 @@ include './nav.php';
         </div>
     </div>
 </div>
+<br>
+<?php
+include './footer.php';
+?>
 <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
 <script type="text/javascript">
     const validateText = function(usr) {
