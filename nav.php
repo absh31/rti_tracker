@@ -17,22 +17,22 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a id="home-nav" class="nav-link" aria-current="page" href="index.php">Home</a>
+                            <a id="home-nav" class="nav-link active" aria-current="page" href="index.php">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a id="home-nav" class="nav-link" aria-current="page" href="submitRTI.php">Submit RTI</a>
+                            <a id="rti-nav" class="nav-link" aria-current="page" href="submitRTI.php">Submit RTI</a>
                         </li>
                         <li class="nav-item">
-                            <a id="list-nav" class="nav-link" href="submitAppeal.php">Submit First Appeal</a>
+                            <a id="apel-nav" class="nav-link" href="submitAppeal.php">Submit First Appeal</a>
                         </li>
                         <li class="nav-item">
-                            <a id="resc-nav" class="nav-link" href="viewStatus.php">View Status</a>
+                            <a id="status-nav" class="nav-link" href="viewStatus.php">View Status</a>
                         </li>
                         <li class="nav-item">
-                            <a id="cmpltd-nav" class="nav-link" href="viewHistory.php">View History</a>
+                            <a id="history-nav" class="nav-link" href="viewHistory.php">View History</a>
                         </li>
                         <li class="nav-item">
-                            <a id="cmpltd-nav" class="nav-link" href="contactUs.php">Contact Us</a>
+                            <a id="contact-nav" class="nav-link" href="contactUs.php">Contact Us</a>
                         </li>
                     </ul>
                     <a href="./login.php">

@@ -28,6 +28,15 @@ include "nav.php";
     </div>
 </div>
 <br>
+<script>
+    document.getElementById("apel-nav").classList.add("active");
+    document.getElementById("apel-nav").style.fontWeight = 600;
+    document.getElementById("rti-nav").classList.remove("active");
+    document.getElementById("home-nav").classList.remove("active");
+    document.getElementById("status-nav").classList.remove("active");
+    document.getElementById("history-nav").classList.remove("active");
+    document.getElementById("contact-nav").classList.remove("active");
+</script>
 <?php
 include './footer.php';
 ?>

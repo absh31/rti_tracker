@@ -41,6 +41,15 @@ include "./nav.php";
     </div>
 </div>
 <br>
+<script>
+    document.getElementById("status-nav").classList.add("active");
+    document.getElementById("status-nav").style.fontWeight = 600;
+    document.getElementById("rti-nav").classList.remove("active");
+    document.getElementById("apel-nav").classList.remove("active");
+    document.getElementById("home-nav").classList.remove("active");
+    document.getElementById("history-nav").classList.remove("active");
+    document.getElementById("contact-nav").classList.remove("active");
+</script>
 <?php
 include './footer.php';
 ?>

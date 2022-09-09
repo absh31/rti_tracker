@@ -194,6 +194,15 @@ include './nav.php';
     </div>
 </div>
 <br>
+<script>
+    document.getElementById("rti-nav").classList.add("active");
+    document.getElementById("rti-nav").style.fontWeight = 600;
+    document.getElementById("home-nav").classList.remove("active");
+    document.getElementById("apel-nav").classList.remove("active");
+    document.getElementById("status-nav").classList.remove("active");
+    document.getElementById("history-nav").classList.remove("active");
+    document.getElementById("contact-nav").classList.remove("active");
+</script>
 <?php
 include './footer.php';
 ?>
