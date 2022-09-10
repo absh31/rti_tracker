@@ -8,24 +8,16 @@ include "./connection.php";
     <br>
     <div class="row">
         <div class="col-6">
-            <?php
-            // if (isset($_SESSION['reqs'])) {
-            //     $reqs = $_SESSION['reqs'];
-            //     foreach ($reqs as $key) {
-            //         echo "Request No. - " . $key . "<br/>";
-            //     }
-            // }
-            ?>
             <h5>Get Your RTI History</h5>
             <p>To get the RTI history, fill below form with required information. <br>
             <form method="POST" action="./Backend/historyView.php">
                 <div class="mb-3">
-                    <label for="reqMobile" class="form-label">Mobile Number</label>
-                    <input type="text" class="form-control" id="reqMobile" name="reqMobile" oninput="validateNumber(this)" aria-describedby="emailHelp">
+                    <label for="reqMobile" class="form-label"><span class="text-danger">*</span> Mobile Number</label>
+                    <input type="text" class="form-control" id="reqMobile" name="reqMobile" oninput="validateNumber(this)" aria-describedby="emailHelp" required>
                 </div>
                 <div class="mb-3">
-                    <label for="reqEmail" class="form-label">Email ID</label>
-                    <input type="email" class="form-control" id="reqEmail" name="reqEmail">
+                    <label for="reqEmail" class="form-label"><span class="text-danger">*</span> Email ID</label>
+                    <input type="email" class="form-control" id="reqEmail" name="reqEmail" required>
                     <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
                 </div>
                 <div class="mb-3">
