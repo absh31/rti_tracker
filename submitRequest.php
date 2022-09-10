@@ -78,7 +78,7 @@ if (!isset($_SESSION['otpVerified'])) {
                         </div>
                     </div>
                     <div class="headingsall" id="bplCardDiv" style="display: none;">
-                        <div class="form-group" id="docBPL">    
+                        <div class="form-group" id="docBPL">
                             <label for="docBPL">BPL Card :</label>
                             <input type="file" accept="image/jpe,image/png,image/jpeg,image/jpg,application/pdf" name="docBPL" id="docBPL" class="form-control">
                             <label class="mt-2 text-danger">Supported file formats: jpe, png, jpeg, jpg, pdf <br>Maximum file size: 2 MB</label>
@@ -108,7 +108,18 @@ if (!isset($_SESSION['otpVerified'])) {
             </div>
         </div>
     </form>
+    <?php
+    include './footer.php';
+    ?>
     <script type="text/javascript">
+        document.getElementById("rti-nav").classList.add("active");
+        document.getElementById("rti-nav").style.fontWeight = 600;
+        document.getElementById("home-nav").classList.remove("active");
+        document.getElementById("apel-nav").classList.remove("active");
+        document.getElementById("status-nav").classList.remove("active");
+        document.getElementById("history-nav").classList.remove("active");
+        document.getElementById("contact-nav").classList.remove("active");
+
         function showBpl(input) {
             var value = input.value
             if (value == 'Yes') {

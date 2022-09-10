@@ -30,7 +30,7 @@ if (!isset($_SESSION['otp'])) {
                     <br>
                     <div class="headingsall">
                         <div class="form-group">
-                            <button type="submit" name="personalRTI" class="btn btn-primary">Verify OTP</button>
+                            <button type="submit" name="personalRTI" class="btn btn-dark text-light">Verify OTP</button>
                         </div>
                     </div>
                 </div>

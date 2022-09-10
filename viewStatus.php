@@ -7,17 +7,17 @@ include "./nav.php";
     <br>
     <div class="row">
         <div class="col-6">
-            <?php 
-                if(isset($_SESSION['reqStatus'])){
-                   $reqStatus = $_SESSION['reqStatus'];
-                   $reqCurr = $_SESSION['reqCurr'];
-                   $reqNo = $_SESSION['reqNo'];
-                   $appEmail = $_SESSION['appEmail'];
-                   echo "Request No - ".$reqNo."<br>";
-                   echo "Applicant Email - ".$appEmail."<br>";
-                   echo "Current Handler - ".$reqCurr."<br>";
-                   echo "Current Status - ".$reqStatus."<br>";
-                }
+            <?php
+            // if(isset($_SESSION['reqStatus'])){
+            //    $reqStatus = $_SESSION['reqStatus'];
+            //    $reqCurr = $_SESSION['reqCurr'];
+            //    $reqNo = $_SESSION['reqNo'];
+            //    $appEmail = $_SESSION['appEmail'];
+            //    echo "Request No - ".$reqNo."<br>";
+            //    echo "Applicant Email - ".$appEmail."<br>";
+            //    echo "Current Handler - ".$reqCurr."<br>";
+            //    echo "Current Status - ".$reqStatus."<br>";
+            // }
             ?>
             <h5>Check Your RTI Status</h5>
             <p>To check the RTI, fill below form with required information. <br>
@@ -35,12 +35,23 @@ include "./nav.php";
                     <div class="g-recaptcha" data-theme="dark" data-sitekey="6Lewa-AZAAAAAMS-ZF5qUSZWezNJ1L9wQ5Iu13IU"></div>
                     <span class="text-danger" id="recaptcha_error"></span>
                 </div>
-                <button type="submit" class="btn btn-dark text-light">Submit</button>
+                <!-- <button type="submit" id="viewStatus" class="btn btn-dark text-light">Submit</button> -->
+                <button class="btn-spinner-border btn btn-dark py-2 submit" type="submit" name="viewStatus" id="viewStatus">
+                    <span class="spinner-border spinner-border-sm" hidden></span> View Status
+                </button>
             </form>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div id="responseData">
         </div>
     </div>
 </div>
 <br>
+<?php
+include './footer.php';
+?>
 <script>
     document.getElementById("status-nav").classList.add("active");
     document.getElementById("status-nav").style.fontWeight = 600;
@@ -49,10 +60,38 @@ include "./nav.php";
     document.getElementById("home-nav").classList.remove("active");
     document.getElementById("history-nav").classList.remove("active");
     document.getElementById("contact-nav").classList.remove("active");
+
+    $(document).ready(function() {
+        $('#viewStatus').on('click', function(e) {
+            $('#responseData').html();
+            e.preventDefault();
+            $('#responseData').html();
+            e.preventDefault();
+            $('.spinner-border').prop("hidden", null);
+            $('.btn-spinner-border').prop("disabled", true);
+            var reqNo = $('#reqNo').val().toString();
+            var reqEmail = $('#reqEmail').val().toString();
+            $.ajax({
+                type: "POST",
+                url: "./Backend/statusView.php",
+                data: {
+                    reqNo: reqNo,
+                    reqEmail: reqEmail,
+                },
+                success: function(response) {
+                    $('.spinner-border').prop("hidden", true);
+                    $('.btn-spinner-border').prop("disabled", false);
+                    // $("#table_id").dataTable().fnDestroy();
+                    // $("#table_id").DataTable();
+                    $('#responseData').html(response);
+                    allData = response;
+                    // $("#table_id").DataTable();
+                    // $("#export_to_excel").show();
+                }
+            })
+        })
+    });
 </script>
-<?php
-include './footer.php';
-?>
 </body>
 
 </html>

@@ -5,14 +5,14 @@ include './nav.php';
 <div class="container">
     <br>
     <div class="row">
-        <div class="col">
+        <div class="col-8">
             <h5>Online RTI Form</h5>
             <p style="font-size: 20px;">Personal Details</p>
             <form method="POST" enctype="multipart/form-data" id="register" action="./Backend/personalRTI.php">
-                <div class="px-3 mb-4 pt-3 apply" style="border: 1px solid #003865">
+                <div class="mb-4 pt-3 apply">
                     <div class="headingsall">
 
-                        <div class="col-sm-6 form-group" id="fullNameDiv">
+                        <div class="form-group" id="fullNameDiv">
                             <label for='name'><span class="text-danger">*</span> Name :</label>
                             <input type="text" name="name" oninput="validateText(this)" id="name" class="form-control" required>
                         </div>
@@ -20,7 +20,7 @@ include './nav.php';
                     <br>
                     <div class="headingsall">
 
-                        <div class="col-sm-6 form-group" id="emailAddDiv">
+                        <div class="form-group" id="emailAddDiv">
                             <label for='email'><span class="text-danger">*</span> Email Address :</label>
                             <input type="email" name="email" id="email" class="form-control" required>
                         </div>
@@ -28,7 +28,7 @@ include './nav.php';
                     <br>
                     <div class="headingsall">
 
-                        <div class="col-sm-6 form-group" id="confirmEmailAddDiv">
+                        <div class="form-group" id="confirmEmailAddDiv">
                             <label for='email'><span class="text-danger">*</span> Confirm Email :</label>
                             <input type="email" name="confirmEmail" id="confirmEmail" class="form-control" required oninput="compareEmail(this)">
                             <span class="text-danger" style="display: none;" id="hiddenSpan">Email doesn't match!</span>
@@ -37,15 +37,15 @@ include './nav.php';
                     <br>
                     <div class="headingsall">
 
-                        <div class="col-sm-6 form-group" id="mobileDiv">
-                            <label for='mobileNumber'>Mobile Number :</label>
-                            <input type="text" name="mobileNumber" id="mobileNumber" class="form-control" oninput="validateNumber(this)">
+                        <div class="form-group" id="mobileDiv">
+                            <label for='mobileNumber'><span class="text-danger">*</span> Mobile Number :</label>
+                            <input type="text" name="mobileNumber" id="mobileNumber" class="form-control" oninput="validateNumber(this)" required>
                         </div>
                     </div>
                     <br>
                     <div class="headingsall">
 
-                        <div class="col-sm-6 form-group" id="phoneDiv">
+                        <div class="form-group" id="phoneDiv">
                             <label for='phoneNumber'>Phone Number :</label>
                             <input type="text" name="phoneNumber" id="phoneNumber" class="form-control" oninput="validateNumber(this)">
                         </div>
@@ -70,7 +70,7 @@ include './nav.php';
                     <br>
                     <div class="headingsall">
 
-                        <div class="col-sm-6 form-group" id="addressDiv">
+                        <div class="form-group" id="addressDiv">
                             <label for='address'><span class="text-danger">*</span> Address :</label>
                             <textarea name="address" id="address" class="form-control" required oninput="validateTextarea(this)" rows="4"></textarea>
                         </div>
@@ -79,7 +79,7 @@ include './nav.php';
                     <br>
                     <div class="headingsall">
 
-                        <div class="col-sm-6 form-group" id="pincodeDiv">
+                        <div class="form-group" id="pincodeDiv">
                             <label for='pincode'><span class="text-danger">*</span> Pincode :</label>
                             <input type="text" name="pincode" id="pincode" class="form-control" oninput="validatePincode(this)">
                         </div>
@@ -100,7 +100,7 @@ include './nav.php';
                     </div>
                     <div class="headingsall" style="display: none;" id="countryDiv">
                         <br>
-                        <div class="col-sm-6 form-group">
+                        <div class="form-group">
                             <label for='country'><span class="text-danger"><span class="text-danger">*</span> </span> Other Country Name:</label>
                             <input type="text" name="countryName" id="countryName" class="form-control" oninput="validateText(this)">
                         </div>
@@ -111,7 +111,7 @@ include './nav.php';
                     <br>
                     <div class="headingsall">
 
-                        <div class="col-sm-6 form-group" id="stateDiv">
+                        <div class="form-group" id="stateDiv">
                             <label for="usr" class="my-2"><span class="text-danger">*</span> State:</label>
                             <!-- <input type="text" onpaste="return validateText(this)" class="form-control" id="State" placeholder="Enter State Name" required> -->
                             <select class="form-control" id="stateSel" name="state" required>
@@ -176,14 +176,14 @@ include './nav.php';
                     </div>
                     <br>
                     <div class="headingsall">
-                        <div class="col-sm-6 form-group">
+                        <div class="form-group">
                             <div class="g-recaptcha" data-theme="dark" data-sitekey="6Lewa-AZAAAAAMS-ZF5qUSZWezNJ1L9wQ5Iu13IU"></div>
                             <span class="text-danger" id="recaptcha_error"></span>
                         </div>
                     </div>
                     <br>
                     <div class="headingsall">
-                        <div class="col-sm-6 form-group">
+                        <div class="form-group">
                             <button class="btn btn-dark text-light" type="submit" name="personalRTI">Submit</button>
                         </div>
                     </div>

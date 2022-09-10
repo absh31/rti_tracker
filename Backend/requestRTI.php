@@ -86,7 +86,7 @@ if (!isset($_POST['requestRTI'])) {
                             echo '<script>alert("File is not uploaded.");</script>';
                             echo "<script>window.open('../submitRequest.php','_self')</script>";
                         } else {
-                            echo '<script>alert("File is uploaded.");</script>';
+                            // echo '<script>alert("File is uploaded.");</script>';
                             // echo "<script>window.open('../submitRequest.php','_self')</script>";
                         }
                     }
@@ -112,7 +112,7 @@ if (!isset($_POST['requestRTI'])) {
             // ob_clean();
             // $bpl = $uploadDir . $bplName;
 
-            $requestNo = '';
+            $requestNo = date("Ymdhis");
             $reqMode = 'Online';
             $reqBase = '20';
             $reqIsBase = 0;
@@ -151,9 +151,9 @@ if (!isset($_POST['requestRTI'])) {
             $sql->bindParam(21, $reqComplete);
 
             if ($sql->execute()) {
+                echo "<script>alert('Your request is filed successfully! Your Request Reference number is: ".$requestNo."')</script>";
                 session_unset();
                 session_destroy();
-                echo "<script>alert('Your request is filed successfully!')</script>";
                 echo '<script>window.open("../index.php","_self")</script>';
             } else {
                 echo "<script>alert('Something went wrong!')</script>";
