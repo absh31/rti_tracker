@@ -20,7 +20,7 @@
                             <a id="home-nav" class="nav-link active" aria-current="page" href="index.php">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a id="rti-nav" class="nav-link" aria-current="page" href="submitRTI.php">Submit RTI</a>
+                            <a id="rti-nav" class="nav-link" aria-current="page" href="instructionsRTI.php">Submit RTI</a>
                         </li>
                         <li class="nav-item">
                             <a id="apel-nav" class="nav-link" href="submitAppeal.php">Submit First Appeal</a>

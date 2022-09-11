@@ -13,7 +13,7 @@ include "./connection.php";
             <form method="POST" action="./Backend/historyView.php">
                 <div class="mb-3">
                     <label for="reqMobile" class="form-label"><span class="text-danger">*</span> Mobile Number</label>
-                    <input type="text" class="form-control" id="reqMobile" name="reqMobile" oninput="validateNumber(this)" aria-describedby="emailHelp" required>
+                    <input type="text" placeholder="Without STD code i.e +91." class="form-control" id="reqMobile" name="reqMobile" oninput="validateNumber(this)" aria-describedby="emailHelp" required>
                 </div>
                 <div class="mb-3">
                     <label for="reqEmail" class="form-label"><span class="text-danger">*</span> Email ID</label>

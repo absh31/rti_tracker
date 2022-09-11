@@ -26,71 +26,77 @@ if (!isset($_POST['requestRTI'])) {
             $appId = $id['applicant_id'];
             $deptId = $_POST['department'];
             $isBPL = $_POST['isBPL'];
-            $bplCard = $_POST['bplCard'];
-            $YOI = $_POST['YOI'];
-            $issueAuth = $_POST['issueAuth'];
-            $docBPL = $_FILES['docBPL']['name'];
-
-            $docBPL = $_FILES['docBPL']['name'];
-            $upload_status = false;
-
-            if ($docBPL != "") {
-                $ImageName_tmp_error = $_FILES['docBPL']['error'];
-                if ($ImageName_tmp_error > 0) {
-                    echo '<script>alert("File is not allowed.");</script>';
-                    echo '<script>window.open("../index.php","_self")</script>';
-                } else {
-
-                    if (!file_exists('../bplFiles')) {
-                        mkdir('../bplFiles', 0777, true);
-                    }
-
-                    $ImageName_type = $_FILES['docBPL']['type'];
-                    $ImageName_size = $_FILES['docBPL']['size'];
-                    $ImageName_tmp_name = $_FILES['docBPL']['tmp_name'];
-
-                    /* Figure out the MIME type | Check in array */
-                    $known_mime_types = array(
-                        "application/pdf",
-                        "application/png",
-                        "application/jpg",
-                        "application/jpeg"
-                    );
-                    if (!in_array($ImageName_type, $known_mime_types)) {
-                        echo "<script> alert('File format not supported!')</script>";
-                        echo "<script>window.open('../submitRequest.php','_self')</script>";
-                        // $_SESSION['admin_add_companyvisitdetails_fail'] = 1;
-                    } else if ($ImageName_size >= "2097152") {
-                        echo "<script> alert('Make sure that file size is less than 2 MB')</script>";
-                        echo "<script>window.open('../submitRequest.php','_self')</script>";
-                        // $_SESSION['admin_add_companyvisitdetails_fail'] = 1;
+            if($isBPL == "YES"){
+                $bplCard = $_POST['bplCard'];
+                $YOI = $_POST['YOI'];
+                $issueAuth = $_POST['issueAuth'];
+                $docBPL = $_FILES['docBPL']['name'];
+                $upload_status = false;
+                
+                if ($docBPL != "") {
+                    $ImageName_tmp_error = $_FILES['docBPL']['error'];
+                    if ($ImageName_tmp_error > 0) {
+                        echo '<script>alert("File is not allowed.");</script>';
+                        echo '<script>window.open("../index.php","_self")</script>';
                     } else {
-                        $pos = strrpos($docBPL, '.');
-                        if ($pos === false) {
-                            // file has no extension; do something special?
-                            $ext = "";
-                        } else {
-                            // includes the period in the extension; do $pos + 1 if you don't want it
-                            $ext = substr($docBPL, $pos);
+    
+                        if (!file_exists('../bplFiles')) {
+                            mkdir('../bplFiles', 0777, true);
                         }
-                        $docBPL = md5($appId) . '_bplCard' . $ext;
-                        $docBPL_path = "../bplFiles/" . $docBPL;
-
-                        if (file_exists($docBPL_path)) {
-                            unlink($docBPL_path);
-                        }
-
-                        $check_upload = move_uploaded_file($ImageName_tmp_name, $docBPL_path);
-
-                        if (!$check_upload) {
-                            echo '<script>alert("File is not uploaded.");</script>';
+    
+                        $ImageName_type = $_FILES['docBPL']['type'];
+                        $ImageName_size = $_FILES['docBPL']['size'];
+                        $ImageName_tmp_name = $_FILES['docBPL']['tmp_name'];
+    
+                        /* Figure out the MIME type | Check in array */
+                        $known_mime_types = array(
+                            "application/pdf",
+                            "application/png",
+                            "application/jpg",
+                            "application/jpeg"
+                        );
+                        if (!in_array($ImageName_type, $known_mime_types)) {
+                            echo "<script> alert('File format not supported!')</script>";
                             echo "<script>window.open('../submitRequest.php','_self')</script>";
+                            // $_SESSION['admin_add_companyvisitdetails_fail'] = 1;
+                        } else if ($ImageName_size >= "2097152") {
+                            echo "<script> alert('Make sure that file size is less than 2 MB')</script>";
+                            echo "<script>window.open('../submitRequest.php','_self')</script>";
+                            // $_SESSION['admin_add_companyvisitdetails_fail'] = 1;
                         } else {
-                            // echo '<script>alert("File is uploaded.");</script>';
-                            // echo "<script>window.open('../submitRequest.php','_self')</script>";
+                            $pos = strrpos($docBPL, '.');
+                            if ($pos === false) {
+                                // file has no extension; do something special?
+                                $ext = "";
+                            } else {
+                                // includes the period in the extension; do $pos + 1 if you don't want it
+                                $ext = substr($docBPL, $pos);
+                            }
+                            $docBPL = md5($appId) . '_bplCard' . $ext;
+                            $docBPL_path = "../bplFiles/" . $docBPL;
+    
+                            if (file_exists($docBPL_path)) {
+                                unlink($docBPL_path);
+                            }
+    
+                            $check_upload = move_uploaded_file($ImageName_tmp_name, $docBPL_path);
+    
+                            if (!$check_upload) {
+                                echo '<script>alert("File is not uploaded.");</script>';
+                                echo "<script>window.open('../submitRequest.php','_self')</script>";
+                            } else {
+                                // echo '<script>alert("File is uploaded.");</script>';
+                                // echo "<script>window.open('../submitRequest.php','_self')</script>";
+                            }
                         }
                     }
                 }
+            }else{
+                $bplCard = "NULL";
+                $YOI = "NULL";
+                $issueAuth = "NULL";
+                $docBPL = "NULL";
+                $docBPL_path = "NULL";
             }
             
             // $allowed_doc = array('jpe', 'png', 'jpeg', 'jpg', 'pdf', 'xls', 'csv');
