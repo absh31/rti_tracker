@@ -13,10 +13,20 @@ function lastLogin($type, $uname, $pass)
     $sql->bindParam(3, $uname);
     $sql->bindParam(4, $pass);
     $sql->bindParam(5, $type);
-    if ($sql->execute()) {
-        echo "<script>window.open('../Officer/dashboard.php','_self')</script>";
-    } else {
-        echo "<script>alert('Something went wrong! Please try again later.')</script>";
-        echo "<script>window.open('../logout.php','_self')</script>";
+    if ($type != '1'){
+        if ($sql->execute()) {
+            echo "<script>window.open('../Officer/dashboard.php','_self')</script>";
+        } else {
+            echo "<script>alert('Something went wrong! Please try again later.')</script>";
+            echo "<script>window.open('../logout.php','_self')</script>";
+        }
+    }
+    else {
+        if ($sql->execute()) {
+            echo "<script>window.open('../Admin/dashboard.php','_self')</script>";
+        } else {
+            echo "<script>alert('Something went wrong! Please try again later.')</script>";
+            echo "<script>window.open('../logout.php','_self')</script>";
+        }
     }
 }
