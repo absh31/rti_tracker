@@ -1,12 +1,12 @@
 <?php
 session_start();
 include '../connection.php';
-if (empty($_POST['g-recaptcha-response'])) {
+if (empty($_POST['captcha'])) {
     echo "<script>alert('Captcha Error. Try Again')</script>";
     echo "<script>window.open('./viewHistory.php','_self')</script>";
 } else {
     $secret_key = '6Lewa-AZAAAAAP729KyiNYyJGV7TnGheI0WUlf6p';
-    $response = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . $secret_key . '&response=' . $_POST['g-recaptcha-response']);
+    $response = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . $secret_key . '&response=' . $_POST['captcha']);
 
     $response_data = json_decode($response);
 

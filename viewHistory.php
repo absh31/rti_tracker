@@ -76,12 +76,14 @@ include './footer.php';
             $('.btn-spinner-border').prop("disabled", true);
             var reqMobile = $('#reqMobile').val().toString();
             var reqEmail = $('#reqEmail').val().toString();
+            var captcha = $('#g-recaptcha-response').val().toString();
             $.ajax({
                 type: "POST",
                 url: "./Backend/historyView.php",
                 data: {
                     reqMobile: reqMobile,
                     reqEmail: reqEmail,
+                    captcha: captcha
                 },
                 success: function(response) {
                     $('.spinner-border').prop("hidden", true);
