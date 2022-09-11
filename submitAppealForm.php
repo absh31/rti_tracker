@@ -31,11 +31,11 @@ if (!isset($_SESSION['reqAppId'])) {
                         <input type="email" name="reqEmail" value="<?php echo $appEmail; ?>" class="form-control" id="reqEmail" readonly>
                         <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
                     </div>
-                    <div class="headingsall">
+                    <div class="mb-3">
                         <?php
                         $reasons = array('ABC', 'XYZ', 'PQR');
                         ?>
-                        <div class="col-sm-6 form-group" id="reasonDiv">
+                        <div class="form-group" id="reasonDiv">
                             <label for="usr" class="my-2"><span class="text-danger">*</span> Reason:</label>
                             <select class="form-control" id="reasonSel" name="appealReason" required>
                                 <option value="" disabled selected>Select Reason</option>
@@ -45,21 +45,32 @@ if (!isset($_SESSION['reqAppId'])) {
                                     <option value="<?php echo $key; ?>"><?php echo $key; ?></option>
                                 <?php }
                                 ?>
-
+                                <option value="Other">Other</option>
                             </select>
                         </div>
                     </div>
-                    <br>
                     <div class="mb-3">
-                        <div class="g-recaptcha" data-sitekey="6Lewa-AZAAAAAMS-ZF5qUSZWezNJ1L9wQ5Iu13IU"></div>
+                        <div class="g-recaptcha" data-theme="dark" data-sitekey="6Lewa-AZAAAAAMS-ZF5qUSZWezNJ1L9wQ5Iu13IU"></div>
                         <span class="text-danger" id="recaptcha_error"></span>
                     </div>
-                    <button type="submit" class="btn btn-primary" name="submitAppeal">Submit</button>
+                    <button type="submit" class="btn btn-dark" name="submitAppeal">Submit Appeal</button>
                 </form>
             </div>
         </div>
     </div>
     <br>
+    <?php
+    include "./footer.php";
+    ?>
+    <script>
+        document.getElementById("apel-nav").classList.add("active");
+        document.getElementById("apel-nav").style.fontWeight = 600;
+        document.getElementById("rti-nav").classList.remove("active");
+        document.getElementById("home-nav").classList.remove("active");
+        document.getElementById("status-nav").classList.remove("active");
+        document.getElementById("history-nav").classList.remove("active");
+        document.getElementById("contact-nav").classList.remove("active");
+    </script>
     </body>
 
     </html>

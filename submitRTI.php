@@ -36,10 +36,12 @@ include './nav.php';
                     </div>
                     <br>
                     <div class="headingsall">
-
-                        <div class="form-group" id="mobileDiv">
-                            <label for='mobileNumber'><span class="text-danger">*</span> Mobile Number :</label>
-                            <input type="text" name="mobileNumber" id="mobileNumber" class="form-control" oninput="validateNumber(this)" required>
+                        <label for='mobileNumber'><span class="text-danger">*</span> Mobile Number :</label>
+                        <div class="input-group mb-2 mr-sm-2">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">+91</div>
+                            </div>
+                            <input type="text" name="mobileNumber" id="mobileNumber" class="form-control" minlength="10" maxlength="10" inputmode="numeric" oninput="validateNumber(this)" required>
                         </div>
                     </div>
                     <br>
@@ -47,7 +49,7 @@ include './nav.php';
 
                         <div class="form-group" id="phoneDiv">
                             <label for='phoneNumber'>Phone Number :</label>
-                            <input type="text" name="phoneNumber" id="phoneNumber" class="form-control" oninput="validateNumber(this)">
+                            <input type="text" name="phoneNumber" minlength="10" maxlength="10" inputmode="numeric" id="phoneNumber" class="form-control" oninput="validateNumber(this)">
                         </div>
                     </div>
                     <br>
