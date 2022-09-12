@@ -98,27 +98,8 @@ if (!isset($_POST['requestRTI'])) {
                 $docBPL = "NULL";
                 $docBPL_path = "NULL";
             }
-            
-            // $allowed_doc = array('jpe', 'png', 'jpeg', 'jpg', 'pdf', 'xls', 'csv');
-            // $ext1 = strtolower(substr($docBPL, strpos($docBPL, ".") + 1, strlen($docBPL)));
-            // if (!in_array($ext1, $allowed_doc)) {
-            //     echo '<script>alert("File is not allowed.");</script>';
-            //     echo '<script>window.open("../index.php","_self")</script>';
-            // }
-            // $ext = pathinfo($_FILES['docBPL']['name'], PATHINFO_EXTENSION);
-            // if (!in_array($ext, $allowed_doc)) {
-            //     echo '<script>alert("File is not allowed.");</script>';
-            //     echo '<script>window.open("../index.php","_self")</script>';
-            // }
-            // if (!file_exists('../bplFiles')) {
-            //     mkdir('../bplFiles', 0777, true);
-            // }
-            // $uploadDir = '../bplFiles/';
-            // $bplName = uniqid() . '_bpl.' . $ext;
-            // ob_clean();
-            // $bpl = $uploadDir . $bplName;
 
-            $requestNo = date("Ymdhis");
+            $requestNo = $_SESSION['requestNo'] = date("Ymdhis");
             $reqMode = 'Online';
             $reqBase = '20';
             $reqIsBase = 0;
@@ -157,9 +138,10 @@ if (!isset($_POST['requestRTI'])) {
             $sql->bindParam(21, $reqComplete);
 
             if ($sql->execute()) {
-                echo "<script>alert('Your request is filed successfully! Your Request Reference number is: ".$requestNo."')</script>";
-                session_unset();
-                session_destroy();
+                echo "<script>window.open('../responseRTI.php', '_self')</script>"; 
+                // echo "<script>alert('Your request is filed successfully! Your Request Reference number is: ".$requestNo."')</script>";
+                // session_unset();
+                // session_destroy();
                 echo '<script>window.open("../index.php","_self")</script>';
             } else {
                 echo "<script>alert('Something went wrong!')</script>";
