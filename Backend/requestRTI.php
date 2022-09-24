@@ -19,6 +19,7 @@ if (!isset($_POST['requestRTI'])) {
             echo "<script>window.open('./submitRTI.php','_self')</script>";
         } else {
             $email = $_SESSION['email'];
+            echo $email;
             $sql = $conn->prepare('SELECT * FROM `tblapplicant` WHERE `applicant_email` = ?');
             $sql->bindParam(1, $email);
             $sql->execute();
@@ -26,7 +27,8 @@ if (!isset($_POST['requestRTI'])) {
             $appId = $id['applicant_id'];
             $deptId = $_POST['department'];
             $isBPL = $_POST['isBPL'];
-            if($isBPL == "YES"){
+            echo $isBPL;
+            if($isBPL == "Yes"){
                 $bplCard = $_POST['bplCard'];
                 $YOI = $_POST['YOI'];
                 $issueAuth = $_POST['issueAuth'];
@@ -138,8 +140,8 @@ if (!isset($_POST['requestRTI'])) {
             $sql->bindParam(21, $reqComplete);
 
             if ($sql->execute()) {
+                echo "<script>alert('Your request is filed successfully! Your Request Reference number is: ".$requestNo."')</script>";
                 echo "<script>window.open('../responseRTI.php', '_self')</script>"; 
-                // echo "<script>alert('Your request is filed successfully! Your Request Reference number is: ".$requestNo."')</script>";
                 // session_unset();
                 // session_destroy();
                 echo '<script>window.open("../index.php","_self")</script>';
