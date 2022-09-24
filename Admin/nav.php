@@ -20,6 +20,7 @@
                             Manage
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="./manageUsers.php">Roles</a></li>
                             <li><a class="dropdown-item" href="./department.php">Departments</a></li>
                             <li><a class="dropdown-item" href="./officer.php">Officers</a></li>
                         </ul>
