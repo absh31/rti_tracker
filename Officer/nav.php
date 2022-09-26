@@ -13,27 +13,19 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a id="home-nav" class="nav-link active" aria-current="page" href="dashboard.php">Dashboard</a>
+                        <a id="dash-nav" class="nav-link active" aria-current="page" href="dashboard.php">Dashboard</a>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Manage RTIs
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="#">Add RTI</a></li>
-                            <li><a class="dropdown-item" href="#">Pending RTI</a></li>
-                            <li><a class="dropdown-item" href="#">Track RTI</a></li>
-                            <li><a class="dropdown-item" href="#">RTI History</a></li>
-                        </ul>
+                    <li class="nav-item">
+                        <a id="add-nav" class="nav-link" aria-current="page" href="./addRTI.php">Add RTI</a>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Manage
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <li><a class="dropdown-item" href="./department.php">Departments</a></li>
-                            <li><a class="dropdown-item" href="./officer.php">Officers</a></li>
-                        </ul>
+                    <li class="nav-item">
+                        <a id="pend-nav" class="nav-link" aria-current="page" href="./pendingRTI.php">Pending RTI</a>
+                    </li>
+                    <li class="nav-item">
+                        <a id="trck-nav" class="nav-link" aria-current="page" href="dashboard.php">Track RTI</a>
+                    </li>
+                    <li class="nav-item">
+                        <a id="hist-nav" class="nav-link" aria-current="page" href="dashboard.php">RTI History</a>
                     </li>
                 </ul>
                 <a href="../logout.php">
