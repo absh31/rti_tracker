@@ -4,10 +4,6 @@ include "../header.php";
 include '../connection.php';
 include './nav.php';
 if ((isset($_SESSION['username']) && isset($_SESSION['auth']))) {
-    $sql = $conn->prepare('SELECT * FROM `tblrole` t, `tblofficer` o WHERE t.role_id = ? AND t.role_id = o.officer_role_id');
-    $sql->bindParam(1, $_SESSION['auth']);
-    $sql->execute();
-    $key = $sql->fetch(PDO::FETCH_ASSOC);
 ?>
     <br>
     <div class="container">
@@ -15,31 +11,35 @@ if ((isset($_SESSION['username']) && isset($_SESSION['auth']))) {
             <div class="col">
                 <h5>Pending RTIs</h5>
                 <br>
-                <table class="table table-bordered" id="pending">
+                <table class="table table-striped table-bordered" id="pending">
                     <thead>
-                        <tr>
-                            <td>#</td>
-                            <td>RTI reference number</td>
-                            <td>RTI issue date</td>
-                            <td>RTI expiring date</td>
-                            <td>Action</td>
+                        <tr class="bg-dark text-light">
+                            <td class="text-center">#</td>
+                            <td class="text-center">RTI reference number</td>
+                            <td class="text-center">RTI issue date</td>
+                            <td class="text-center">RTI expiring date</td>
+                            <td class="text-center">Action</td>
                         </tr>
                     </thead>
                     <tbody>
                         <?php
                         $i = 1;
                         $ThisTime = date("Y-m-d H:i:s");
-                        $sql = $conn->prepare("SELECT * FROM tblrequest WHERE request_status = 'Requested' AND TIMESTAMPDIFF(DAY, `request_time`, ?) < 30");
+                        $reqCur = 'user';
+                        $sql = $conn->prepare("SELECT * FROM tblrequest WHERE request_status = 'Requested' AND TIMESTAMPDIFF(DAY, `request_time`, ?) < 30 AND request_current_handler = ?");
                         $sql->bindParam(1, $ThisTime);
+                        $sql->bindParam(2, $reqCur);
                         $sql->execute();
                         while ($row = $sql->fetch(PDO::FETCH_ASSOC)) {
                         ?>
                             <tr>
-                                <td><?= $i ?></td>
-                                <td><?= $row['request_no'] ?></td>
-                                <td><?= $row['request_time'] ?></td>
-                                <td><?= date('d-m-Y', strtotime($row['request_time'] . ' + 30 days')) ?></td>
-                                <td>FORWARD</td>
+                                <td class="text-center"><?= $i ?></td>
+                                <td class="text-center"><?= $row['request_no'] ?></td>
+                                <td class="text-center"><?= $row['request_time'] ?></td>
+                                <td class="text-center"><?= date('d-m-Y', strtotime($row['request_time'] . ' + 30 days')) ?></td>
+                                <td class="text-center">
+                                    <a href="./forwardRTI.php?reqNo=<?= $row['request_no']?>" class="btn btn-outline-success">Forward</a>
+                                </td>
                             </tr>
                         <?php
                             $i++;

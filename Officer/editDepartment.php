@@ -46,8 +46,8 @@ if ((isset($_SESSION['username']) && isset($_SESSION['auth']))) {
                     </tbody>
                 </table>
                 <div class="col text-center">
-                    <a href="./department.php" class="btn btn-outline-danger px-4 mx-4">Cancel</a>
-                    <input class="btn btn-outline-primary px-4" type="submit" name="addDept" value="Save Changes">
+                    <a href="./department.php" class="btn btn-danger px-4 mx-4">Cancel</a>
+                    <input class="btn btn-dark px-4" type="submit" name="addDept" value="Save Changes">
                 </div>
             </div>
         </form>

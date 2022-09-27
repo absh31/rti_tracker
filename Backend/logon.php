@@ -27,6 +27,8 @@ if (isset($_POST['AuthLogin'])) {
             $sql->execute();
 
             if ($sql->rowCount() > 0) {
+                $row = $sql->fetch(PDO::FETCH_ASSOC);
+                $_SESSION['officer_name'] = $row['officer_name'];
                 $_SESSION['username'] = $uname;
                 $_SESSION['password'] = $pass;
                 $_SESSION['auth'] = $type;
