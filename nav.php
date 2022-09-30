@@ -44,13 +44,19 @@
     <?php
     } else {
     ?>
-        <div class="container">
-            <div class="row">
-                <div class="col text-center mt-4">
+        <div class="container-fluid" style="background-color : #D9D9D9">
+            <div class="row mx-5 py-2">
+                <div class="col" id="logo1">
+                    <img src="./uploads/images/Group36238.png" alt="">
+                </div>
+                <div class="col text-center mt-3">
                     <a class="navbar-brand" href="index.php" style="font-weight: 800; color:black; font-size:30;">
                         <!-- <img src="logo.png" width="45"height="45" class="d-inline-block align-text-center" style="margin-right:2px;"> -->
                         RTI TRACKER
                     </a>
+                </div>
+                <div class="col text-end" id="logo2">
+                    <img src="./uploads/images/Group36232.png" alt="">
                 </div>
             </div>
         </div>
