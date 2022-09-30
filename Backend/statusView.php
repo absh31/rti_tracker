@@ -41,6 +41,7 @@ if (empty($_POST['captcha'])) {
                         <th>Requested Department</th>
                         <th>Request Status</th>
                         <th>Requested Information</th>
+                        <th>Payment Details</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -51,6 +52,11 @@ if (empty($_POST['captcha'])) {
                         <td><?= $array['department_name']; ?></td>
                         <td><?= $key['request_status']; ?></td>
                         <td><?= $key['request_text']; ?></td>
+                        <td><?php 
+                        if($key['request_is_base_pay'] == 0){
+                            ?> <a href="./Transactions/payRequest.php?requestNo=<?php echo $_SESSION['requestNo']; ?>">Pay Now</a>
+                        <?php }  else {
+                            ?>Paid<?php } ?></td>
                     </tr>
                 </tbody>
             </table>
