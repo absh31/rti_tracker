@@ -2,8 +2,10 @@
 include '../../connection.php';
 if (isset($_POST['deptID'])) {
     $id = $_POST['deptID'];
-    $query = $conn->prepare("SELECT * FROM tblofficer WHERE officer_department_id = ? OR officer_department_id = ''");
+    $roleID = 4;
+    $query = $conn->prepare("SELECT * FROM tblofficer WHERE (officer_department_id = ? OR officer_department_id = '') AND officer_role_id = ?");
     $query->bindParam(1, $id);
+    $query->bindParam(2, $roleID);
     $query->execute();
     if($query->rowCount() == 0){
         echo "<option disabled selected> NO OFFICER ASSIGNED </option>";
