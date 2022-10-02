@@ -10,12 +10,11 @@ if ((isset($_SESSION['username']) && isset($_SESSION['auth']))) {
     include './nav.php';
     if ($key['role_id'] == 4) {
         $reqNo = $_GET['id'];
-        echo $reqNo;
         $applicant_sql = $conn->prepare("SELECT * FROM tblapplicant a, tblrequest r WHERE a.applicant_id = r.request_applicant_id AND r.request_no = ?");
         $applicant_sql->bindParam(1, $reqNo);
         $applicant_sql->execute();
         $row = $applicant_sql->fetch(PDO::FETCH_ASSOC);
-        print_r($row);
+        // print_r($row);
 ?>
         <br>
         <div class="container">
@@ -29,7 +28,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['auth']))) {
 
                                 <div class="form-group" id="fullNameDiv">
                                     <label for='name'><span class="text-danger">*</span> Name :</label>
-                                    <input type="text" name="reqNo" value="<?= $reqNo?>" hidden>
+                                    <input type="text" name="reqNo" value="<?= $reqNo ?>" hidden>
                                     <input type="text" readonly value="<?= $row['applicant_name'] ?>" name="name" oninput="validateText(this)" id="name" class="form-control" required>
                                 </div>
                             </div>
@@ -274,7 +273,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['auth']))) {
                                 <div class="headingsall" id="bplCardDiv" style="display: none;">
                                     <div class="form-group" id="docBPL">
                                         <label for="docBPL">BPL Card :</label>
-                                        <iframe id="iframeid" src='../bplFiles/<?php echo $UserName."_resume.pdf";?>' width="100%" height="500px"></iframe>
+                                        <iframe id="iframeid" src='../bplFiles/<?php echo $UserName . "_resume.pdf"; ?>' width="100%" height="500px"></iframe>
                                     </div>
                                     <br>
                                 </div>
@@ -288,7 +287,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['auth']))) {
                                 </div>
                             </div>
                             <br>
-                            
+
                             <div class="headingsall">
                                 <div class="form-group" id="textDiv">
                                     <label for='text'>Remarks for RTI Application :</label>
@@ -325,6 +324,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['auth']))) {
             </div>
         </div>
 <?php
+        include "../footer.php";
     }
 }
 ?>

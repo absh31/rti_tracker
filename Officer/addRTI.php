@@ -7,7 +7,6 @@ if ((isset($_SESSION['username']) && isset($_SESSION['auth']))) {
     $sql->bindParam(1, $_SESSION['auth']);
     $sql->execute();
     $key = $sql->fetch(PDO::FETCH_ASSOC);
-
     include './nav.php';
 ?>
     <br>

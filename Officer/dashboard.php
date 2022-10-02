@@ -20,6 +20,9 @@ if ((isset($_SESSION['username']) && isset($_SESSION['auth']))) {
         </div>
         <br><br>
         <?php include '../footer.php'; ?>
+        <script>
+            document.getElementById("dash-nav").style.fontWeight = 600;
+        </script>
         </body>
 
         </html>

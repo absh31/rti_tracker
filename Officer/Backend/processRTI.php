@@ -78,12 +78,17 @@ if (!isset($_POST['rejectRTI']) && !isset($_POST['revertRTI'])) {
         // (C) DONE - WHAT'S NEXT?
         if (count($status) == 0) {
             $sql = $conn->prepare("INSERT INTO tblactivity (activity_request_no, activity_from, activity_to, activity_remarks, activity_status) VALUES(?,?,?,?,?)");
+
             $sql->bindParam(1, $reqNo);
             $sql->bindParam(2, $fromOfficerName);
             $sql->bindParam(3, $toOfficerName);
             $sql->bindParam(4, $remarks);
             $sql->bindParam(5, $activity_status);
             if ($sql->execute()) {
+                $sql2 = $conn->prepare("UPDATE tblrequest SET request_current_handler = ? WHERE request_no = ?");
+                $sql2 -> bindParam(1, $toOfficerName);
+                $sql2 -> bindParam(2, $reqNo);
+                $sql2 -> execute();
                 echo '<script>alert("Returned to the Nodal Officer successfully!");</script>';
                 echo '<script>window.open("../dashboard.php","_self")</script>';
             } else {
@@ -173,6 +178,10 @@ if (!isset($_POST['rejectRTI']) && !isset($_POST['revertRTI'])) {
             $sql->bindParam(4, $remarks);
             $sql->bindParam(5, $activity_status);
             if ($sql->execute()) {
+                $sql2 = $conn->prepare("UPDATE tblrequest SET request_current_handler = ? WHERE request_no = ?");
+                $sql2 -> bindParam(1, $toOfficerName);
+                $sql2 -> bindParam(2, $reqNo);
+                $sql2 -> execute();
                 echo '<script>alert("Returned to the Nodal Officer successfully!");</script>';
                 echo '<script>window.open("../dashboard.php","_self")</script>';
             } else {
