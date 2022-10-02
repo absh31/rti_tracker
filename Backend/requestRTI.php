@@ -27,7 +27,8 @@ if (!isset($_POST['requestRTI'])) {
             $appId = $id['applicant_id'];
             $deptId = $_POST['department'];
             $isBPL = $_POST['isBPL'];
-            echo $isBPL;
+            $upload_status = false;
+
             if($isBPL == "Yes"){
                 $bplCard = $_POST['bplCard'];
                 $YOI = $_POST['YOI'];
@@ -84,9 +85,11 @@ if (!isset($_POST['requestRTI'])) {
                             $check_upload = move_uploaded_file($ImageName_tmp_name, $docBPL_path);
     
                             if (!$check_upload) {
+                                $upload_status = false;
                                 echo '<script>alert("File is not uploaded.");</script>';
                                 echo "<script>window.open('../submitRequest.php','_self')</script>";
                             } else {
+                                $upload_status = true;
                                 // echo '<script>alert("File is uploaded.");</script>';
                                 // echo "<script>window.open('../submitRequest.php','_self')</script>";
                             }
@@ -140,14 +143,25 @@ if (!isset($_POST['requestRTI'])) {
             $sql->bindParam(21, $reqComplete);
 
             if ($sql->execute()) {
-                echo "<script>alert('Your request is filed successfully! Your Request Reference number is: ".$requestNo."')</script>";
-                echo "<script>window.open('../responseRTI.php', '_self')</script>"; 
-                // session_unset();
-                // session_destroy();
-                echo '<script>window.open("../index.php","_self")</script>';
+                if($upload_status){
+                    $doc_sql = $conn->prepare("INSERT INTO tbldocument (document_request_id, document_title, document_path, document_type) VALUES(?,?,?,?)");
+                    $doc_sql->bindParam(1, $requestNo);
+                    $doc_sql->bindParam(2, $docBPL);
+                    $doc_sql->bindParam(3, $docBPL_path);
+                    $doc_sql->bindParam(4, $ext);
+                    if($doc_sql->execute()){
+                        echo "<script>alert('Your request is filed successfully! Your Request Reference number is: ".$requestNo."')</script>";
+                        echo "<script>window.open('../responseRTI.php', '_self')</script>"; 
+                        // session_unset();
+                        // session_destroy();
+                    }else{
+                        echo "<script>alert('Something went wrong!')</script>";
+                        echo '<script>window.open("../submitRequest.php","_self")</script>';
+                    }
+                }
             } else {
                 echo "<script>alert('Something went wrong!')</script>";
-                // echo '<script>window.open(".../submitRequest.php","_self")</script>';
+                echo '<script>window.open(".../submitRequest.php","_self")</script>';
             }
         }
     }

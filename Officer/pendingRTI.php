@@ -2,60 +2,139 @@
 session_start();
 include "../header.php";
 include '../connection.php';
-include './nav.php';
 if ((isset($_SESSION['username']) && isset($_SESSION['auth']))) {
+    $sql = $conn->prepare('SELECT * FROM `tblrole` t, `tblofficer` o WHERE t.role_id = ? AND t.role_id = o.officer_role_id');
+    $sql->bindParam(1, $_SESSION['auth']);
+    $sql->execute();
+    $key = $sql->fetch(PDO::FETCH_ASSOC);
+    include './nav.php';
+    if ($key['role_id'] == 3) {
 ?>
-    <br>
-    <div class="container">
-        <div class="row">
-            <div class="col">
-                <h5>Pending RTIs</h5>
-                <br>
-                <table class="table table-striped table-bordered" id="pending">
-                    <thead>
-                        <tr class="bg-dark text-light">
-                            <td class="text-center">#</td>
-                            <td class="text-center">RTI reference number</td>
-                            <td class="text-center">RTI issue date</td>
-                            <td class="text-center">RTI expiring date</td>
-                            <td class="text-center">Action</td>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        $i = 1;
-                        $ThisTime = date("Y-m-d H:i:s");
-                        $reqCur = 'user';
-                        $sql = $conn->prepare("SELECT * FROM tblrequest WHERE request_status = 'Requested' AND TIMESTAMPDIFF(DAY, `request_time`, ?) < 30 AND request_current_handler = ?");
-                        $sql->bindParam(1, $ThisTime);
-                        $sql->bindParam(2, $reqCur);
-                        $sql->execute();
-                        while ($row = $sql->fetch(PDO::FETCH_ASSOC)) {
-                        ?>
-                            <tr>
-                                <td class="text-center"><?= $i ?></td>
-                                <td class="text-center"><?= $row['request_no'] ?></td>
-                                <td class="text-center"><?= $row['request_time'] ?></td>
-                                <td class="text-center"><?= date('d-m-Y', strtotime($row['request_time'] . ' + 30 days')) ?></td>
-                                <td class="text-center">
-                                    <a href="./forwardRTI.php?reqNo=<?= $row['request_no']?>" class="btn btn-outline-success">Forward</a>
-                                </td>
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <h5>Pending RTIs</h5>
+                    <br>
+                    <table class="table table-striped table-bordered" id="pending">
+                        <thead>
+                            <tr class="bg-dark text-light">
+                                <td class="text-center">#</td>
+                                <td class="text-center">RTI reference number</td>
+                                <td class="text-center">RTI issue date</td>
+                                <td class="text-center">RTI expiring date</td>
+                                <td class="text-center">Action</td>
                             </tr>
-                        <?php
-                            $i++;
-                        }
-                        ?>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            <?php
+                            $i = 1;
+                            $ThisTime = date("Y-m-d H:i:s");
+                            $reqCur = 'user';
+                            $sql = $conn->prepare("SELECT * FROM tblrequest WHERE request_status = 'Requested' AND TIMESTAMPDIFF(DAY, `request_time`, ?) < 30 AND request_current_handler = ?");
+                            $sql->bindParam(1, $ThisTime);
+                            $sql->bindParam(2, $reqCur);
+                            $sql->execute();
+                            while ($row = $sql->fetch(PDO::FETCH_ASSOC)) {
+                            ?>
+                                <tr>
+                                    <td class="text-center"><?= $i ?></td>
+                                    <td class="text-center"><?= $row['request_no'] ?></td>
+                                    <td class="text-center"><?= $row['request_time'] ?></td>
+                                    <td class="text-center"><?= date('d-m-Y', strtotime($row['request_time'] . ' + 30 days')) ?></td>
+                                    <td class="text-center">
+                                        <a href="./forwardRTI.php?reqNo=<?= $row['request_no'] ?>" class="btn btn-outline-success">Forward</a>
+                                    </td>
+                                </tr>
+                            <?php
+                                $i++;
+                            }
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
-    <br><br>
+        <br><br>
+    <?php
+    } else if ($key['role_id'] == 4) {
+    ?>
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <h5>Pending RTIs</h5>
+                    <br>
+                    <table class="table table-striped table-bordered" id="pending">
+                        <thead>
+                            <tr class="bg-dark text-light">
+                                <td class="text-center">#</td>
+                                <td class="text-center">RTI reference number</td>
+                                <td class="text-center">RTI issue date</td>
+                                <td class="text-center">RTI expiring date</td>
+                                <td class="text-center">Action</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            $i = 1;
+                            $ThisTime = date("Y-m-d H:i:s");
+                            $reqCur = 'user';
+                            $sql = $conn->prepare("SELECT * FROM tblrequest WHERE request_status = 'Requested' AND TIMESTAMPDIFF(DAY, `request_time`, ?) < 30 AND request_current_handler = ?");
+                            $sql->bindParam(1, $ThisTime);
+                            $sql->bindParam(2, $reqCur);
+                            $sql->execute();
+                            while ($row = $sql->fetch(PDO::FETCH_ASSOC)) {
+                            ?>
+                                <tr>
+                                    <td class="text-center"><?= $i ?></td>
+                                    <td class="text-center"><?= $row['request_no'] ?></td>
+                                    <td class="text-center"><?= $row['request_time'] ?></td>
+                                    <td class="text-center"><?= date('d-m-Y', strtotime($row['request_time'] . ' + 30 days')) ?></td>
+                                    <td class="text-center">
+                                        <a href="./viewRTI.php?id=<?= $row['request_no']?>" target="_blank"  id="revertButton" class="btn btn-dark">View</a>
+                                    </td>
+                                </tr>
+                            <?php
+                                $i++;
+                            }
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <br><br>
+
+    <?php
+    }
+    ?>
     <?php include '../footer.php'; ?>
 
     <script>
         $(document).ready(function() {
             $('#pending').DataTable();
+            $('#pending').on('click', '#rejectButton', function() {
+                var reqNo = $(this).attr('data-id')
+                reqNo = reqNo.toString()
+                console.log(reqNo);
+                $.ajax({
+                    type: "POST",
+                    url: "./Backend/rejectRTI.php",
+                    data: {
+                        id: JSON.stringify(data1)
+                    },
+                    success: function(response) {
+                        var res = JSON.parse(response)
+                        console.log(res)
+                        // $('#AserviceID').val(res['book_id'])
+                        // $('#AserviceName').val(res['book_name'])
+                        // $('#Adate').val(res['book_date'])
+                        // $('#Address').val(res['book_address'])
+                        $('#toggleModalBtn2').click()
+                    }
+                });
+            })
         });
     </script>
     </body>
