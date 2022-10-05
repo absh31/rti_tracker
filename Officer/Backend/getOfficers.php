@@ -8,12 +8,12 @@ if (isset($_POST['deptID'])) {
     $query->bindParam(2, $roleID);
     $query->execute();
     if($query->rowCount() == 0){
-        echo "<option disabled selected> NO OFFICER ASSIGNED </option>";
+        echo "<option disabled selected value=''> NO OFFICER ASSIGNED </option>";
     }else{
         while ($row = $query->fetch(PDO::FETCH_ASSOC)) {
             $id = $row['officer_id'];
             $name = $row['officer_name'];
-            echo "<option value='$name'> $name </option>";
+            echo "<option value='$id'> $name </option>";
         }
     }
 }

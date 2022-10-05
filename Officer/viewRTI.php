@@ -8,8 +8,8 @@ if ((isset($_SESSION['username']) && isset($_SESSION['auth']))) {
     $sql->execute();
     $key = $sql->fetch(PDO::FETCH_ASSOC);
     include './nav.php';
-    if ($key['role_id'] == 4) {
-        $reqNo = $_GET['id'];
+    if ($key['role_id'] == 4 && !empty($_GET['reqNo'])) {
+        $reqNo = $_GET['reqNo'];
         $applicant_sql = $conn->prepare("SELECT * FROM tblapplicant a, tblrequest r WHERE a.applicant_id = r.request_applicant_id AND r.request_no = ?");
         $applicant_sql->bindParam(1, $reqNo);
         $applicant_sql->execute();
@@ -127,7 +127,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['auth']))) {
                             ); ?>
                             <br>
                             <div class="headingsall">
-
+                                
                                 <div class="form-group" id="stateDiv">
                                     <label for="usr" class="my-2"><span class="text-danger">*</span> State:</label>
                                     <select class="form-control" id="stateSel" name="state" required>
@@ -137,14 +137,14 @@ if ((isset($_SESSION['username']) && isset($_SESSION['auth']))) {
                                             if ($key == $row['request_state']) {
                                         ?>
                                                 <option value="<?php echo $key; ?>" selected><?php echo $key; ?></option>
-                                            <?php
+                                                <?php
                                             }
-                                            ?>
+                                                ?>
                                             <option value="<?php echo $key; ?>"><?php echo $key; ?></option>
                                         <?php }
                                         ?>
 
-                                    </select>
+</select>
                                 </div>
                             </div>
                             <br>
@@ -199,7 +199,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['auth']))) {
                             <div class="headingsall">
                                 <div class="form-group" id="departmentDiv">
                                     <label for="department" class="my-2">Department:</label>
-                                    <select class="form-control" id="departmentSel" name="department" required>
+                                    <select class="form-control" id="departmentSel" name="department" required disabled>
                                         <option value="" disabled selected>Select Department</option>
                                         <?php
                                         $sql = $conn->prepare("SELECT * FROM `tbldepartment`");
@@ -221,8 +221,8 @@ if ((isset($_SESSION['username']) && isset($_SESSION['auth']))) {
                             <br>
                             <div class="headingsall">
                                 <div class="form-group" id="bplDiv">
-                                    <label for="BPL" class="my-2">Do you have BPL Card?</label>
-                                    <select class="form-control" id="bplSel" name="isBPL" required onchange="showBpl(this)">
+                                    <label for="BPL" class="my-2">Does applicant have BPL Card?</label>
+                                    <select class="form-control" id="bplSel" name="isBPL" disabled required onchange="showBpl(this)">
                                         <option value="" disabled selected>Select option</option>
                                         <option value="Yes" <?php echo $row['request_from_bpl'] == "Yes" ? "selected" : ""; ?>>Yes</option>
                                         <option value="No" <?php echo $row['request_from_bpl'] == "No" ? "selected" : ""; ?>>No</option>
@@ -270,10 +270,18 @@ if ((isset($_SESSION['username']) && isset($_SESSION['auth']))) {
                                         <br>
                                     </div>
                                 </div>
-                                <div class="headingsall" id="bplCardDiv" style="display: none;">
+                                <div class="headingsall" id="bplCardDiv">
                                     <div class="form-group" id="docBPL">
                                         <label for="docBPL">BPL Card :</label>
-                                        <iframe id="iframeid" src='../bplFiles/<?php echo $UserName . "_resume.pdf"; ?>' width="100%" height="500px"></iframe>
+                                        <?php
+                                        $docType = 'bplcard';
+                                        $docSql = $conn->prepare("SELECT * FROM tbldocument WHERE document_request_id = ? AND document_type = ?");
+                                        $docSql->bindParam(1, $reqNo);
+                                        $docSql->bindParam(2, $docType);
+                                        $docSql->execute();
+                                        $docRow = $docSql->fetch(PDO::FETCH_ASSOC);
+                                        ?>
+                                        <a class="btn btn-dark mx-2" href="../bplfiles/<?php echo $docRow['document_title'] ?>" target="_blank">View BPL Card</a>
                                     </div>
                                     <br>
                                 </div>
@@ -305,6 +313,14 @@ if ((isset($_SESSION['username']) && isset($_SESSION['auth']))) {
                             <br>
 
                             <div class="headingsall">
+
+                                <div class="form-group" id="phoneDiv">
+                                    <label for='addFees'>Fees amount :</label>
+                                <input type="text" name="addFees" inputmode="numeric" id="addFees" class="form-control" oninput="validateNumber(this)" required>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="headingsall">
                                 <div class="form-group">
                                     <div class="g-recaptcha" data-theme="dark" data-sitekey="6Lewa-AZAAAAAMS-ZF5qUSZWezNJ1L9wQ5Iu13IU"></div>
                                     <span class="text-danger" id="recaptcha_error"></span>
@@ -323,6 +339,24 @@ if ((isset($_SESSION['username']) && isset($_SESSION['auth']))) {
                 </div>
             </div>
         </div>
+        <script>
+            const validateNumber = function(usr) {
+                var regexp = /^[0-9 ]+$/;
+                var input = usr.value
+                if (input != "") {
+                    if (regexp.test(input)) {
+                        if (input.length > 10) {
+                            alert("Mobile number should contain only 10 digits!")
+                            usr.value = input.slice(0, 10);
+                        } else
+                            return true
+                    } else {
+                        alert("Only numbers are allowed!")
+                        usr.value = null;
+                    }
+                }
+            }
+        </script>
 <?php
         include "../footer.php";
     }

@@ -18,19 +18,17 @@ if ((isset($_SESSION['username']) && isset($_SESSION['auth']))) {
         </div>
         <br>
         <?php
-            $deptId = $_GET['id'];
-            $deptSql = $conn->prepare("SELECT * FROM tbldepartment WHERE department_id = ?");
-            $deptSql->bindParam(1, $deptId);
-            $deptSql->execute();
-            $department = $deptSql->fetch(PDO::FETCH_ASSOC);
+        $deptId = $_GET['id'];
+        $deptSql = $conn->prepare("SELECT * FROM tbldepartment WHERE department_id = ?");
+        $deptSql->bindParam(1, $deptId);
+        $deptSql->execute();
+        $department = $deptSql->fetch(PDO::FETCH_ASSOC);
         ?>
         <form action="./Backend/editDept.php" method="POST">
             <div class="row">
                 <table class="table align-middle">
                     <tbody>
-                        <tr>
-                            <td><input class="form-control" type="text" name="deptId" id="dept_name" value="<?php echo $department['department_id'] ?>" hidden required></td>
-                        </tr>
+                        <input class="form-control" type="text" name="deptId" id="dept_name" value="<?php echo $department['department_id'] ?>" hidden required>
                         <tr>
                             <td>Department Name</td>
                             <td><input class="form-control" type="text" name="deptName" id="dept_name" value="<?php echo $department['department_name'] ?>" required></td>

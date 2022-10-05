@@ -42,6 +42,7 @@ if (empty($_POST['captcha'])) {
                         <th>Request Status</th>
                         <th>Requested Information</th>
                         <th>Payment Details</th>
+                        <th>Documents</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -52,11 +53,34 @@ if (empty($_POST['captcha'])) {
                         <td><?= $array['department_name']; ?></td>
                         <td><?= $key['request_status']; ?></td>
                         <td><?= $key['request_text']; ?></td>
-                        <td><?php 
-                        if($key['request_is_base_pay'] == 0){
-                            ?> <a href="./Transactions/payRequest.php?requestNo=<?php echo $_SESSION['requestNo']; ?>">Pay Now</a>
-                        <?php }  else {
-                            ?>Paid<?php } ?></td>
+                        <?php
+                        if ($key['request_is_base_pay'] == 0) {
+                        ?>
+                            <td>
+                                <a href="./Transactions/payRequest.php?reqNo=<?= $reqNo ?>&payType=base">Pay Now</a>
+                            </td>
+                            <td>None</td>
+                        <?php
+                        } else if ($key['request_is_add_pay'] == 0) {
+                        ?>
+                            <td>
+                                <a href="./Transactions/payRequest.php?reqNo=<?= $reqNo ?>&payType=add">Pay Now</a>
+                            </td>
+                            <td>None</td>
+                        <?php
+                        } else if ($key['request_is_base_pay'] == 1 && $key['request_is_add_pay'] == 1) {
+                            $docSql = $conn->prepare("SELECT * FROM tbldocument WHERE document_request_id = ? ORDER BY document_id DESC LIMIT 1");
+                            $docSql->bindParam(1, $reqNo);
+                            $docSql->execute();
+                            $docRow = $docSql->fetch(PDO::FETCH_ASSOC);
+                        ?>
+                            <td>Paid</td>
+                            <td>
+                                <a class="btn btn-dark mx-2" href="./uploads/<?= $docRow['document_title'] ?>" target="_blank">Download Attachment</a>
+                            </td>
+                        <?php
+                        }
+                        ?>
                     </tr>
                 </tbody>
             </table>

@@ -15,7 +15,6 @@ if ((isset($_SESSION['username']) && isset($_SESSION['auth']))) {
             <div class="row">
                 <div class="col">
                     <h5>Forward RTIs</h5>
-                    <br>
                     <table class="table table-striped table-bordered" id="pending">
                         <thead>
                             <tr class="bg-dark text-light">
@@ -40,7 +39,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['auth']))) {
                                 <tr>
                                     <td class="text-center"><?= $i ?></td>
                                     <td class="text-center"><?= $row['request_no'] ?></td>
-                                    <td class="text-center"><?= $row['request_time'] ?></td>
+                                    <td class="text-center"><?= date('d-m-Y', strtotime($row['request_time'])) ?></td>
                                     <td class="text-center"><?php echo $exp_date = date('d-m-Y', strtotime($row['request_time'] . ' + 30 days')) ?>
                                         <?php
                                         $diff = date_diff(date_create($ThisTime), date_create($exp_date));
@@ -60,7 +59,71 @@ if ((isset($_SESSION['username']) && isset($_SESSION['auth']))) {
                                         ?>
                                     </td>
                                     <td class="text-center">
-                                        <a href="./forwardRTI.php?reqNo=<?= $row['request_no'] ?>" class="btn btn-outline-success">Forward</a>
+                                        <a href="./forwardRTI.php?reqNo=<?= $row['request_no'] ?>&confirm=0" target="_blank" class="btn btn-outline-success">Forward</a>
+                                    </td>
+                                </tr>
+                            <?php
+                                $i++;
+                            }
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col">
+                    <h5>Received RTIs</h5>
+                    <table class="table table-striped table-bordered" id="received">
+                        <thead>
+                            <tr class="bg-dark text-light">
+                                <td class="text-center">#</td>
+                                <td class="text-center">RTI reference number</td>
+                                <td class="text-center">RTI issue date</td>
+                                <td class="text-center">RTI expiring date</td>
+                                <td class="text-center">RTI Remarks</td>
+                                <td class="text-center">Action</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            $i = 1;
+                            $currentHandler = "Nodal Officer";
+                            // $ThisTime = date("Y-m-d H:i:s");
+                            $completed = 0;
+                            $sql = $conn->prepare("SELECT * FROM tblrequest r, tblactivity a WHERE r.request_no = a.activity_request_no AND r.request_current_handler = ? 
+                            AND r.request_completed = ?");
+                            $sql->bindParam(1, $currentHandler);
+                            $sql->bindParam(2, $completed);
+                            $sql->execute();
+                            while ($row = $sql->fetch(PDO::FETCH_ASSOC)) {
+                            ?>
+                                <tr>
+                                    <td class="text-center"><?= $i ?></td>
+                                    <td class="text-center"><?= $row['request_no'] ?></td>
+                                    <td class="text-center"><?= date('d-m-Y', strtotime($row['request_time'])) ?></td>
+                                    <td class="text-center"><?php echo $exp_date = date('d-m-Y', strtotime($row['request_time'] . ' + 30 days')) ?>
+                                        <?php
+                                        $diff = date_diff(date_create($ThisTime), date_create($exp_date));
+                                        if ($diff->days <= 10) {
+                                        ?>
+                                            <span class="text-danger">
+                                                (<?= $diff->format('%a day(s) left'); ?>)
+                                            </span>
+                                        <?php
+                                        } else {
+                                        ?>
+                                            <span>
+                                                (<?= $diff->format('%a day(s) left'); ?>)
+                                            </span>
+                                        <?php
+                                        }
+                                        ?>
+                                    </td>
+                                    <td class="text-center"><?=$row['activity_remarks']?></td>
+                                    <td class="text-center">
+                                        <a href="./forwardRTI.php?reqNo=<?= $row['request_no'] ?>&confirm=0" target="_blank" class="btn btn-outline-success">Forward</a>
+                                        <a href="./forwardRTI.php?reqNo=<?= $row['request_no'] ?>&confirm=1" target="_blank" class="btn btn-outline-danger" style="margin-left: 15px;">Close RTI</a>
                                     </td>
                                 </tr>
                             <?php
@@ -98,6 +161,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['auth']))) {
                                 <td class="text-center">RTI reference number</td>
                                 <td class="text-center">RTI issue date</td>
                                 <td class="text-center">RTI expiring date</td>
+                                <td class="text-center">RTI Remarks</td>
                                 <td class="text-center">Action</td>
                             </tr>
                         </thead>
@@ -105,18 +169,18 @@ if ((isset($_SESSION['username']) && isset($_SESSION['auth']))) {
                             <?php
                             $i = 1;
                             $ThisTime = date("Y-m-d H:i:s");
-                            $reqCur = 'user';
-                            $sql = $conn->prepare("SELECT * FROM tblrequest WHERE request_status = 'Requested' AND TIMESTAMPDIFF(DAY, `request_time`, ?) < 30 AND request_current_handler = ? AND request_department_id = ?");
-                            $sql->bindParam(1, $ThisTime);
-                            $sql->bindParam(2, $reqCur);
-                            $sql->bindParam(3, $key['officer_department_id']);
+                            $completed = 0;
+                            $sql = $conn->prepare("SELECT * FROM tblrequest r, tblactivity a WHERE r.request_no = a.activity_request_no AND r.request_current_handler = ? AND request_department_id = ? AND r.request_completed = ?");
+                            $sql->bindParam(1, $key['officer_id']);
+                            $sql->bindParam(2, $key['officer_department_id']);
+                            $sql->bindParam(3, $completed);
                             $sql->execute();
                             while ($row = $sql->fetch(PDO::FETCH_ASSOC)) {
                             ?>
                                 <tr>
                                     <td class="text-center"><?= $i ?></td>
                                     <td class="text-center"><?= $row['request_no'] ?></td>
-                                    <td class="text-center"><?= $row['request_time'] ?></td>
+                                    <td class="text-center"><?= date('d-m-Y', strtotime($row['request_time'])) ?></td>
                                     <td class="text-center"><?php echo $exp_date = date('d-m-Y', strtotime($row['request_time'] . ' + 30 days')) ?>
                                         <?php
                                         $diff = date_diff(date_create($ThisTime), date_create($exp_date));
@@ -135,8 +199,9 @@ if ((isset($_SESSION['username']) && isset($_SESSION['auth']))) {
                                         }
                                         ?>
                                     </td>
+                                    <td class="text-center"><?=$row['activity_remarks'] ?></td>
                                     <td class="text-center">
-                                        <a href="./viewRTI.php?id=<?= $row['request_no'] ?>" target="_blank" id="revertButton" class="btn btn-dark">View</a>
+                                        <a href="./viewRTI.php?reqNo=<?= $row['request_no'] ?>" target="_blank" id="revertButton" class="btn btn-dark">View</a>
                                     </td>
                                 </tr>
                             <?php
@@ -164,6 +229,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['auth']))) {
         $(document).ready(function() {
             $('#pending').DataTable();
             $('#pending1').DataTable();
+            $('#received').DataTable();
             $('#pending').on('click', '#rejectButton', function() {
                 var reqNo = $(this).attr('data-id')
                 reqNo = reqNo.toString()

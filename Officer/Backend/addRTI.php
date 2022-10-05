@@ -94,12 +94,11 @@ if (!isset($_POST['personalRTI'])) {
                         $check_upload = move_uploaded_file($ImageName_tmp_name, $docBPL_path);
 
                         if (!$check_upload) {
+                            $upload_status = false;
                             echo '<script>alert("File is not uploaded.");</script>';
-                            exit();
-                            echo "<script>window.open('../dashboard.php','_self')</script>";
+                            echo "<script>window.open('../addRTI.php','_self')</script>";
                         } else {
-                            // echo '<script>alert("File is uploaded.");</script>';
-                            // echo "<script>window.open('../submitRequest.php','_self')</script>";
+                            $upload_status = true;
                         }
                     }
                 }
@@ -115,7 +114,7 @@ if (!isset($_POST['personalRTI'])) {
         $requestNo = date("Ymdhis");
         $reqMode = 'Online';
         $reqBase = '20';
-        $reqIsBase = 0;
+        $reqIsBase = 1;
         $reqCurr = 'user';
         $reqIsAppeal = 0;
         $reqStatus = 'Requested';
@@ -135,7 +134,7 @@ if (!isset($_POST['personalRTI'])) {
         $sql->bindParam(5, $bplCard);
         $sql->bindParam(6, $YOI);
         $sql->bindParam(7, $issueAuth);
-        $sql->bindParam(8, $docBPL_path);
+        $sql->bindParam(8, $docBPL);
         $sql->bindParam(9, $reqAddress);
         $sql->bindParam(10, $reqPincode);
         $sql->bindParam(11, $reqCountry);
@@ -149,9 +148,24 @@ if (!isset($_POST['personalRTI'])) {
         $sql->bindParam(19, $reqIsAppeal);
         $sql->bindParam(20, $reqStatus);
         $sql->bindParam(21, $reqComplete);
-        if($sql->execute()){
-            echo '<script>alert("RTI added successfully!")</script>';
-            echo '<script>window.open("../dashboard.php","_self")</script>';
+        if ($sql->execute()) {
+            if ($upload_status) {
+                $doc_type = 'bplcard';
+                $doc_sql = $conn->prepare("INSERT INTO tbldocument (document_request_id, document_title, document_path, document_type) VALUES(?,?,?,?)");
+                $doc_sql->bindParam(1, $requestNo);
+                $doc_sql->bindParam(2, $docBPL);
+                $doc_sql->bindParam(3, $docBPL_path);
+                $doc_sql->bindParam(4, $doc_type);
+                if ($doc_sql->execute()) {
+                    echo "<script>alert('Your request is filed successfully! Your Request Reference number is: " . $requestNo . "')</script>";
+                    echo "<script>window.open('../dashboard.php', '_self')</script>";
+                    // session_unset();
+                    // session_destroy();
+                } else {
+                    echo "<script>alert('Something went wrong!')</script>";
+                    echo '<script>window.open("../addRTI.php","_self")</script>';
+                }
+            }
         }
     } else {
         echo '<script>alert("Something went Wrong!");</script>';

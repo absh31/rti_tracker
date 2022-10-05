@@ -12,12 +12,11 @@ if (!isset($_POST['rejectRTI']) && !isset($_POST['revertRTI'])) {
         $toOfficerName = "Nodal Officer";
         $activity_status = "RTI Rejected and returned to Nodal Officer.";
         $docs = array();
-        // (A) SOME FLAGS
         $total = isset($_FILES["attachments"]) ? count($_FILES["attachments"]["name"]) : 0;
-        $status = [];
+        $status = "YES";
 
         // (B) PROCESS FILE UPLOAD
-        if ($total > 0) {
+        if ($_FILES["attachments"]["size"][0] > 0) {
             for ($i = 0; $i < $total; $i++) {
                 if (!file_exists('../../uploads')) {
                     mkdir('../../uploads', 0777, true);
@@ -36,11 +35,11 @@ if (!isset($_POST['rejectRTI']) && !isset($_POST['revertRTI'])) {
                 );
                 if (!in_array($doc_type, $known_mime_types)) {
                     echo "<script> alert('File format not supported!')</script>";
-                    echo "<script>window.open('../viewRTI.php?id=" . $reqNo . "','_self')</script>";
+                    echo "<script>window.open('../viewrti.php?reqNo=" . $reqNo . "','_self')</script>";
                     // $_SESSION['admin_add_companyvisitdetails_fail'] = 1;
                 } else if ($doc_size >= "2097152") {
                     echo "<script> alert('Make sure that file size is less than 2 MB')</script>";
-                    echo "<script>window.open('../viewRTI.php?id=" . $reqNo . "','_self')</script>";
+                    echo "<script>window.open('../viewrti.php?reqNo=" . $reqNo . "','_self')</script>";
                     // $_SESSION['admin_add_companyvisitdetails_fail'] = 1;
                 } else {
                     $pos = strrpos($doc_name, '.');
@@ -51,7 +50,7 @@ if (!isset($_POST['rejectRTI']) && !isset($_POST['revertRTI'])) {
                         // includes the period in the extension; do $pos + 1 if you don't want it
                         $ext = substr($doc_name, $pos);
                     }
-                    $doc = md5($reqNo) . '_attachment' . $i++ . $ext;
+                    $doc = md5($reqNo) . '_attachment' . $i+1 . $ext;
                     $doc_path = "../../uploads/" . $doc;
 
                     $check_upload = move_uploaded_file($doc_tmp, $doc_path);
@@ -61,43 +60,36 @@ if (!isset($_POST['rejectRTI']) && !isset($_POST['revertRTI'])) {
                         echo '<script>alert("File is not uploaded.");</script>';
                         echo "<script>window.open('../submitRequest.php','_self')</script>";
                     } else {
+                        $doc_type = 'attachment';
                         $upload_status = true;
                         $doc_sql = $conn->prepare("INSERT INTO tbldocument (document_request_id, document_title, document_path, document_type) VALUES(?,?,?,?)");
                         $doc_sql->bindParam(1, $reqNo);
                         $doc_sql->bindParam(2, $doc);
                         $doc_sql->bindParam(3, $doc_path);
-                        $doc_sql->bindParam(4, $ext);
+                        $doc_sql->bindParam(4, $doc_type);
                         $doc_sql->execute();
                     }
                 }
             }
-        } else {
-            $status[] = "No files uploaded!";
         }
 
-        // (C) DONE - WHAT'S NEXT?
-        if (count($status) == 0) {
-            $sql = $conn->prepare("INSERT INTO tblactivity (activity_request_no, activity_from, activity_to, activity_remarks, activity_status) VALUES(?,?,?,?,?)");
+        $sql = $conn->prepare("INSERT INTO tblactivity (activity_request_no, activity_from, activity_to, activity_remarks, activity_status) VALUES(?,?,?,?,?)");
 
-            $sql->bindParam(1, $reqNo);
-            $sql->bindParam(2, $fromOfficerName);
-            $sql->bindParam(3, $toOfficerName);
-            $sql->bindParam(4, $remarks);
-            $sql->bindParam(5, $activity_status);
-            if ($sql->execute()) {
-                $sql2 = $conn->prepare("UPDATE tblrequest SET request_current_handler = ? WHERE request_no = ?");
-                $sql2 -> bindParam(1, $toOfficerName);
-                $sql2 -> bindParam(2, $reqNo);
-                $sql2 -> execute();
-                echo '<script>alert("Returned to the Nodal Officer successfully!");</script>';
-                echo '<script>window.open("../dashboard.php","_self")</script>';
-            } else {
-                echo '<script>alert("Something went wrong!");</script>';
-                echo '<script>window.open("../viewRTI.php?id=".$reqNo."?id=' . $reqNo . '","_self")</script>';
-            }
+        $sql->bindParam(1, $reqNo);
+        $sql->bindParam(2, $fromOfficerName);
+        $sql->bindParam(3, $toOfficerName);
+        $sql->bindParam(4, $remarks);
+        $sql->bindParam(5, $activity_status);
+        if ($sql->execute()) {
+            $sql2 = $conn->prepare("UPDATE tblrequest SET request_current_handler = ? WHERE request_no = ?");
+            $sql2->bindParam(1, $toOfficerName);
+            $sql2->bindParam(2, $reqNo);
+            $sql2->execute();
+            echo '<script>alert("Returned to the Nodal Officer successfully!");</script>';
+            echo '<script>window.open("../dashboard.php","_self")</script>';
         } else {
-            echo '<script>alert("Files not uploaded!");</script>';
-            echo '<script>window.open("../viewRTI.php?id=' . $reqNo . '","_self")</script>';
+            echo '<script>alert("Something went wrong!");</script>';
+            echo '<script>window.open("../viewrti.php?reqNo=".$reqNo."?id=' . $reqNo . '","_self")</script>';
         }
     } else if (isset($_POST['revertRTI'])) {
         $reqNo = $_POST['reqNo'];
@@ -105,13 +97,14 @@ if (!isset($_POST['rejectRTI']) && !isset($_POST['revertRTI'])) {
         $fromOfficerName = $_SESSION['officer_name'];
         $toOfficerName = "Nodal Officer";
         $activity_status = "Reverted back to the Nodal Officer.";
+        $fees = $_POST['addFees'];
         $docs = array();
-        // (A) SOME FLAGS
         $total = isset($_FILES["attachments"]) ? count($_FILES["attachments"]["name"]) : 0;
-        $status = [];
+        $status = "YES";
+        // print_r($_FILES);
+        // exit;
 
-        // (B) PROCESS FILE UPLOAD
-        if ($total > 0) {
+        if ($_FILES["attachments"]["size"][0] > 0) {
             for ($i = 0; $i < $total; $i++) {
                 if (!file_exists('../../uploads')) {
                     mkdir('../../uploads', 0777, true);
@@ -125,16 +118,16 @@ if (!isset($_POST['rejectRTI']) && !isset($_POST['revertRTI'])) {
                 $known_mime_types = array(
                     "application/pdf",
                     "application/png",
-                    "application/jpg",
-                    "application/jpeg"
+                    "image/jpg",
+                    "image/jpeg"
                 );
                 if (!in_array($doc_type, $known_mime_types)) {
                     echo "<script> alert('File format not supported!')</script>";
-                    echo "<script>window.open('../viewRTI.php?id=" . $reqNo . "','_self')</script>";
+                    echo "<script>window.open('../viewrti.php?reqNo=" . $reqNo . "','_self')</script>";
                     // $_SESSION['admin_add_companyvisitdetails_fail'] = 1;
                 } else if ($doc_size >= "2097152") {
                     echo "<script> alert('Make sure that file size is less than 2 MB')</script>";
-                    echo "<script>window.open('../viewRTI.php?id=" . $reqNo . "','_self')</script>";
+                    echo "<script>window.open('../viewrti.php?reqNo=" . $reqNo . "','_self')</script>";
                     // $_SESSION['admin_add_companyvisitdetails_fail'] = 1;
                 } else {
                     $pos = strrpos($doc_name, '.');
@@ -145,9 +138,9 @@ if (!isset($_POST['rejectRTI']) && !isset($_POST['revertRTI'])) {
                         // includes the period in the extension; do $pos + 1 if you don't want it
                         $ext = substr($doc_name, $pos);
                     }
-                    $doc = md5($reqNo) . '_attachment' . $i++ . $ext;
+                    $doc = md5($reqNo) . '_attachment' . $i+1 . $ext;
                     $doc_path = "../../uploads/" . $doc;
-
+                    $doc_type = "attachment";
                     $check_upload = move_uploaded_file($doc_tmp, $doc_path);
 
                     if (!$check_upload) {
@@ -160,37 +153,30 @@ if (!isset($_POST['rejectRTI']) && !isset($_POST['revertRTI'])) {
                         $doc_sql->bindParam(1, $reqNo);
                         $doc_sql->bindParam(2, $doc);
                         $doc_sql->bindParam(3, $doc_path);
-                        $doc_sql->bindParam(4, $ext);
+                        $doc_sql->bindParam(4, $doc_type);
                         $doc_sql->execute();
                     }
                 }
             }
-        } else {
-            $status[] = "No files uploaded!";
         }
 
-        // (C) DONE - WHAT'S NEXT?
-        if (count($status) == 0) {
-            $sql = $conn->prepare("INSERT INTO tblactivity (activity_request_no, activity_from, activity_to, activity_remarks, activity_status) VALUES(?,?,?,?,?)");
-            $sql->bindParam(1, $reqNo);
-            $sql->bindParam(2, $fromOfficerName);
-            $sql->bindParam(3, $toOfficerName);
-            $sql->bindParam(4, $remarks);
-            $sql->bindParam(5, $activity_status);
-            if ($sql->execute()) {
-                $sql2 = $conn->prepare("UPDATE tblrequest SET request_current_handler = ? WHERE request_no = ?");
-                $sql2 -> bindParam(1, $toOfficerName);
-                $sql2 -> bindParam(2, $reqNo);
-                $sql2 -> execute();
-                echo '<script>alert("Returned to the Nodal Officer successfully!");</script>';
-                echo '<script>window.open("../dashboard.php","_self")</script>';
-            } else {
-                echo '<script>alert("Something went wrong!");</script>';
-                echo '<script>window.open("../viewRTI.php?id=".$reqNo."?id=' . $reqNo . '","_self")</script>';
-            }
+        $sql = $conn->prepare("INSERT INTO tblactivity (activity_request_no, activity_from, activity_to, activity_remarks, activity_status) VALUES(?,?,?,?,?)");
+        $sql->bindParam(1, $reqNo);
+        $sql->bindParam(2, $fromOfficerName);
+        $sql->bindParam(3, $toOfficerName);
+        $sql->bindParam(4, $remarks);
+        $sql->bindParam(5, $activity_status);
+        if ($sql->execute()) {
+            $sql2 = $conn->prepare("UPDATE tblrequest SET request_current_handler = ?, request_add_pay = ? WHERE request_no = ?");
+            $sql2->bindParam(1, $toOfficerName);
+            $sql2->bindParam(2, $fees);
+            $sql2->bindParam(3, $reqNo);
+            $sql2->execute();
+            echo '<script>alert("Returned to the Nodal Officer successfully!");</script>';
+            echo '<script>window.open("../dashboard.php","_self")</script>';
         } else {
-            echo '<script>alert("Files not uploaded!");</script>';
-            echo '<script>window.open("../viewRTI.php?id=' . $reqNo . '","_self")</script>';
+            echo '<script>alert("Something went wrong!");</script>';
+            echo '<script>window.open("../viewrti.php?reqNo=".$reqNo."?id=' . $reqNo . '","_self")</script>';
         }
     }
 }

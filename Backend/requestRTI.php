@@ -144,11 +144,12 @@ if (!isset($_POST['requestRTI'])) {
 
             if ($sql->execute()) {
                 if($upload_status){
+                    $doc_type = 'bplcard';
                     $doc_sql = $conn->prepare("INSERT INTO tbldocument (document_request_id, document_title, document_path, document_type) VALUES(?,?,?,?)");
                     $doc_sql->bindParam(1, $requestNo);
                     $doc_sql->bindParam(2, $docBPL);
                     $doc_sql->bindParam(3, $docBPL_path);
-                    $doc_sql->bindParam(4, $ext);
+                    $doc_sql->bindParam(4, $doc_type);
                     if($doc_sql->execute()){
                         echo "<script>alert('Your request is filed successfully! Your Request Reference number is: ".$requestNo."')</script>";
                         echo "<script>window.open('../responseRTI.php', '_self')</script>"; 
@@ -159,7 +160,7 @@ if (!isset($_POST['requestRTI'])) {
                         echo '<script>window.open("../submitRequest.php","_self")</script>';
                     }
                 }
-            } else {
+            } else {    
                 echo "<script>alert('Something went wrong!')</script>";
                 echo '<script>window.open(".../submitRequest.php","_self")</script>';
             }

@@ -28,9 +28,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['auth']))) {
             <div class="row">
                 <table class="table align-middle">
                     <tbody>
-                        <tr>
-                            <td><input class="form-control" type="text" name="officerId" id="dept_name" value="<?php echo $officer['officer_id'] ?>" hidden required></td>
-                        </tr>
+                            <input class="form-control" type="text" name="officerId" id="dept_name" value="<?php echo $officer['officer_id'] ?>" hidden required>
                         <tr>
                             <td>Officer Name</td>
                             <td><input class="form-control" type="text" name="officerName" id="officer_name" value="<?php echo $officer['officer_name'] ?>" required></td>
