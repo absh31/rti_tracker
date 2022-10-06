@@ -63,9 +63,9 @@ if (!isset($_POST['personalRTI'])) {
                     /* Figure out the MIME type | Check in array */
                     $known_mime_types = array(
                         "application/pdf",
-                        "application/png",
-                        "application/jpg",
-                        "application/jpeg"
+                        "image/png",
+                        "image/jpg",
+                        "image/jpeg"
                     );
                     if (!in_array($ImageName_type, $known_mime_types)) {
                         echo "<script> alert('File format not supported!')</script>";
@@ -110,7 +110,6 @@ if (!isset($_POST['personalRTI'])) {
             $docBPL = "NULL";
             $docBPL_path = "NULL";
         }
-
         $requestNo = date("Ymdhis");
         $reqMode = 'Online';
         $reqBase = '20';
@@ -125,7 +124,7 @@ if (!isset($_POST['personalRTI'])) {
         $reqCountry = $_POST['country'];
         $reqState = $_POST['state'];
         $reqPlaceType = $_POST['status'];
-
+        
         $sql = $conn->prepare("INSERT INTO `tblrequest` (`request_applicant_id`, `request_department_id`, `request_no`, `request_from_bpl`, `request_bpl_no`, `request_bpl_yoi`, `request_bpl_ia`, `request_bpl_file`, `request_address`, `request_pincode`, `request_country`, `request_state`, `request_place_type`, `request_text`, `request_mode`, `request_base_pay`, `request_is_base_pay`, `request_current_handler`, `request_is_appealed`, `request_status`, `request_completed`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         $sql->bindParam(1, $appId);
         $sql->bindParam(2, $deptId);
@@ -149,7 +148,7 @@ if (!isset($_POST['personalRTI'])) {
         $sql->bindParam(20, $reqStatus);
         $sql->bindParam(21, $reqComplete);
         if ($sql->execute()) {
-            if ($upload_status) {
+            if ($isBPL == 'Yes') {
                 $doc_type = 'bplcard';
                 $doc_sql = $conn->prepare("INSERT INTO tbldocument (document_request_id, document_title, document_path, document_type) VALUES(?,?,?,?)");
                 $doc_sql->bindParam(1, $requestNo);
@@ -159,16 +158,20 @@ if (!isset($_POST['personalRTI'])) {
                 if ($doc_sql->execute()) {
                     echo "<script>alert('Your request is filed successfully! Your Request Reference number is: " . $requestNo . "')</script>";
                     echo "<script>window.open('../dashboard.php', '_self')</script>";
-                    // session_unset();
-                    // session_destroy();
                 } else {
                     echo "<script>alert('Something went wrong!')</script>";
                     echo '<script>window.open("../addRTI.php","_self")</script>';
                 }
+            }else{
+                echo "<script>alert('Your request is filed successfully! Your Request Reference number is: " . $requestNo . "')</script>";
+                echo "<script>window.open('../dashboard.php', '_self')</script>";
             }
+        }else{
+            echo '<script>alert("Something went Wrong!");</script>';
+            echo '<script>window.open("../addRTI.php","_self")</script>';
         }
     } else {
         echo '<script>alert("Something went Wrong!");</script>';
-        echo '<script>window.open("../personalVerify.php","_self")</script>';
+        echo '<script>window.open("../addRTI.php","_self")</script>';
     }
 }

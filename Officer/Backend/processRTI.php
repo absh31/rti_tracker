@@ -29,17 +29,17 @@ if (!isset($_POST['rejectRTI']) && !isset($_POST['revertRTI'])) {
                 /* Figure out the MIME type | Check in array */
                 $known_mime_types = array(
                     "application/pdf",
-                    "application/png",
-                    "application/jpg",
-                    "application/jpeg"
+                    "image/png",
+                    "image/jpg",
+                    "image/jpeg"
                 );
                 if (!in_array($doc_type, $known_mime_types)) {
                     echo "<script> alert('File format not supported!')</script>";
-                    echo "<script>window.open('../viewrti.php?reqNo=" . $reqNo . "','_self')</script>";
+                    echo "<script>window.open('../viewRTI.php?reqNo=" . $reqNo . "','_self')</script>";
                     // $_SESSION['admin_add_companyvisitdetails_fail'] = 1;
                 } else if ($doc_size >= "2097152") {
                     echo "<script> alert('Make sure that file size is less than 2 MB')</script>";
-                    echo "<script>window.open('../viewrti.php?reqNo=" . $reqNo . "','_self')</script>";
+                    echo "<script>window.open('../viewRTI.php?reqNo=" . $reqNo . "','_self')</script>";
                     // $_SESSION['admin_add_companyvisitdetails_fail'] = 1;
                 } else {
                     $pos = strrpos($doc_name, '.');
@@ -50,7 +50,7 @@ if (!isset($_POST['rejectRTI']) && !isset($_POST['revertRTI'])) {
                         // includes the period in the extension; do $pos + 1 if you don't want it
                         $ext = substr($doc_name, $pos);
                     }
-                    $doc = md5($reqNo) . '_attachment' . $i+1 . $ext;
+                    $doc = md5($reqNo) . '_attachment' . $i + 1 . $ext;
                     $doc_path = "../../uploads/" . $doc;
 
                     $check_upload = move_uploaded_file($doc_tmp, $doc_path);
@@ -58,7 +58,7 @@ if (!isset($_POST['rejectRTI']) && !isset($_POST['revertRTI'])) {
                     if (!$check_upload) {
                         $upload_status = false;
                         echo '<script>alert("File is not uploaded.");</script>';
-                        echo "<script>window.open('../submitRequest.php','_self')</script>";
+                        echo "<script>window.open('../viewRTI.php?reqNo=" . $reqNo . "','_self')</script>";
                     } else {
                         $doc_type = 'attachment';
                         $upload_status = true;
@@ -72,14 +72,15 @@ if (!isset($_POST['rejectRTI']) && !isset($_POST['revertRTI'])) {
                 }
             }
         }
-
-        $sql = $conn->prepare("INSERT INTO tblactivity (activity_request_no, activity_from, activity_to, activity_remarks, activity_status) VALUES(?,?,?,?,?)");
+        $activity_type = "Rejected";
+        $sql = $conn->prepare("INSERT INTO tblactivity (activity_request_no, activity_from, activity_to, activity_remarks, activity_status, activity_type) VALUES(?,?,?,?,?,?)");
 
         $sql->bindParam(1, $reqNo);
         $sql->bindParam(2, $fromOfficerName);
         $sql->bindParam(3, $toOfficerName);
         $sql->bindParam(4, $remarks);
         $sql->bindParam(5, $activity_status);
+        $sql->bindParam(6, $activity_type);
         if ($sql->execute()) {
             $sql2 = $conn->prepare("UPDATE tblrequest SET request_current_handler = ? WHERE request_no = ?");
             $sql2->bindParam(1, $toOfficerName);
@@ -89,7 +90,7 @@ if (!isset($_POST['rejectRTI']) && !isset($_POST['revertRTI'])) {
             echo '<script>window.open("../dashboard.php","_self")</script>';
         } else {
             echo '<script>alert("Something went wrong!");</script>';
-            echo '<script>window.open("../viewrti.php?reqNo=".$reqNo."?id=' . $reqNo . '","_self")</script>';
+            echo '<script>window.open("../viewRTI.php?reqNo=".$reqNo."?id=' . $reqNo . '","_self")</script>';
         }
     } else if (isset($_POST['revertRTI'])) {
         $reqNo = $_POST['reqNo'];
@@ -123,11 +124,11 @@ if (!isset($_POST['rejectRTI']) && !isset($_POST['revertRTI'])) {
                 );
                 if (!in_array($doc_type, $known_mime_types)) {
                     echo "<script> alert('File format not supported!')</script>";
-                    echo "<script>window.open('../viewrti.php?reqNo=" . $reqNo . "','_self')</script>";
+                    echo "<script>window.open('../viewRTI.php?reqNo=" . $reqNo . "','_self')</script>";
                     // $_SESSION['admin_add_companyvisitdetails_fail'] = 1;
                 } else if ($doc_size >= "2097152") {
                     echo "<script> alert('Make sure that file size is less than 2 MB')</script>";
-                    echo "<script>window.open('../viewrti.php?reqNo=" . $reqNo . "','_self')</script>";
+                    echo "<script>window.open('../viewRTI.php?reqNo=" . $reqNo . "','_self')</script>";
                     // $_SESSION['admin_add_companyvisitdetails_fail'] = 1;
                 } else {
                     $pos = strrpos($doc_name, '.');
@@ -138,7 +139,7 @@ if (!isset($_POST['rejectRTI']) && !isset($_POST['revertRTI'])) {
                         // includes the period in the extension; do $pos + 1 if you don't want it
                         $ext = substr($doc_name, $pos);
                     }
-                    $doc = md5($reqNo) . '_attachment' . $i+1 . $ext;
+                    $doc = md5($reqNo) . '_attachment' . $i + 1 . $ext;
                     $doc_path = "../../uploads/" . $doc;
                     $doc_type = "attachment";
                     $check_upload = move_uploaded_file($doc_tmp, $doc_path);
@@ -159,13 +160,27 @@ if (!isset($_POST['rejectRTI']) && !isset($_POST['revertRTI'])) {
                 }
             }
         }
-
-        $sql = $conn->prepare("INSERT INTO tblactivity (activity_request_no, activity_from, activity_to, activity_remarks, activity_status) VALUES(?,?,?,?,?)");
+        if($total > 0){
+            $total = (int)$total;
+            $docSql = $conn->prepare("SELECT * FROM tbldocument WHERE document_request_id = ? ORDER BY document_id DESC LIMIT ?");
+            $docSql->bindParam(1, $reqNo);
+            $docSql->bindParam(2, $total, PDO::PARAM_INT);
+            $docSql->execute();
+            $docs = "";
+            $docsArray = array();
+            while ($arr = $docSql->fetch(PDO::FETCH_ASSOC))
+                array_push($docsArray, $arr['document_id']);
+        }
+        $docs = implode(",", $docsArray);
+        $activity_type = "Revert";
+        $sql = $conn->prepare("INSERT INTO tblactivity (activity_request_no, activity_from, activity_to, activity_remarks, activity_status, activity_documents, activity_type) VALUES(?,?,?,?,?,?,?)");
         $sql->bindParam(1, $reqNo);
         $sql->bindParam(2, $fromOfficerName);
         $sql->bindParam(3, $toOfficerName);
         $sql->bindParam(4, $remarks);
         $sql->bindParam(5, $activity_status);
+        $sql->bindParam(6, $docs);
+        $sql->bindParam(7, $activity_type);
         if ($sql->execute()) {
             $sql2 = $conn->prepare("UPDATE tblrequest SET request_current_handler = ?, request_add_pay = ? WHERE request_no = ?");
             $sql2->bindParam(1, $toOfficerName);
@@ -176,7 +191,7 @@ if (!isset($_POST['rejectRTI']) && !isset($_POST['revertRTI'])) {
             echo '<script>window.open("../dashboard.php","_self")</script>';
         } else {
             echo '<script>alert("Something went wrong!");</script>';
-            echo '<script>window.open("../viewrti.php?reqNo=".$reqNo."?id=' . $reqNo . '","_self")</script>';
+            echo '<script>window.open("../viewRTI.php?reqNo=".$reqNo."?id=' . $reqNo . '","_self")</script>';
         }
     }
 }

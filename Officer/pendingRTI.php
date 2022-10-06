@@ -82,6 +82,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['auth']))) {
                                 <td class="text-center">RTI issue date</td>
                                 <td class="text-center">RTI expiring date</td>
                                 <td class="text-center">RTI Remarks</td>
+                                <td class="text-center">RTI Status</td>
                                 <td class="text-center">Action</td>
                             </tr>
                         </thead>
@@ -91,7 +92,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['auth']))) {
                             $currentHandler = "Nodal Officer";
                             // $ThisTime = date("Y-m-d H:i:s");
                             $completed = 0;
-                            $sql = $conn->prepare("SELECT * FROM tblrequest r, tblactivity a WHERE r.request_no = a.activity_request_no AND r.request_current_handler = ? 
+                            $sql = $conn->prepare("SELECT * FROM tblrequest r, tblactivity a WHERE r.request_no = a.activity_request_no AND a.activity_to = ? 
                             AND r.request_completed = ?");
                             $sql->bindParam(1, $currentHandler);
                             $sql->bindParam(2, $completed);
@@ -121,6 +122,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['auth']))) {
                                         ?>
                                     </td>
                                     <td class="text-center"><?=$row['activity_remarks']?></td>
+                                    <td class="text-center"><?=$row['activity_type']?></td>
                                     <td class="text-center">
                                         <a href="./forwardRTI.php?reqNo=<?= $row['request_no'] ?>&confirm=0" target="_blank" class="btn btn-outline-success">Forward</a>
                                         <a href="./forwardRTI.php?reqNo=<?= $row['request_no'] ?>&confirm=1" target="_blank" class="btn btn-outline-danger" style="margin-left: 15px;">Close RTI</a>
@@ -170,7 +172,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['auth']))) {
                             $i = 1;
                             $ThisTime = date("Y-m-d H:i:s");
                             $completed = 0;
-                            $sql = $conn->prepare("SELECT * FROM tblrequest r, tblactivity a WHERE r.request_no = a.activity_request_no AND r.request_current_handler = ? AND request_department_id = ? AND r.request_completed = ?");
+                            $sql = $conn->prepare("SELECT * FROM tblrequest r, tblactivity a WHERE r.request_no = a.activity_request_no AND a.activity_to = ? AND request_department_id = ? AND r.request_completed = ?");
                             $sql->bindParam(1, $key['officer_id']);
                             $sql->bindParam(2, $key['officer_department_id']);
                             $sql->bindParam(3, $completed);

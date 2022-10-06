@@ -7,6 +7,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['auth']))) {
     $sql->bindParam(1, $_SESSION['auth']);
     $sql->execute();
     $key = $sql->fetch(PDO::FETCH_ASSOC);
+    $officer_id = $key['officer_id'];
     include './nav.php';
     if ($key['role_id'] == 4 && !empty($_GET['reqNo'])) {
         $reqNo = $_GET['reqNo'];
@@ -22,13 +23,18 @@ if ((isset($_SESSION['username']) && isset($_SESSION['auth']))) {
                 <div class="col">
                     <h5>RTI Details:</h5>
                     <p style="font-size: 16px; font-weight: 600;">Personal Details</p>
-                    <form method="POST" enctype="multipart/form-data" id="register" action="./Backend/processRTI.php">
+                    <form method="POST" enctype="multipart/form-data" action="./Backend/processRTI.php">
                         <div class="mb-4">
+                            <div class="form-group" id="fullNameDiv">
+                                <label for='reqNo'><span class="text-danger">*</span> Request Numebr :</label>
+                                <input type="text" class="form-control" name="reqNo" value="<?= $reqNo ?>" disabled>
+                                <input type="text" class="form-control" name="reqNo" value="<?= $reqNo ?>" hidden required>
+                            </div>
+                            <br>
                             <div class="headingsall">
 
                                 <div class="form-group" id="fullNameDiv">
                                     <label for='name'><span class="text-danger">*</span> Name :</label>
-                                    <input type="text" name="reqNo" value="<?= $reqNo ?>" hidden>
                                     <input type="text" readonly value="<?= $row['applicant_name'] ?>" name="name" oninput="validateText(this)" id="name" class="form-control" required>
                                 </div>
                             </div>
@@ -234,14 +240,14 @@ if ((isset($_SESSION['username']) && isset($_SESSION['auth']))) {
                             if ($row['request_from_bpl'] == "Yes") {
                             ?>
 
-                                <div class="headingsall" id="BPLNoDiv" style="display: none;">
+                                <div class="headingsall" id="BPLNoDiv">
                                     <div class="form-group">
                                         <label for='bpl'>BPL Card No. :</label>
                                         <input disabled type="text" name="bplCard" value="<?= $row['request_bpl_no'] ?>" id="bplCard" class="form-control">
                                         <br>
                                     </div>
                                 </div>
-                                <div class="headingsall" id="yearDiv" style="display: none;">
+                                <div class="headingsall" id="yearDiv">
                                     <div class="form-group">
                                         <label for='year'>Year of Issue :</label>
                                         <select class="form-control" name="YOI" id="year">
@@ -263,7 +269,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['auth']))) {
                                         <br>
                                     </div>
                                 </div>
-                                <div class="headingsall" id="issueAuthDiv" style="display: none;">
+                                <div class="headingsall" id="issueAuthDiv">
                                     <div class="form-group">
                                         <label for='issueAuth'>Issuing Authority :</label>
                                         <input disabled type="text" name="issueAuth" id="issueAuth" value="<?= $row['request_bpl_ia'] ?>" class="form-control" oninput="validateText(this)">
@@ -295,6 +301,39 @@ if ((isset($_SESSION['username']) && isset($_SESSION['auth']))) {
                                 </div>
                             </div>
                             <br>
+                            <div class="headingsall">
+                                <div class="form-group" id="textDiv">
+                                    <label for='text'>Attachments:</label>
+                                    <?php
+                                    $docType = 'attachment';
+                                    
+                                    $sql1 = $conn->prepare("SELECT * FROM tblactivity WHERE activity_request_no = ? AND activity_to = ?");
+                                    $sql1->bindParam(1, $reqNo);
+                                    $sql1->bindParam(2, $officer_id);
+                                    $sql1->execute();
+                                    $a1 = $sql1->fetch(PDO::FETCH_ASSOC);
+                                    $docs = $a1['activity_documents'];
+
+                                    $sql2 = $conn->prepare("SELECT * FROM tbldocument WHERE document_id IN ($docs)");
+                                    $sql2->execute();
+                                    $docRow = $sql2->fetch(PDO::FETCH_ASSOC);
+                                    $i = 1;
+                                    if (empty($docRow)) {
+                                    ?>
+                                        <label for="">No Attachments</label>
+                                        <?php
+                                    } else {
+                                        do {
+                                        ?>
+                                            <a class="btn btn-dark mx-2" href="../uploads/<?php echo $docRow['document_title'] ?>" target="_blank">View Attachment <?= $i++?></a>
+                                        <?php
+                                        } while ($docRow = $sql2->fetch(PDO::FETCH_ASSOC));
+                                        ?>
+                                    <?php
+                                    } ?>
+                                </div>
+                            </div>
+                            <br>
 
                             <div class="headingsall">
                                 <div class="form-group" id="textDiv">
@@ -316,7 +355,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['auth']))) {
 
                                 <div class="form-group" id="phoneDiv">
                                     <label for='addFees'>Fees amount :</label>
-                                <input type="text" name="addFees" inputmode="numeric" id="addFees" class="form-control" oninput="validateNumber(this)" required>
+                                    <input type="text" name="addFees" inputmode="numeric" id="addFees" class="form-control" oninput="validateNumber(this)" required>
                                 </div>
                             </div>
                             <br>

@@ -8,6 +8,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['auth']))) {
     $sql->execute();
     $key = $sql->fetch(PDO::FETCH_ASSOC);
     if ($sql->rowCount() > 0) {
+        // echo $key['officer_id'];
         include './nav.php';
 ?>
         <br>
