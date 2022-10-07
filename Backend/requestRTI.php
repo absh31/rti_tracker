@@ -7,7 +7,7 @@ if (!isset($_POST['requestRTI'])) {
 } else {
     if (empty($_POST['g-recaptcha-response'])) {
         echo "<script>alert('Captcha Error. Try Again')</script>";
-        echo "<script>window.open('../submitRTI.php','_self')</script>";
+        echo "<script>window.open('../submitRequest.php','_self')</script>";
     } else {
         $secret_key = '6Lewa-AZAAAAAP729KyiNYyJGV7TnGheI0WUlf6p';
         $response = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . $secret_key . '&response=' . $_POST['g-recaptcha-response']);
@@ -16,7 +16,7 @@ if (!isset($_POST['requestRTI'])) {
 
         if (!$response_data->success) {
             echo "<script>alert('Captcha Error. Try Again')</script>";
-            echo "<script>window.open('./submitRTI.php','_self')</script>";
+            echo "<script>window.open('./submitRequest.php','_self')</script>";
         } else {
             $email = $_SESSION['email'];
             echo $email;
@@ -105,6 +105,8 @@ if (!isset($_POST['requestRTI'])) {
             }
 
             $requestNo = $_SESSION['requestNo'] = date("Ymdhis");
+            echo $_SESSION['requestNo'];
+            // exit;
             $reqMode = 'Online';
             $reqBase = '20';
             $reqIsBase = 0;
@@ -159,6 +161,9 @@ if (!isset($_POST['requestRTI'])) {
                         echo "<script>alert('Something went wrong!')</script>";
                         echo '<script>window.open("../submitRequest.php","_self")</script>';
                     }
+                }else{
+                    echo "<script>alert('Your request is filed successfully! Your Request Reference number is: ".$requestNo."')</script>";
+                    echo "<script>window.open('../responseRTI.php', '_self')</script>"; 
                 }
             } else {    
                 echo "<script>alert('Something went wrong!')</script>";

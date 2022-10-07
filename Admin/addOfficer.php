@@ -3,7 +3,7 @@ session_start();
 include "../header.php";
 include '../connection.php';
 include './nav.php';
-if ((isset($_SESSION['username']) && isset($_SESSION['auth']))) {
+if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SESSION['auth']))) {
     $sql = $conn->prepare('SELECT * FROM `tblrole` t, `tblofficer` o WHERE t.role_id = ? AND t.role_id = o.officer_role_id');
     $sql->bindParam(1, $_SESSION['auth']);
     $sql->execute();

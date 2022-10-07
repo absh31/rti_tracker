@@ -1,7 +1,7 @@
 <?php
 session_start();
 include '../../connection.php';
-if ((isset($_SESSION['username']) && isset($_SESSION['auth']))) {
+if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SESSION['auth']))) {
     $reqNo = $_POST['reqNo'];
     $req = $conn->prepare("SELECT * FROM tblrequest WHERE request_no = ?");
     $req->bindParam(1, $reqNo);

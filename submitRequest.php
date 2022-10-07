@@ -27,7 +27,6 @@ if (!isset($_SESSION['otpVerified'])) {
         $eduStatus = $_SESSION['educationalStatus'] = $_POST['educationalStatus'];
         $edu = $_SESSION['education'] = $_POST['education'];
     }
-
 ?>
     <form method="POST" enctype="multipart/form-data" id="register" action="./Backend/requestRTI.php">
         <div class="container">

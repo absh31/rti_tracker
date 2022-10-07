@@ -2,9 +2,11 @@
 session_start();
 include "../header.php";
 include '../connection.php';
-if ((isset($_SESSION['username']) && isset($_SESSION['auth']))) {
-    $sql = $conn->prepare('SELECT * FROM `tblrole` t, `tblofficer` o WHERE t.role_id = ? AND t.role_id = o.officer_role_id');
+if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SESSION['auth']))) {
+    $sql = $conn->prepare('SELECT * FROM `tblrole` t, `tblofficer` o WHERE t.role_id = ? AND t.role_id = o.officer_role_id AND o.officer_username = ? AND o.officer_password = ?');
     $sql->bindParam(1, $_SESSION['auth']);
+    $sql->bindParam(2, $_SESSION['username']);
+    $sql->bindParam(3, $_SESSION['password']);
     $sql->execute();
     $key = $sql->fetch(PDO::FETCH_ASSOC);
     include './nav.php';
@@ -59,7 +61,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['auth']))) {
                                         ?>
                                     </td>
                                     <td class="text-center">
-                                        <a href="./forwardRTI.php?reqNo=<?= $row['request_no'] ?>&confirm=0" target="_blank" class="btn btn-outline-success">Forward</a>
+                                        <a href="./forwardRTI.php?reqNo=<?= $row['request_no'] ?>" target="_blank" class="btn btn-outline-success">Forward</a>
                                     </td>
                                 </tr>
                             <?php
@@ -123,9 +125,12 @@ if ((isset($_SESSION['username']) && isset($_SESSION['auth']))) {
                                     </td>
                                     <td class="text-center"><?=$row['activity_remarks']?></td>
                                     <td class="text-center"><?=$row['activity_type']?></td>
-                                    <td class="text-center">
+                                    <!-- <td class="text-center">
                                         <a href="./forwardRTI.php?reqNo=<?= $row['request_no'] ?>&confirm=0" target="_blank" class="btn btn-outline-success">Forward</a>
                                         <a href="./forwardRTI.php?reqNo=<?= $row['request_no'] ?>&confirm=1" target="_blank" class="btn btn-outline-danger" style="margin-left: 15px;">Close RTI</a>
+                                    </td> -->
+                                    <td class="text-center">
+                                        <a href="./forwardRTI.php?reqNo=<?= $row['request_no'] ?>" target="_blank" class="btn btn-outline-success">View</a>
                                     </td>
                                 </tr>
                             <?php
@@ -147,7 +152,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['auth']))) {
             document.getElementById("hist-nav").classList.remove("active")
         </script>
     <?php
-    } else if ($key['role_id'] == 4) {
+    } else if ($key['role_id'] != 3) {
         //OFFICER
     ?>
         <br>
@@ -172,10 +177,11 @@ if ((isset($_SESSION['username']) && isset($_SESSION['auth']))) {
                             $i = 1;
                             $ThisTime = date("Y-m-d H:i:s");
                             $completed = 0;
-                            $sql = $conn->prepare("SELECT * FROM tblrequest r, tblactivity a WHERE r.request_no = a.activity_request_no AND a.activity_to = ? AND request_department_id = ? AND r.request_completed = ?");
+                            $sql = $conn->prepare("SELECT * FROM tblrequest r, tblactivity a WHERE a.activity_to = ? AND r.request_department_id = ? AND r.request_current_handler = ? AND r.request_completed = ? AND r.request_no = a.activity_request_no");
                             $sql->bindParam(1, $key['officer_id']);
                             $sql->bindParam(2, $key['officer_department_id']);
-                            $sql->bindParam(3, $completed);
+                            $sql->bindParam(3, $key['officer_id']);
+                            $sql->bindParam(4, $completed);
                             $sql->execute();
                             while ($row = $sql->fetch(PDO::FETCH_ASSOC)) {
                             ?>

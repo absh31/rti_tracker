@@ -1,8 +1,8 @@
 <?php
 session_start();
 include '../../connection.php';
-if ((isset($_SESSION['username']) && isset($_SESSION['auth']))) {
-    if (isset($_POST['forwardRTI']) && $_POST['confirm'] == 0) {
+if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SESSION['auth']))) {
+    if (isset($_POST['forwardRTI'])) {
         $reqNo = $_POST['reqNo'];
         $activityType = "Forwarded";
         $fromOfficerName = $_SESSION['officer_name'];
@@ -32,10 +32,10 @@ if ((isset($_SESSION['username']) && isset($_SESSION['auth']))) {
                 );
                 if (!in_array($doc_type, $known_mime_types)) {
                     echo "<script> alert('File format not supported!')</script>";
-                    echo "<script>window.open('../forwardRTI.php?reqNo=" . $reqNo . "&confirm=0','_self')</script>";
+                    echo "<script>window.open('../forwardRTI.php?reqNo=" . $reqNo . "','_self')</script>";
                 } else if ($doc_size >= "2097152") {
                     echo "<script> alert('Make sure that file size is less than 2 MB')</script>";
-                    echo "<script>window.open('../forwardRTI.php?reqNo=" . $reqNo . "&confirm=0','_self')</script>";
+                    echo "<script>window.open('../forwardRTI.php?reqNo=" . $reqNo . "','_self')</script>";
                 } else {
                     $pos = strrpos($doc_name, '.');
                     if ($pos === false) {
@@ -53,7 +53,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['auth']))) {
                     if (!$check_upload) {
                         $upload_status = false;
                         echo '<script>alert("File is not uploaded.");</script>';
-                        echo "<script>window.open('../forwardRTI.php?reqNo=" . $reqNo . "&confirm=0','_self')</script>";
+                        echo "<script>window.open('../forwardRTI.php?reqNo=" . $reqNo . "','_self')</script>";
                     } else {
                         $upload_status = true;
                         $doc_type = "attachment";
@@ -94,7 +94,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['auth']))) {
             $sql->bindParam(7, $activityType);
             if (!($sql->execute())) {
                 echo "<script>window.alert(`Something went wrong!`)</script>";
-                echo "<script>window.open('../forwardRTI.php?reqNo=" . $reqNo . "&confirm=0','_self')</script>";
+                echo "<script>window.open('../forwardRTI.php?reqNo=" . $reqNo . "','_self')</script>";
             }
         }
         
@@ -110,14 +110,14 @@ if ((isset($_SESSION['username']) && isset($_SESSION['auth']))) {
             echo "<script>window.alert(`Something went wrong!`)</script>";
             echo "<script>window.open('../pendingRTI.php','_self')</script>";
         }
-    } else if (isset($_POST['closeRTI']) && $_POST['confirm'] == 1) {
+    } else if (isset($_POST['closeRTI'])) {
         // print_r($_POST);
         $reqNo = $_POST['reqNo'];
         $checkSql = $conn->prepare("SELECT * FROM tblactivity WHERE activity_request_no = ? ORDER BY activity_id DESC");
         $checkSql->bindParam(1, $reqNo);
         $checkSql->execute();
         $arr = $checkSql->fetch(PDO::FETCH_ASSOC);
-        print_r($arr);
+        // print_r($arr);
         // exit;
         if($arr['activity_to'] == "Nodal Officer" && $arr['activity_type'] == "Rejected"){
             $confirm = $_POST['confirm'];
@@ -146,10 +146,10 @@ if ((isset($_SESSION['username']) && isset($_SESSION['auth']))) {
                     echo "<script>window.open('../pendingRTI.php','_self')</script>";
                 } else {
                     echo "<script>window.alert(`Something went wrong!`)</script>";
-                    echo "<script>window.open('../forwardRTI.php?reqNo" . $reqN . "&confirm=" . $confirm . "','_self')</script>";
+                    echo "<script>window.open('../forwardRTI.php?reqNo" . $reqN . "','_self')</script>";
                 }
             }
-        }else if($arr['activity_to'] == "Nodal Officer" && $arr['activity_type'] == "Reverted"){
+        }else if($arr['activity_to'] == "Nodal Officer" && $arr['activity_type'] == "Revert"){
             $confirm = $_POST['confirm'];
             $currentHandler = "none";
             $activityType = "Closed";
@@ -176,7 +176,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['auth']))) {
                     echo "<script>window.open('../pendingRTI.php','_self')</script>";
                 } else {
                     echo "<script>window.alert(`Something went wrong!`)</script>";
-                    echo "<script>window.open('../forwardRTI.php?reqNo" . $reqN . "&confirm=" . $confirm . "','_self')</script>";
+                    echo "<script>window.open('../forwardRTI.php?reqNo" . $reqN . "','_self')</script>";
                 }
             }
         }

@@ -35,39 +35,39 @@ if (empty($_POST['captcha'])) {
             <table class="table table-bordered">
                 <thead>
                     <tr class="bg-dark text-light">
-                        <th>Applicant Email</th>
-                        <th>Request No</th>
-                        <th>Request Current Handler</th>
-                        <th>Requested Department</th>
-                        <th>Request Status</th>
-                        <th>Requested Information</th>
-                        <th>Payment Details</th>
-                        <th>Documents</th>
+                        <th class="text-center align-middle">Applicant Email</th>
+                        <th class="text-center align-middle">Request No</th>
+                        <th class="text-center align-middle">Request Current Handler</th>
+                        <th class="text-center align-middle">Requested Department</th>
+                        <th class="text-center align-middle">Request Status</th>
+                        <th class="text-center align-middle">Requested Information</th>
+                        <th class="text-center align-middle">Payment Details</th>
+                        <th class="text-center align-middle">Documents</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td><?= $key['applicant_email']; ?></td>
-                        <td><?= $key['request_no']; ?></td>
-                        <td><?= $key['request_current_handler']; ?></td>
-                        <td><?= $array['department_name']; ?></td>
-                        <td><?= $key['request_status']; ?></td>
-                        <td><?= $key['request_text']; ?></td>
+                        <td class="text-center align-middle"><?= $key['applicant_email']; ?></td>
+                        <td class="text-center align-middle"><?= $key['request_no']; ?></td>
+                        <td class="text-center align-middle"><?= $key['request_current_handler']; ?></td>
+                        <td class="text-center align-middle"><?= $array['department_name']; ?></td>
+                        <td class="text-center align-middle"><?= $key['request_status']; ?></td>
+                        <td class="text-center align-middle"><?= $key['request_text']; ?></td>
                         <?php
-                        if ($key['request_status'] != "Rejected") {
-                            if ($key['request_is_base_pay'] == 0) {
+                        if ($key['request_status'] != "Reject") {
+                            if ($key['request_is_base_pay'] != 1) {
                         ?>
-                                <td>
-                                    <a href="./Transactions/payRequest.php?reqNo=<?= $reqNo ?>&payType=base">Pay Now</a>
+                                <td class="text-center align-middle">
+                                    <a href="./Transactions/payRequest.php?requestNo=<?= $reqNo ?>&payType=base">Pay Now</a>
                                 </td>
-                                <td>None</td>
+                                <td class="text-center align-middle">None</td>
                             <?php
-                            } else if ($key['request_is_add_pay'] == 0) {
+                            } else if ($key['request_is_add_pay'] != 1) {
                             ?>
-                                <td>
-                                    <a href="./Transactions/payRequest.php?reqNo=<?= $reqNo ?>&payType=add">Pay Now</a>
+                                <td class="text-center align-middle">
+                                    <a href="./Transactions/payRequest.php?requestNo=<?= $reqNo ?>&payType=add">Pay Now</a>
                                 </td>
-                                <td>None</td>
+                                <td class="text-center align-middle">None</td>
                             <?php
                             } else if ($key['request_is_base_pay'] == 1 && $key['request_is_add_pay'] == 1) {
                                 $docSql = $conn->prepare("SELECT * FROM tbldocument WHERE document_request_id = ? ORDER BY document_id DESC LIMIT 1");
@@ -75,16 +75,16 @@ if (empty($_POST['captcha'])) {
                                 $docSql->execute();
                                 $docRow = $docSql->fetch(PDO::FETCH_ASSOC);
                             ?>
-                                <td>Paid</td>
-                                <td>
+                                <td class="text-center align-middle">Paid</td>
+                                <td class="text-center align-middle">
                                     <a class="btn btn-dark mx-2" href="./uploads/<?= $docRow['document_title'] ?>" target="_blank">Download Attachment</a>
                                 </td>
                         <?php
                             }
                         }else{
                             ?>
-                            <td>NA</td>
-                            <td>NA</td>
+                            <td class="text-center align-middle">NA</td>
+                            <td class="text-center align-middle">NA</td>
                             <?php
                         }
                         ?>
@@ -109,7 +109,7 @@ if (empty($_POST['captcha'])) {
                 </thead>
                 <tbody>
                     <tr>
-                        <td colspan="5" class="text-danger text-center">NO DATA AVAIALABLE</td>
+                        <td class="text-center align-middle" colspan="5" class="text-danger text-center">NO DATA AVAIALABLE</td>
                     </tr>
                 </tbody>
             </table>

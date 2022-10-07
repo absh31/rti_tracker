@@ -1,7 +1,7 @@
 <?php
 session_start();
 include '../../connection.php';
-if ((isset($_SESSION['username']) && isset($_SESSION['auth']))) {
+if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SESSION['auth']))) {
     include "./checkAdminLogin.php";
     if (checkAdminLogin($_SESSION['auth']) == "admin") {
         if (isset($_POST['addOfficer'])) {

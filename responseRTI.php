@@ -21,7 +21,7 @@ if (!isset($_SESSION['requestNo'])) {
                     if ($key['request_is_base_pay'] == 0){
                     
                     ?>
-                    <h4>To proceed further, pay request fees. <a href="./Transactions/payRequest.php?requestNo=<?php echo $_SESSION['requestNo']; ?>">Pay Now</a></h4>
+                    <h4>To proceed further, pay request fees. <a href="./Transactions/payRequest.php?requestNo=<?php echo $_SESSION['requestNo']; ?>&payType=base">Pay Now</a></h4>
                 <?php } else {
                 ?>
                     <h4>Your fees are paid successfully!...</h4>
