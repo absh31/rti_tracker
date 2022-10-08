@@ -20,6 +20,82 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                     <h5>Hello <?= ucwords($key['officer_name']) ?></h5>
                 </div>
             </div>
+            <br>
+            <div class="row">
+                <h4>Total RTIs</h4>
+                <div class="col-sm">
+                    <div class="card">
+                        <div class="card-body text-dark">
+                            <h5 class="card-title text-center font-weight-bold" style="font-size: 60px;">
+                                <?php
+                                $sql = $conn->prepare("SELECT COUNT(*) AS totalRti FROM tblrequest");
+                                $sql->execute();
+                                $count = $sql->fetch();
+                                echo $count['totalRti'];
+                                ?>
+                            </h5>
+                            <p class="card-text text-center" style="font-size: 20px; font-weight: 500;">Total</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <div class="card">
+                        <div class="card-body text-dark">
+                            <h5 class="card-title text-center font-weight-bold" style="font-size: 60px;">
+                                <?php
+                                $type = 'user';
+                                $type1 = 'none';
+                                $sql = $conn->prepare("SELECT COUNT(*) AS activeRti FROM tblrequest WHERE request_current_handler != ? AND request_current_handler != ?");
+                                $sql->bindParam(1, $type);
+                                $sql->bindParam(2, $type1);
+                                $sql->execute();
+                                $count = $sql->fetch();
+                                echo $count['activeRti'];
+                                ?>
+                            </h5>
+                            <p class="card-text text-center" style="font-size: 20px; font-weight: 500;">Active</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <div class="card">
+                        <div class="card-body" style="text-decoration: none;">
+                            <h5 class="card-title text-center text-danger font-weight-bold" style="font-size: 60px; color: #003975; text-decoration: none;">
+                                <?php
+                                $type = 'user';
+                                $sql = $conn->prepare("SELECT COUNT(*) AS pendingRti FROM tblrequest WHERE request_current_handler = ?");
+                                $sql->bindParam(1, $type);
+                                $sql->execute();
+                                $count = $sql->fetch();
+                                //$count['pendingRti'];
+                                ?>
+                                <?= $count['pendingRti'] ?>
+                            </h5>
+                            <a class="stretched-link" style="text-decoration: none;" href="./pendingRTI.php">
+                                <p class="card-text text-center text-danger" style="font-size: 20px; font-weight: 500;">Pending</p>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title text-center text-success font-weight-bold" style="font-size: 60px; color: #003975;">
+                                <?php
+                                $type = 'none';
+                                $sql = $conn->prepare("SELECT COUNT(*) AS completedRti FROM tblrequest WHERE request_current_handler = ?");
+                                $sql->bindParam(1, $type);
+                                $sql->execute();
+                                $count = $sql->fetch();
+                                echo $count['completedRti'];
+                                ?>
+                            </h5>
+                            <p class="card-text text-center text-success" style="font-size: 20px; font-weight: 500;">Completed</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
         </div>
         <br><br>
         <?php include '../footer.php'; ?>
