@@ -11,7 +11,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
     if ($key['role_id'] == 3) {
 ?>
         <br>
-        <div class="container">
+        <div class="container-fluid px-4">
             <div class="row">
                 <div class="col-6">
                     <h5>Track RTI</h5>

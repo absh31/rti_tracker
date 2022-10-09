@@ -17,7 +17,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
         if (!empty($row)) {
 ?>
             <br>
-            <div class="container">
+            <div class="container-fluid px-4">
                 <div class="row">
                     <div class="col">
                         <h5>RTI Details</h5>

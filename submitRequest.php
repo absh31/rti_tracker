@@ -29,7 +29,7 @@ if (!isset($_SESSION['otpVerified'])) {
     }
 ?>
     <form method="POST" enctype="multipart/form-data" id="register" action="./Backend/requestRTI.php">
-        <div class="container">
+        <div class="container-fluid px-4">
             <br>
             <div class="row">
                 <div class="col-lg-6 col-sm-12 col-md-9">

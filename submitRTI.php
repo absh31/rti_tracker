@@ -14,7 +14,7 @@ if (isset($_SESSION['existingUser']) && $_SESSION['existingUser'] == 1) {
     $sql2->execute();
     $request = $sql2->fetch(PDO::FETCH_ASSOC);
 ?>
-    <div class="container">
+    <div class="container-fluid px-4">
         <br>
         <div class="row">
             <div class="col-8">
@@ -315,7 +315,7 @@ if (isset($_SESSION['existingUser']) && $_SESSION['existingUser'] == 1) {
 <?php
 } else {
 ?>
-    <div class="container">
+    <div class="container-fluid px-4">
         <br>
         <div class="row">
             <div class="col-8">

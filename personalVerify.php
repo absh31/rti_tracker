@@ -18,7 +18,7 @@ if (! (isset($_SESSION['otp'])) && !(isset($_SESSION['otpExisting']))) {
             ?>
 
             <br>
-            <div class="container">
+            <div class="container-fluid px-4">
                 <div class="row">
                     <div class="col text-center">
                         <h5>Online RTI Form OTP Verification</h5>

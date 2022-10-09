@@ -10,7 +10,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
     include './nav.php';
 ?>
     <br>
-    <div class="container">
+    <div class="container-fluid px-4">
         <div class="row">
             <div class="col-8">
                 <h5>Add RTI</h5>

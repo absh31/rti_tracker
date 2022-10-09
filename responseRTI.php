@@ -8,7 +8,7 @@ if (!isset($_SESSION['requestNo'])) {
     echo '<script>window.open("./index.php","_self")</script>';
 } else {
 ?>
-    <div class="container">
+    <div class="container-fluid px-4">
         <div class="row">
             <div class="col text-center">
                 <br><br>

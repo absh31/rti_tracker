@@ -21,7 +21,7 @@ include "nav.php";
     }
 </style>
 <br>
-<div class="container">
+<div class="container-fluid px-4">
     <div class="col-md-6 mx-auto my-5 p-4 transparent" style="background : url(./uploads/images/Rectangle32.png) ">
         <div class="row">
             <div class="col text-center">
