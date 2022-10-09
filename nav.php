@@ -3,7 +3,23 @@
     <?php
     // echo $_SERVER['PHP_SELF'];
     if ($_SERVER['PHP_SELF'] != '/rti_tracker/login.php' && !isset($key)) {
-    ?>
+        ?>
+        <div class="container-fluid" style="background-color : #D9D9D9">
+            <div class="row mx-4 py-2">
+                <div class="col" id="logo1">
+                    <img src="http:\\localhost\rti_tracker\uploads\images\logo2.png" alt="">
+                </div>
+                <div class="col text-center mt-3">
+                    <a class="navbar-brand" href="index.php" style="font-weight: 800; color:black; font-size:30;">
+                        <!-- <img src="logo.png" width="45"height="45" class="d-inline-block align-text-center" style="margin-right:2px;"> -->
+                        RTI TRACKER 
+                    </a>
+                </div>
+                <div class="col text-end" id="logo2">
+                    <img src="http:\\localhost\rti_tracker\uploads\images\logo1.png" alt="">
+                </div>
+            </div>
+        </div>
         <nav class="navbar sticky-top navbar-expand-lg navbar-dark" id="navigation" style="background-color : black">
             <div class="container-fluid">
                 <!-- <a class="navbar-brand fw-bold" href="./index.php">GURUKRUPA ENTERPRISE</a> -->
