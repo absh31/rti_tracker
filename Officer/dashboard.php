@@ -11,10 +11,11 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
     $key = $sql->fetch(PDO::FETCH_ASSOC);
     if ($sql->rowCount() > 0) {
         // echo $key['officer_id'];
+        include "../nav.php";
         include './nav.php';
 ?>
         <br>
-        <div class="container-fluid px-4">
+        <div class="container-fluid px-5">
             <div class="row">
                 <div class="col">
                     <h5>Hello <?= ucwords($key['officer_name']) ?></h5>
@@ -141,7 +142,9 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
             };
             const myChart = new Chart(ctx, {
                 type: 'line',
-                data: {data},
+                data: {
+                    data
+                },
                 options: {
                     scales: {
                         y: {

@@ -2,7 +2,7 @@
 include "header.php";
 include "nav.php";
 ?>
-<div class="container-fluid px-4">
+<div class="container-fluid px-5">
     <br>
     <div class="row">
         <div class="col">

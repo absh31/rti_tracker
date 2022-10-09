@@ -3,12 +3,13 @@ session_start();
 include './connection.php';
 include './header.php';
 include './nav.php';
+include '../nav.php';
 if (!isset($_SESSION['requestNo'])) {
     echo '<script>alert("Bad Request");</script>';
     echo '<script>window.open("./index.php","_self")</script>';
 } else {
 ?>
-    <div class="container-fluid px-4">
+    <div class="container-fluid px-5">
         <div class="row">
             <div class="col text-center">
                 <br><br>

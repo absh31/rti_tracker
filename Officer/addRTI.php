@@ -7,10 +7,11 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
     $sql->bindParam(1, $_SESSION['auth']);
     $sql->execute();
     $key = $sql->fetch(PDO::FETCH_ASSOC);
-    include './nav.php';
+    include '../nav.php';
+include './nav.php';
 ?>
     <br>
-    <div class="container-fluid px-4">
+    <div class="container-fluid px-5">
         <div class="row">
             <div class="col-8">
                 <h5>Add RTI</h5>

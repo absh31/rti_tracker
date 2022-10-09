@@ -10,7 +10,8 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
     $sql->execute();
     $key = $sql->fetch(PDO::FETCH_ASSOC);
     $officer_id = $key['officer_id'];
-    include './nav.php';
+    include '../nav.php';
+include './nav.php';
     if ($key['role_id'] == 4 && !empty($_GET['reqNo'])) {
         $reqNo = $_GET['reqNo'];
         $applicant_sql = $conn->prepare("SELECT * FROM tblapplicant a, tblrequest r WHERE a.applicant_id = r.request_applicant_id AND r.request_no = ?");
@@ -20,7 +21,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
         // print_r($row);
 ?>
         <br>
-        <div class="container-fluid px-4">
+        <div class="container-fluid px-5">
             <div class="row">
                 <div class="col">
                     <h5>RTI Details:</h5>

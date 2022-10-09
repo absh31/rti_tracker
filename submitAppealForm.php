@@ -15,7 +15,7 @@ if (!isset($_SESSION['reqAppId'])) {
     $key = $sql->fetch(PDO::FETCH_ASSOC);
 
 ?>
-    <div class="container-fluid px-4">
+    <div class="container-fluid px-5">
         <br>
         <div class="row">
             <div class="col-6">

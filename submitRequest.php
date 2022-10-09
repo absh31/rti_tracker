@@ -2,6 +2,7 @@
 session_start();
 include './header.php';
 include './nav.php';
+include '../nav.php';
 if (!isset($_SESSION['otpVerified'])) {
     echo '<script>alert("Bad Request");</script>';
     echo '<script>window.open("./index.php","_self")</script>';
@@ -29,7 +30,7 @@ if (!isset($_SESSION['otpVerified'])) {
     }
 ?>
     <form method="POST" enctype="multipart/form-data" id="register" action="./Backend/requestRTI.php">
-        <div class="container-fluid px-4">
+        <div class="container-fluid px-5">
             <br>
             <div class="row">
                 <div class="col-lg-6 col-sm-12 col-md-9">

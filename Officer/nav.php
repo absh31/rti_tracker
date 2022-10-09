@@ -4,11 +4,13 @@
     if ($key['role_id'] == 3) {
     ?>
         <nav class="navbar sticky-top navbar-expand-lg px-0 navbar-dark" id="navigation" style="background-color : black">
-            <div class="container-fluid px-4">
+            <div class="container-fluid px-5">
                 <!-- <a class="navbar-brand fw-bold" href="./index.php">GURUKRUPA ENTERPRISE</a> -->
                 <a class="navbar-brand" href="index.php" style="font-weight: 800;">
                     <!-- <img src="logo.png" width="45"height="45" class="d-inline-block align-text-center" style="margin-right:2px;"> -->
-                    RTI TRACKER
+                    <?php
+                    echo $key['officer_role_id'] == "1" ? "ADMIN LOGIN" : ($key['officer_role_id'] == "3" ? "NODAL LOGIN" : ($key['officer_role_id'] == "4" ? "DEPARTMENT LOGIN" : "")) ;
+                    ?>
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -38,7 +40,7 @@
             </div>
         </nav>
     <?php
-    } else if ($key['role_id'] != 3) {
+    } else if ($key['role_id'] == 4) {
     ?>
         <nav class="navbar sticky-top navbar-expand-lg navbar-dark" id="navigation" style="background-color : black">
             <div class="container-fluid">

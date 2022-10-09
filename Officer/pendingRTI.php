@@ -9,11 +9,12 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
     $sql->bindParam(3, $_SESSION['password']);
     $sql->execute();
     $key = $sql->fetch(PDO::FETCH_ASSOC);
-    include './nav.php';
+    include '../nav.php';
+include './nav.php';
     if ($key['role_id'] == 3) {
 ?>
         <br>
-        <div class="container-fluid px-4">
+        <div class="container-fluid px-5">
             <div class="row">
                 <div class="col">
                     <h5>Forward RTIs</h5>
@@ -152,11 +153,11 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
             document.getElementById("hist-nav").classList.remove("active")
         </script>
     <?php
-    } else if ($key['role_id'] != 3) {
+    } else if ($key['role_id'] != 4) {
         //OFFICER
     ?>
         <br>
-        <div class="container-fluid px-4">
+        <div class="container-fluid px-5">
             <div class="row">
                 <div class="col">
                     <h5>Pending RTIs</h5>

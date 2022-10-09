@@ -7,7 +7,8 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
     $sql->bindParam(1, $_SESSION['auth']);
     $sql->execute();
     $key = $sql->fetch(PDO::FETCH_ASSOC);
-    include './nav.php';
+    include '../nav.php';
+include './nav.php';
     if (!empty($_GET['reqNo'])) {
         $reqNo = $_GET['reqNo'];
         $applicant_sql = $conn->prepare("SELECT * FROM tblapplicant a, tblrequest r WHERE a.applicant_id = r.request_applicant_id AND r.request_no = ?");
@@ -17,7 +18,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
         if (!empty($row)) {
 ?>
             <br>
-            <div class="container-fluid px-4">
+            <div class="container-fluid px-5">
                 <div class="row">
                     <div class="col">
                         <h5>RTI Details</h5>

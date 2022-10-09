@@ -2,6 +2,7 @@
 session_start();
 include './header.php';
 include './nav.php';
+include '../nav.php';
 include './connection.php';
 if (isset($_SESSION['existingUser']) && $_SESSION['existingUser'] == 1) {
     $email = $_SESSION['email'];
@@ -14,7 +15,7 @@ if (isset($_SESSION['existingUser']) && $_SESSION['existingUser'] == 1) {
     $sql2->execute();
     $request = $sql2->fetch(PDO::FETCH_ASSOC);
 ?>
-    <div class="container-fluid px-4">
+    <div class="container-fluid px-5">
         <br>
         <div class="row">
             <div class="col-8">
@@ -315,7 +316,7 @@ if (isset($_SESSION['existingUser']) && $_SESSION['existingUser'] == 1) {
 <?php
 } else {
 ?>
-    <div class="container-fluid px-4">
+    <div class="container-fluid px-5">
         <br>
         <div class="row">
             <div class="col-8">

@@ -4,7 +4,7 @@ include "header.php";
 include "nav.php";
 include "./connection.php";
 ?>
-<div class="container-fluid px-4">
+<div class="container-fluid px-5">
     <br>
     <div class="row">
         <div class="col-6">

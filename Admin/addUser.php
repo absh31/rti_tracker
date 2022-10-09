@@ -2,7 +2,6 @@
 session_start();
 include "../header.php";
 include '../connection.php';
-include './nav.php';
 
 function getDepartments($conn)
 {
@@ -20,9 +19,11 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
     $key = $sql->fetch(PDO::FETCH_ASSOC);
 
     if ($key['role_name'] == "admin") {
+        include '../nav.php';
+        include './nav.php';
 ?>
         <br>
-        <div class="container-fluid px-4">
+        <div class="container-fluid px-5">
             <div class="row">
                 <div class="col">
                     <h5>Add Department</h5>
@@ -31,48 +32,53 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
             <br>
             <form action="./Backend/addUser.php" method="POST">
                 <div class="row">
-                    <table class="table align-middle">
-                        <tbody>
-                            <tr>
-                                <td>Role Name</td>
-                                <td><input class="form-control" type="text" name="roleName" id="dept_name" required></td>
-                            </tr>
-                            <tr>
-                                <td>Add Role After</td>
-                                <td>
-                                    <select name="rolePriority" id="rolePriority" class="form-control" required>
-                                        <option value="" selected disabled>Add Role After</option>
-                                        <?php
-                                        $role_sql = $conn->prepare("SELECT DISTINCT(role_name) AS role_name, role_priority FROM tblrole WHERE is_active = 1");
-                                        $role_sql->execute();
-                                        $roles = $role_sql->fetchAll(PDO::FETCH_ASSOC);
+                    <div class="col">
 
-                                        foreach ($roles as $role) {
-                                        ?>
-                                            <option value="<?php echo $role['role_priority'] ?>"><?php echo $role['role_name'] ?></option>
-                                        <?php
-                                        }
-                                        ?>
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Department Name</td>
-                                <td>
-                                    <select name="roleDepartment" id="rolePriority" class="form-control" required>
-                                        <option value="" selected disabled>Select Department</option>
-                                        <option value="None">None</option>
-                                        <?php
-                                        $departments = getDepartments($conn);
-                                        foreach ($departments as $department) {
-                                            echo "<option value = " . $department['department_id'] . ">" . $department["department_name"] . "</option>";
-                                        }
-                                        ?>
-                                    </select>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                        <table class="table align-middle table-bordered">
+                            <tbody>
+                                <tr>
+                                    <td>Role Name</td>
+                                    <td><input class="form-control" type="text" name="roleName" id="dept_name" required></td>
+                                </tr>
+                                <tr>
+                                    <td>Add Role After</td>
+                                    <td>
+                                        <select name="rolePriority" id="rolePriority" class="form-control" required>
+                                            <option value="" selected disabled>Add Role After</option>
+                                            <?php
+                                            $role_sql = $conn->prepare("SELECT DISTINCT(role_name) AS role_name, role_priority FROM tblrole WHERE is_active = 1");
+                                            $role_sql->execute();
+                                            $roles = $role_sql->fetchAll(PDO::FETCH_ASSOC);
+
+                                            foreach ($roles as $role) {
+                                            ?>
+                                                <option value="<?php echo $role['role_priority'] ?>"><?php echo $role['role_name'] ?></option>
+                                            <?php
+                                            }
+                                            ?>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Department Name</td>
+                                    <td>
+                                        <select name="roleDepartment" id="rolePriority" class="form-control" required>
+                                            <option value="" selected disabled>Select Department</option>
+                                            <option value="None">None</option>
+                                            <?php
+                                            $departments = getDepartments($conn);
+                                            foreach ($departments as $department) {
+                                                echo "<option value = " . $department['department_id'] . ">" . $department["department_name"] . "</option>";
+                                            }
+                                            ?>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row">
                     <div class="col text-center">
                         <a href="./manageUsers.php" class="btn btn-danger px-4 mx-4">Cancel</a>
                         <input class="btn btn-dark px-5" type="submit" name="addUser" value="Add">

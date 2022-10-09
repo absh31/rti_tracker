@@ -2,6 +2,7 @@
 session_start();
 include "../header.php";
 include '../connection.php';
+include '../nav.php';
 include './nav.php';
 if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SESSION['auth']))) {
     $sql = $conn->prepare('SELECT * FROM `tblrole` t, `tblofficer` o WHERE t.role_id = ? AND t.role_id = o.officer_role_id');
@@ -10,7 +11,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
     $key = $sql->fetch(PDO::FETCH_ASSOC);
 ?>
     <br>
-    <div class="container-fluid px-4">
+    <div class="container-fluid px-5">
         <div class="row">
             <div class="col">
                 <h5>Add Department</h5>
