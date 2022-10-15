@@ -55,14 +55,14 @@ if (empty($_POST['captcha'])) {
                         <td class="text-center align-middle"><?= $key['request_text']; ?></td>
                         <?php
                         if ($key['request_status'] != "Reject") {
-                            if ($key['request_is_base_pay'] != 1) {
+                            if ($key['request_is_base_pay'] != 1 && $key['request_is_add_pay'] == 0) {
                         ?>
                                 <td class="text-center align-middle">
                                     <a href="./Transactions/payRequest.php?requestNo=<?= $reqNo ?>&payType=base">Pay Now</a>
                                 </td>
                                 <td class="text-center align-middle">None</td>
                             <?php
-                            } else if ($key['request_is_add_pay'] != 1) {
+                            } else if ($key['request_is_add_pay'] != "") {
                             ?>
                                 <td class="text-center align-middle">
                                     <a href="./Transactions/payRequest.php?requestNo=<?= $reqNo ?>&payType=add">Pay Now</a>
@@ -80,6 +80,12 @@ if (empty($_POST['captcha'])) {
                                     <a class="btn btn-dark mx-2" href="./uploads/<?= $docRow['document_title'] ?>" target="_blank">Download Attachment</a>
                                 </td>
                         <?php
+                            }else{
+                                ?>
+                                <td class="text-center align-middle">No payment needed yet</td>
+                                <td class="text-center align-middle">NA</td>
+
+                                <?php
                             }
                         }else{
                             ?>
