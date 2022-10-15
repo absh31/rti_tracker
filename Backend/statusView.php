@@ -176,7 +176,7 @@ if (empty($_POST['captcha'])) {
                                         } else {
                                             do {
                                             ?>
-                                                <a class="btn btn-dark mx-2" href="../uploads/<?php echo $docRow['document_title'] ?>" target="_blank">View <?= $i++ ?></a>
+                                                <a class="btn btn-dark mx-2" href="./uploads/<?php echo $docRow['document_title'] ?>" target="_blank">View <?= $i++ ?></a>
                                             <?php
                                             } while ($docRow = $sql2->fetch(PDO::FETCH_ASSOC));
                                             ?>

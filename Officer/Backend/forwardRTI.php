@@ -84,7 +84,11 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
 
             $officername = $toOfficerName[$j];
             $remark = $remarks[$j];
-            $status = 'Forwarded to Departmental Officer ' . $toOfficerName[$j];
+            $officer = $conn->prepare("SELECT * FROM tblofficer WHERE officer_id = ?");
+            $officer->bindParam(1, $toOfficerName[$j]);
+            $officer->execute();
+            $officerRow = $officer->fetch(PDO::FETCH_ASSOC);
+            $status = 'Forwarded to Departmental Officer ' . $officerRow['officer_name'];
             $sql = $conn->prepare("INSERT INTO tblactivity (activity_request_no, activity_from, activity_to, activity_remarks, activity_status, activity_documents, activity_type) VALUES (?,?,?,?,?,?,?)");
             $sql->bindParam(1, $reqNo);
             $sql->bindParam(2, $fromOfficerName);
