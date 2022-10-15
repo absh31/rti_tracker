@@ -62,7 +62,7 @@ if (empty($_POST['captcha'])) {
                                 </td>
                                 <td class="text-center align-middle">None</td>
                             <?php
-                            } else if ($key['request_is_add_pay'] != "") {
+                            } else if ($key['request_is_add_pay'] != "0") {
                             ?>
                                 <td class="text-center align-middle">
                                     <a href="./Transactions/payRequest.php?requestNo=<?= $reqNo ?>&payType=add">Pay Now</a>
