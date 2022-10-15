@@ -160,7 +160,7 @@ if (!isset($_POST['requestRTI'])) {
                 $to = "Nodal Officer";
                 $type = "Filed";
                 $status = "Application filed successfully";
-                $document = NULL;
+                $document = "NULL";
                 if ($upload_status){
                     $doc_sql = $conn->prepare("SELECT * FROM tbldocument WHERE document_request_id = ?");
                     $doc_sql->bindParam(1, $requestNo);
