@@ -2,7 +2,6 @@
 session_start();
 include './header.php';
 include './nav.php';
-include '../nav.php';
 include './connection.php';
 if (isset($_SESSION['existingUser']) && $_SESSION['existingUser'] == 1) {
     $email = $_SESSION['email'];

@@ -32,7 +32,7 @@ if (empty($_POST['captcha'])) {
             $array = $sql2->fetch(PDO::FETCH_ASSOC);
 ?>
             <p>Request Details:</p>
-            <table class="table table-bordered">
+            <table class="table table-bordered" id="rtiStatus">
                 <thead>
                     <tr class="bg-dark text-light">
                         <th class="text-center align-middle">Applicant Email</th>

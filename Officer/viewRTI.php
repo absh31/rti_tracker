@@ -317,7 +317,7 @@ include './nav.php';
                                     $a1 = $sql1->fetch(PDO::FETCH_ASSOC);
                                     $docs = $a1['activity_documents'];
 
-                                    $sql2 = $conn->prepare("SELECT * FROM tbldocument WHERE document_id IN ($docs)");
+                                    $sql2 = $conn->prepare("SELECT * FROM tbldocument WHERE document_id IN ('$docs') AND document_type = '$docType'");
                                     $sql2->execute();
                                     $docRow = $sql2->fetch(PDO::FETCH_ASSOC);
                                     $i = 1;
@@ -349,7 +349,7 @@ include './nav.php';
                             <div class="headingsall">
                                 <div class="form-group" id="textDiv">
                                     <label for='text'>Attachments for RTI Application :</label>
-                                    <input class="form-control" type="file" name="attachments[]" multiple>
+                                    <input class="form-control" type="file" name="attachments[]" required multiple>
                                 </div>
                             </div>
                             <br>

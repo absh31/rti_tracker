@@ -8,7 +8,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
     $sql->execute();
     $key = $sql->fetch(PDO::FETCH_ASSOC);
     include '../nav.php';
-include './nav.php';
+    include './nav.php';
     if (!empty($_GET['reqNo'])) {
         $reqNo = $_GET['reqNo'];
         $applicant_sql = $conn->prepare("SELECT * FROM tblapplicant a, tblrequest r WHERE a.applicant_id = r.request_applicant_id AND r.request_no = ?");
@@ -211,18 +211,23 @@ include './nav.php';
                                         $a1 = $sql1->fetch(PDO::FETCH_ASSOC);
                                         if (!empty($a1)) {
                                             $docs = $a1['activity_documents'];
-                                            $sql2 = $conn->prepare("SELECT * FROM tbldocument WHERE document_id IN ($docs)");
+                                            $sql2 = $conn->prepare("SELECT * FROM tbldocument WHERE document_id IN ('$docs') AND document_type = '$docType'");
                                             $sql2->execute();
                                             $docRow = $sql2->fetch(PDO::FETCH_ASSOC);
                                             $i = 1;
-                                            do {
+                                            if (!empty($docRow)) {
+                                                do {
                                         ?>
-                                                <a class="btn btn-dark mx-2" href="../uploads/<?php echo $docRow['document_title'] ?>" target="_blank">View Attachment <?= $i++ ?></a>
+                                                    <a class="btn btn-dark mx-2" href="../uploads/<?php echo $docRow['document_title'] ?>" target="_blank">View Attachment <?= $i++ ?></a>
+                                                <?php
+                                                } while ($docRow = $sql2->fetch(PDO::FETCH_ASSOC));
+                                            } else {
+                                                ?>
+                                                No Attachmentss
                                             <?php
-                                            } while ($docRow = $sql2->fetch(PDO::FETCH_ASSOC));
+                                            }
                                             ?>
                                         <?php
-
                                         } else {
                                         ?>
                                             No Attachmentss
@@ -329,7 +334,6 @@ include './nav.php';
                 document.getElementById("dash-nav").classList.remove("active")
                 document.getElementById("add-nav").classList.remove("active")
                 document.getElementById("trck-nav").classList.remove("active")
-                document.getElementById("hist-nav").classList.remove("active")
                 var i = 0;
                 $(document).ready(function() {
                     $('#deptName').on('change', function() {

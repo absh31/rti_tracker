@@ -22,9 +22,12 @@ if (!isset($_POST['personalRTI'])) {
             $otp = rand(100000, 999999);
             $_SESSION['otp'] = $otp;
             $_SESSION['name'] = $_POST['name'];
-            $_SESSION['email'] = $_POST['email'];
+            $to = $_SESSION['email'] = $_POST['email'];
             $_SESSION['mobileNumber'] = $_POST['mobileNumber'];
             $_SESSION['phoneNumber'] = $_POST['phoneNumber'];
+            $subject = "Email validation for RTI APPLICATION";
+            $msg = "Your OTP for validation is: ".$otp;
+            mail($to, $subject, $msg);
 
             if ($_POST['gender'] == 'Male' || $_POST['gender'] == 'Female' || $_POST['gender'] == 'Other')
                 $_SESSION['gender'] = $_POST['gender'];
@@ -68,7 +71,7 @@ if (!isset($_POST['personalRTI'])) {
                 echo "<script>window.open('../submitRTI.php','_self')</script>";
             }
 
-            echo "<script>alert('Your OTP for verification is: " . $otp . "')</script>";
+            echo "<script>alert('OTP sent to your registered email id!')</script>";
             echo "<script>window.open('../personalVerify.php','_self')</script>";
         }
     }

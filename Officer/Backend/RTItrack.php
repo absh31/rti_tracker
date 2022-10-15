@@ -11,30 +11,9 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
     $sql->bindParam(1, $reqNo);
     $sql->execute();
     if ($sql->rowCount() > 0) {
-
 ?>
-        <h5>Request Details:</h5>
-        <table class="table table-bordered">
-            <thead>
-                <tr class="bg-dark text-light">
-                    <td>Request No</td>
-                    <td>Request Text</td>
-                    <td>Request date</td>
-                    <td>Request expiry date</td>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><?=$reqNo ?></xtd>
-                    <td><?=$reqRow['request_text'] ?></td>
-                    <td><?=date('d-m-Y', strtotime($reqRow['request_time'])) ?></td>
-                    <td><?=date('d-m-Y', strtotime($reqRow['request_time'] . ' + 30 days')) ?></td>
-                </tr>
-            </tbody>
-        </table>
-        <br>
         <h5>Activity Details:</h5>
-        <table class="table table-bordered">
+        <table class="table table-bordered align-middle">
             <thead>
                 <tr class="bg-dark text-light">
                     <th>#</th>
@@ -42,6 +21,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                     <th>Activity To</th>
                     <th>Activity Remarks</th>
                     <th>Activity Status</th>
+                    <th>Activity Time</th>
                     <th>Documents</th>
                 </tr>
             </thead>
@@ -62,13 +42,14 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                                 $officer->execute();
                                 $orow = $officer->fetch(PDO::FETCH_ASSOC);
                                 echo $orow['officer_name'];
-                            }else{
+                            } else {
                                 echo $row['activity_to'];
                             }
                             ?>
                         </td>
                         <td><?= $row['activity_remarks']; ?></td>
                         <td><?= $row['activity_status']; ?></td>
+                        <td><?= $row['activity_time']; ?></td>
                         <td>
                             <?php
                             $docs = $row['activity_documents'];
@@ -103,7 +84,28 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
             </tbody>
         </table>
 
-<?php
+    <?php
+    } else {
+    ?>
+        <h5>Activity Details:</h5>
+        <table class="table table-striped table-bordered">
+            <thead>
+                <tr class="bg-dark text-light">
+                    <th>#</th>
+                    <th>Activity From</th>
+                    <th>Activity To</th>
+                    <th>Activity Remarks</th>
+                    <th>Activity Status</th>
+                    <th>Documents</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="text-center" colspan="6">NO DATA AVAILABLE</td>
+                </tr>
+            </tbody>
+        </table>
+    <?php
     }
 } else {
     echo "<script>window.alert(`Don't peep!`)</script>";

@@ -76,7 +76,7 @@ include './footer.php';
                     // $("#table_id").DataTable();
                     $('#responseData').html(response);
                     allData = response;
-                    // $("#table_id").DataTable();
+                    $("#rtiStatus").DataTable();
                     // $("#export_to_excel").show();
                 }
             })

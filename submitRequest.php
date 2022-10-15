@@ -2,14 +2,13 @@
 session_start();
 include './header.php';
 include './nav.php';
-include '../nav.php';
 if (!isset($_SESSION['otpVerified'])) {
     echo '<script>alert("Bad Request");</script>';
     echo '<script>window.open("./index.php","_self")</script>';
 } else {
     include './connection.php';
     if (isset($_SESSION['existingUser'])) {
-        print_r($_POST);
+        // print_r($_POST);
         $name = $_SESSION['name'] = $_POST['name'];
         $email = $_SESSION['email'] = $_POST['email'];
         $mobileNumber = $_SESSION['mobileNumber'] = $_POST['mobileNumber'];
@@ -68,7 +67,7 @@ if (!isset($_SESSION['otpVerified'])) {
                     <div class="headingsall" id="BPLNoDiv" style="display: none;">
                         <div class="form-group">
                             <label for='bpl'>BPL Card No. :</label>
-                            <input type="text" name="bplCard" id="bplCard" class="form-control" oninput="validateText(this)">
+                            <input type="text" name="bplCard" id="bplCard" class="form-control" oninput="validateNumber(this)">
                             <br>
                         </div>
                     </div>
@@ -107,7 +106,7 @@ if (!isset($_SESSION['otpVerified'])) {
                     </div>
                     <div class="headingsall">
                         <div class="form-group" id="textDiv">
-                            <label for='text'>Text for RTI request Application :</label>
+                            <label for='text'>Text for RTI Application :</label>
                             <textarea name="reqText" id="reqText" class="form-control" rows="5" oninput="validateTextarea(this)"></textarea>
                         </div>
                     </div>

@@ -33,7 +33,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
             <div class="row">
                 <div class="col">
                     <h5>ALL RTIs</h5>
-                    <table class="table table-striped table-bordered" id="pending1">
+                    <table class="table table-striped table-bordered align-middle" id="pending1">
                         <thead>
                             <tr class="bg-dark text-light">
                                 <td class="text-center">#</td>
@@ -59,8 +59,8 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                             ?>
                                 <tr>
                                     <td class="text-center"><?= $i ?></td>
-                                    <td class="text-center" id="reqNo" aria-valuemax=""><?= $row['request_no'] ?></td>
-                                       <td class="text-center"><?= date('d-m-Y', strtotime($row['request_time'])) ?></td>
+                                    <td class="text-center" id="reqNo"><?= $row['request_no'] ?></td>
+                                    <td class="text-center"><?= date('d-m-Y', strtotime($row['request_time'])) ?></td>
                                     <td class="text-center"><?php echo $exp_date = date('d-m-Y', strtotime($row['request_time'] . ' + 30 days')) ?>
                                         <?php
                                         $diff = date_diff(date_create($ThisTime), date_create($exp_date));
@@ -79,9 +79,27 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                                         }
                                         ?>
                                     </td>
-                                    <td class="text-center"><?= $row2['activity_type'] ?></td>
+                                    <td class="text-center" style="width: 300px;">
+                                        <?php 
+                                        if (!empty($row2)){
+                                            if($row2['activity_to'] == 'Applicant'){
+                                                echo "Reverted back to the applicant";
+                                            }else{
+                                                $sql3 = $conn->prepare("SELECT * FROM tblofficer o, tbldepartment d WHERE o.officer_department_id = d.department_id AND o.officer_id = ?");
+                                                $sql3->bindParam(1, $row2['activity_to']);
+                                                $sql3->execute();
+                                                $row3 = $sql3->fetch(PDO::FETCH_ASSOC);
+                                                if(!empty($row3))
+                                                    echo $row2['activity_status'] . " (".$row3['officer_name'].") (".$row3['department_name'].")";
+                                            }
+                                            // echo $row2['activity_type'] . " to " . $row3['officer_name'] . " of Dept - " . $row3['department_name'] ;
+                                        }else{
+                                            echo "<span class='text-danger'>NO INFO AVAILABLE </span>";
+                                        }
+                                        ?>
+                                    </td>
                                     <td class="text-center">
-                                        <a target="_blank" id="trackRTI" class="btn btn-dark">Track</a>
+                                        <a target="_blank" id="<?= $row['request_no'] ?>" class="track btn btn-dark">Track</a>
                                     </td>
                                 </tr>
                             <?php
@@ -93,6 +111,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                 </div>
             </div>
         </div>
+        <br>
         <?php
         include '../footer.php';
         ?>
@@ -103,12 +122,13 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
             document.getElementById("trck-nav").style.fontWeight = 600;
 
             $(document).ready(function() {
-                $('#pending1').DataTable();
-                $('#trackRTI').on('click', function(e) {
-                    console.log("HELLo")
+                var table = $('#pending1').DataTable();
+                var rows = table.rows().nodes()
+                rows.$('.track').on('click', function(e) {
                     $('.spinner-border').prop("hidden", null);
                     $('.btn-spinner-border').prop("disabled", true);
-                    var reqNo = $('#reqNo').val().toString();
+                    var reqNo = $(this).attr('id')
+                    console.log(reqNo)
                     $.ajax({
                         type: "POST",
                         url: "./Backend/RTItrack.php",
@@ -135,4 +155,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
         </html>
 <?php
     }
+}else{
+    echo "<script>window.alert(`Don't peep!`)</script>";
+    echo "<script>window.open('../login.php','_self')</script>";
 }

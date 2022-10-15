@@ -290,7 +290,6 @@ include './nav.php';
         document.getElementById("dash-nav").classList.remove("active")
         document.getElementById("pend-nav").classList.remove("active")
         document.getElementById("trck-nav").classList.remove("active")
-        document.getElementById("hist-nav").classList.remove("active")
 
         function showBpl(input) {
             var value = input.value

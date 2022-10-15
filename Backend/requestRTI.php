@@ -28,35 +28,36 @@ if (!isset($_POST['requestRTI'])) {
             $deptId = $_POST['department'];
             $isBPL = $_POST['isBPL'];
             $upload_status = false;
+            $reqIsBase;
 
-            if($isBPL == "Yes"){
+            if ($isBPL == "Yes") {
                 $bplCard = $_POST['bplCard'];
                 $YOI = $_POST['YOI'];
                 $issueAuth = $_POST['issueAuth'];
                 $docBPL = $_FILES['docBPL']['name'];
                 $upload_status = false;
-                
+
                 if ($docBPL != "") {
                     $ImageName_tmp_error = $_FILES['docBPL']['error'];
                     if ($ImageName_tmp_error > 0) {
                         echo '<script>alert("File is not allowed.");</script>';
                         echo '<script>window.open("../index.php","_self")</script>';
                     } else {
-    
+
                         if (!file_exists('../bplFiles')) {
                             mkdir('../bplFiles', 0777, true);
                         }
-    
+
                         $ImageName_type = $_FILES['docBPL']['type'];
                         $ImageName_size = $_FILES['docBPL']['size'];
                         $ImageName_tmp_name = $_FILES['docBPL']['tmp_name'];
-    
+
                         /* Figure out the MIME type | Check in array */
                         $known_mime_types = array(
                             "application/pdf",
-                            "application/png",
-                            "application/jpg",
-                            "application/jpeg"
+                            "image/png",
+                            "image/jpg",
+                            "image/jpeg"
                         );
                         if (!in_array($ImageName_type, $known_mime_types)) {
                             echo "<script> alert('File format not supported!')</script>";
@@ -77,26 +78,28 @@ if (!isset($_POST['requestRTI'])) {
                             }
                             $docBPL = md5($appId) . '_bplCard' . $ext;
                             $docBPL_path = "../bplFiles/" . $docBPL;
-    
+
                             if (file_exists($docBPL_path)) {
                                 unlink($docBPL_path);
                             }
-    
+
                             $check_upload = move_uploaded_file($ImageName_tmp_name, $docBPL_path);
-    
+
                             if (!$check_upload) {
                                 $upload_status = false;
                                 echo '<script>alert("File is not uploaded.");</script>';
                                 echo "<script>window.open('../submitRequest.php','_self')</script>";
                             } else {
                                 $upload_status = true;
+                                $reqIsBase = "NA";
                                 // echo '<script>alert("File is uploaded.");</script>';
                                 // echo "<script>window.open('../submitRequest.php','_self')</script>";
                             }
                         }
                     }
                 }
-            }else{
+            } else {
+                $reqIsBase = 0;
                 $bplCard = "NULL";
                 $YOI = "NULL";
                 $issueAuth = "NULL";
@@ -109,7 +112,6 @@ if (!isset($_POST['requestRTI'])) {
             // exit;
             $reqMode = 'Online';
             $reqBase = '20';
-            $reqIsBase = 0;
             $reqCurr = 'user';
             $reqIsAppeal = 0;
             $reqStatus = 'Requested';
@@ -145,27 +147,42 @@ if (!isset($_POST['requestRTI'])) {
             $sql->bindParam(21, $reqComplete);
 
             if ($sql->execute()) {
-                if($upload_status){
+                if ($upload_status) {
                     $doc_type = 'bplcard';
                     $doc_sql = $conn->prepare("INSERT INTO tbldocument (document_request_id, document_title, document_path, document_type) VALUES(?,?,?,?)");
                     $doc_sql->bindParam(1, $requestNo);
                     $doc_sql->bindParam(2, $docBPL);
                     $doc_sql->bindParam(3, $docBPL_path);
                     $doc_sql->bindParam(4, $doc_type);
-                    if($doc_sql->execute()){
-                        echo "<script>alert('Your request is filed successfully! Your Request Reference number is: ".$requestNo."')</script>";
-                        echo "<script>window.open('../responseRTI.php', '_self')</script>"; 
-                        // session_unset();
-                        // session_destroy();
-                    }else{
-                        echo "<script>alert('Something went wrong!')</script>";
-                        echo '<script>window.open("../submitRequest.php","_self")</script>';
-                    }
-                }else{
-                    echo "<script>alert('Your request is filed successfully! Your Request Reference number is: ".$requestNo."')</script>";
-                    echo "<script>window.open('../responseRTI.php', '_self')</script>"; 
+                    $doc_sql->execute();
                 }
-            } else {    
+                $from = "Applicant";
+                $to = "Nodal Officer";
+                $type = "Filed";
+                $status = "Application filed successfully";
+                $document = NULL;
+                if ($upload_status){
+                    $doc_sql = $conn->prepare("SELECT * FROM tbldocument WHERE document_request_id = ?");
+                    $doc_sql->bindParam(1, $requestNo);
+                    $doc_sql->execute();
+                    $doc_row = $doc_sql->fetch(PDO::FETCH_ASSOC); 
+                    $document = $doc_row['document_id'];
+                }
+                $activity_sql = $conn->prepare("INSERT INTO tblactivity (activity_request_no, activity_from, activity_to, activity_type, activity_status, activity_documents) VALUES(?,?,?,?,?,?)");
+                $activity_sql->bindParam(1, $requestNo);
+                $activity_sql->bindParam(2, $from);
+                $activity_sql->bindParam(3, $to);
+                $activity_sql->bindParam(4, $type);
+                $activity_sql->bindParam(5, $status);
+                $activity_sql->bindParam(6, $document);
+                if($activity_sql->execute()){
+                    echo "<script>alert('Your request is filed successfully! Your Request Reference number is: " . $requestNo . "')</script>";
+                    echo "<script>window.open('../responseRTI.php', '_self')</script>";
+                }else{
+                    echo "<script>alert('Something went wrong!')</script>";
+                    echo '<script>window.open(".../submitRequest.php","_self")</script>';
+                }
+            } else {
                 echo "<script>alert('Something went wrong!')</script>";
                 echo '<script>window.open(".../submitRequest.php","_self")</script>';
             }

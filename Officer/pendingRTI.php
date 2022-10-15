@@ -10,7 +10,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
     $sql->execute();
     $key = $sql->fetch(PDO::FETCH_ASSOC);
     include '../nav.php';
-include './nav.php';
+    include './nav.php';
     if ($key['role_id'] == 3) {
 ?>
         <br>
@@ -93,12 +93,13 @@ include './nav.php';
                             <?php
                             $i = 1;
                             $currentHandler = "Nodal Officer";
+                            $type = "Filed";
                             // $ThisTime = date("Y-m-d H:i:s");
                             $completed = 0;
-                            $sql = $conn->prepare("SELECT * FROM tblrequest r, tblactivity a WHERE r.request_no = a.activity_request_no AND a.activity_to = ? 
-                            AND r.request_completed = ?");
+                            $sql = $conn->prepare("SELECT * FROM tblrequest r, tblactivity a WHERE r.request_no = a.activity_request_no AND a.activity_to = ? AND a.activity_type != ? AND r.request_completed = ?");
                             $sql->bindParam(1, $currentHandler);
-                            $sql->bindParam(2, $completed);
+                            $sql->bindParam(2, $type);
+                            $sql->bindParam(3, $completed);
                             $sql->execute();
                             while ($row = $sql->fetch(PDO::FETCH_ASSOC)) {
                             ?>
@@ -124,8 +125,8 @@ include './nav.php';
                                         }
                                         ?>
                                     </td>
-                                    <td class="text-center"><?=$row['activity_remarks']?></td>
-                                    <td class="text-center"><?=$row['activity_type']?></td>
+                                    <td class="text-center"><?= $row['activity_remarks'] ?></td>
+                                    <td class="text-center"><?= $row['activity_type'] ?></td>
                                     <!-- <td class="text-center">
                                         <a href="./forwardRTI.php?reqNo=<?= $row['request_no'] ?>&confirm=0" target="_blank" class="btn btn-outline-success">Forward</a>
                                         <a href="./forwardRTI.php?reqNo=<?= $row['request_no'] ?>&confirm=1" target="_blank" class="btn btn-outline-danger" style="margin-left: 15px;">Close RTI</a>
@@ -150,10 +151,9 @@ include './nav.php';
             document.getElementById("dash-nav").classList.remove("active")
             document.getElementById("add-nav").classList.remove("active")
             document.getElementById("trck-nav").classList.remove("active")
-            document.getElementById("hist-nav").classList.remove("active")
         </script>
     <?php
-    } else if ($key['role_id'] != 4) {
+    } else if ($key['role_id'] != 3) {
         //OFFICER
     ?>
         <br>
@@ -178,43 +178,48 @@ include './nav.php';
                             $i = 1;
                             $ThisTime = date("Y-m-d H:i:s");
                             $completed = 0;
-                            $sql = $conn->prepare("SELECT * FROM tblrequest r, tblactivity a WHERE a.activity_to = ? AND r.request_department_id = ? AND r.request_current_handler = ? AND r.request_completed = ? AND r.request_no = a.activity_request_no");
+                            // print_r($key);
+                            $sql = $conn->prepare("SELECT * FROM tblrequest r, tblactivity a WHERE a.activity_to = ? AND r.request_department_id = ?  AND r.request_completed = ? AND r.request_no = a.activity_request_no ORDER BY a.activity_id DESC");
                             $sql->bindParam(1, $key['officer_id']);
                             $sql->bindParam(2, $key['officer_department_id']);
-                            $sql->bindParam(3, $key['officer_id']);
-                            $sql->bindParam(4, $completed);
+                            $sql->bindParam(3, $completed);
                             $sql->execute();
-                            while ($row = $sql->fetch(PDO::FETCH_ASSOC)) {
+                            if (!empty($row = $sql->fetch(PDO::FETCH_ASSOC))) {
+                                $officers = explode(',', $row['request_current_handler']);
+                                if (in_array($key['officer_id'], $officers)) {
+                                    do {
                             ?>
-                                <tr>
-                                    <td class="text-center"><?= $i ?></td>
-                                    <td class="text-center"><?= $row['request_no'] ?></td>
-                                    <td class="text-center"><?= date('d-m-Y', strtotime($row['request_time'])) ?></td>
-                                    <td class="text-center"><?php echo $exp_date = date('d-m-Y', strtotime($row['request_time'] . ' + 30 days')) ?>
-                                        <?php
-                                        $diff = date_diff(date_create($ThisTime), date_create($exp_date));
-                                        if ($diff->days <= 10) {
-                                        ?>
-                                            <span class="text-danger">
-                                                (<?= $diff->format('%a day(s) left'); ?>)
-                                            </span>
-                                        <?php
-                                        } else {
-                                        ?>
-                                            <span>
-                                                (<?= $diff->format('%a day(s) left'); ?>)
-                                            </span>
-                                        <?php
-                                        }
-                                        ?>
-                                    </td>
-                                    <td class="text-center"><?=$row['activity_remarks'] ?></td>
-                                    <td class="text-center">
-                                        <a href="./viewRTI.php?reqNo=<?= $row['request_no'] ?>" target="_blank" id="revertButton" class="btn btn-dark">View</a>
-                                    </td>
-                                </tr>
+                                        <tr>
+                                            <td class="text-center"><?= $i ?></td>
+                                            <td class="text-center"><?= $row['request_no'] ?></td>
+                                            <td class="text-center"><?= date('d-m-Y', strtotime($row['request_time'])) ?></td>
+                                            <td class="text-center"><?php echo $exp_date = date('d-m-Y', strtotime($row['request_time'] . ' + 30 days')) ?>
+                                                <?php
+                                                $diff = date_diff(date_create($ThisTime), date_create($exp_date));
+                                                if ($diff->days <= 10) {
+                                                ?>
+                                                    <span class="text-danger">
+                                                        (<?= $diff->format('%a day(s) left'); ?>)
+                                                    </span>
+                                                <?php
+                                                } else {
+                                                ?>
+                                                    <span>
+                                                        (<?= $diff->format('%a day(s) left'); ?>)
+                                                    </span>
+                                                <?php
+                                                }
+                                                ?>
+                                            </td>
+                                            <td class="text-center"><?= $row['activity_remarks'] ?></td>
+                                            <td class="text-center">
+                                                <a href="./viewRTI.php?reqNo=<?= $row['request_no'] ?>" target="_blank" id="revertButton" class="btn btn-dark">View</a>
+                                            </td>
+                                        </tr>
                             <?php
-                                $i++;
+                                        $i++;
+                                    } while ($row = $sql->fetch(PDO::FETCH_ASSOC));
+                                }
                             }
                             ?>
                         </tbody>
@@ -227,7 +232,6 @@ include './nav.php';
             document.getElementById("pend-nav").style.fontWeight = 600;
             document.getElementById("pend-nav").classList.add("active");
             document.getElementById("dash-nav").classList.remove("active")
-            document.getElementById("hist-nav").classList.remove("active")
         </script>
     <?php
     }

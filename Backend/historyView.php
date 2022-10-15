@@ -28,7 +28,7 @@ if (empty($_POST['captcha'])) {
         $i = 0;
         if ($sql->rowCount() > 0) {
 ?>
-            <table class="table table-bordered">
+            <table class="table table-bordered" id="rtiHistory">
                 <thead class="bg-dark text-light">
                     <tr>
                         <th>#</th>

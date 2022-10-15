@@ -29,9 +29,6 @@
                         <li class="nav-item">
                             <a id="trck-nav" class="nav-link" aria-current="page" href="./trackRTI.php">Track RTI</a>
                         </li>
-                        <li class="nav-item">
-                            <a id="hist-nav" class="nav-link" aria-current="page" href="dashboard.php">RTI History</a>
-                        </li>
                     </ul>
                     <a href="../logout.php">
                         <button class="btn text-light border-light" name="login" type="submit">Logout</button>
@@ -42,8 +39,8 @@
     <?php
     } else if ($key['role_id'] == 4) {
     ?>
-        <nav class="navbar sticky-top navbar-expand-lg navbar-dark" id="navigation" style="background-color : black">
-            <div class="container-fluid">
+        <nav class="navbar sticky-top navbar-expand-lg px-0 navbar-dark" id="navigation" style="background-color : black">
+            <div class="container-fluid px-5">
                 <!-- <a class="navbar-brand fw-bold" href="./index.php">GURUKRUPA ENTERPRISE</a> -->
                 <a class="navbar-brand" href="index.php" style="font-weight: 800;">
                     <!-- <img src="logo.png" width="45"height="45" class="d-inline-block align-text-center" style="margin-right:2px;"> -->
@@ -61,7 +58,7 @@
                             <a id="pend-nav" class="nav-link" aria-current="page" href="./pendingRTI.php">Pending RTI</a>
                         </li>
                         <li class="nav-item">
-                            <a id="hist-nav" class="nav-link" aria-current="page" href="dashboard.php">RTI History</a>
+                            <a id="trck-nav" class="nav-link" aria-current="page" href="dashboard.php">Track RTI</a>
                         </li>
                     </ul>
                     <a href="../logout.php">

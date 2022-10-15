@@ -3,7 +3,6 @@ session_start();
 include './connection.php';
 include './header.php';
 include './nav.php';
-include '../nav.php';
 if (!isset($_SESSION['requestNo'])) {
     echo '<script>alert("Bad Request");</script>';
     echo '<script>window.open("./index.php","_self")</script>';
@@ -20,15 +19,19 @@ if (!isset($_SESSION['requestNo'])) {
                     $sql->execute();
                     $key = $sql->fetch(PDO::FETCH_ASSOC);
                     if ($key['request_is_base_pay'] == 0){
-                    
                     ?>
                     <h4>To proceed further, pay request fees. <a href="./Transactions/payRequest.php?requestNo=<?php echo $_SESSION['requestNo']; ?>&payType=base">Pay Now</a></h4>
-                <?php } else {
+                <?php } else if($key['request_is_base_pay'] == "NA"){
+                ?>
+                    <a href="./index.php">Click Here</a> to go back to the home page...
+                <?php
+                }else{
                 ?>
                     <h4>Your fees are paid successfully!...</h4>
+                    <a href="./index.php">Click Here</a> to go back to the home page...
                 <?php
+                session_destroy();
                 } ?>
-                <a href="./index.php">Click Here</a> to go back to the home page...
             </div>
         </div>
     </div>

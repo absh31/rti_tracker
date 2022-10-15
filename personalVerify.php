@@ -2,7 +2,6 @@
 session_start();
 include './header.php';
 include './nav.php';
-include '../nav.php';
 if (! (isset($_SESSION['otp'])) && !(isset($_SESSION['otpExisting']))) {
     echo '<script>alert("Bad Request");</script>';
     echo '<script>window.open("./index.php","_self")</script>';

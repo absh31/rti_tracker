@@ -67,6 +67,7 @@ include './footer.php';
     }
 
     $(document).ready(function() {
+        
         $('#viewHistory').on('click', function(e) {
             $('#responseData').html();
             e.preventDefault();
@@ -88,10 +89,10 @@ include './footer.php';
                 success: function(response) {
                     $('.spinner-border').prop("hidden", true);
                     $('.btn-spinner-border').prop("disabled", false);
-                    // $("#table_id").dataTable().fnDestroy();
                     // $("#table_id").DataTable();
                     $('#responseData').html(response);
                     allData = response;
+                    $("#rtiHistory").DataTable();
                     // $("#table_id").DataTable();
                     // $("#export_to_excel").show();
                 }
