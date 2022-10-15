@@ -245,7 +245,10 @@ if (isset($_SESSION['existingUser']) && $_SESSION['existingUser'] == 1) {
             var input = usr.value
             if (input != "") {
                 if (regexp.test(input)) {
-                    if (input.length > 10) {
+                    if (input[0] == "0" || input[0] == "1" || input[0] == "2" || input[0] == "3" || input[0] == "4" || input[0] == "5"){
+                        alert("Mobile number must start from 6, 7, 8 or 9!")
+                        usr.value = "";
+                    } else if (input.length > 10) {
                         alert("Mobile number should contain only 10 digits!")
                         usr.value = input.slice(0, 10);
                     } else
@@ -260,9 +263,13 @@ if (isset($_SESSION['existingUser']) && $_SESSION['existingUser'] == 1) {
         const validatePincode = function(usr) {
             var regexp = /^[0-9 ]+$/;
             var input = usr.value
+            console.log(input)
             if (input != "") {
                 if (regexp.test(input)) {
-                    if (input.length > 6) {
+                    if (input[0] == "0"){
+                        alert("Pincode should not start from 0!")
+                        usr.value = input.slice(0, 6);
+                    } else if (input.length > 6) {
                         alert("Pincode should contain only 6 digits!")
                         usr.value = input.slice(0, 6);
                     } else
@@ -541,7 +548,10 @@ if (isset($_SESSION['existingUser']) && $_SESSION['existingUser'] == 1) {
             var input = usr.value
             if (input != "") {
                 if (regexp.test(input)) {
-                    if (input.length > 10) {
+                    if (input[0] == "0" || input[0] == "1" || input[0] == "2" || input[0] == "3" || input[0] == "4" || input[0] == "5"){
+                        alert("Mobile number must start from 6, 7, 8 or 9!")
+                        usr.value = "";
+                    } else if (input.length > 10) {
                         alert("Mobile number should contain only 10 digits!")
                         usr.value = input.slice(0, 10);
                     } else
@@ -556,9 +566,13 @@ if (isset($_SESSION['existingUser']) && $_SESSION['existingUser'] == 1) {
         const validatePincode = function(usr) {
             var regexp = /^[0-9 ]+$/;
             var input = usr.value
+            console.log(input)
             if (input != "") {
                 if (regexp.test(input)) {
-                    if (input.length > 6) {
+                    if (input[0] == "0"){
+                        alert("Pincode should not start from 0!")
+                        usr.value = "";
+                    } else if (input.length > 6) {
                         alert("Pincode should contain only 6 digits!")
                         usr.value = input.slice(0, 6);
                     } else

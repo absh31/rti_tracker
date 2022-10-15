@@ -178,9 +178,15 @@ if (!isset($_SESSION['otpVerified'])) {
         const validateNumber = function(usr) {
             var regexp = /^[0-9 ]+$/;
             var input = usr.value
+            console.log(input.length)
             if (input != "") {
                 if (regexp.test(input)) {
-                    return true
+                    if (input.length > 30) {
+                        alert("Maximum length reached!")
+                        usr.value = input.slice(0, 30);
+                    } else {
+                        return true
+                    }
                 } else {
                     alert("Only numbers are allowed!")
                     usr.value = null;
