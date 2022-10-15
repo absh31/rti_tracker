@@ -49,12 +49,20 @@ if (empty($_POST['captcha'])) {
                     <tr>
                         <td class="text-center align-middle"><?= $key['applicant_email']; ?></td>
                         <td class="text-center align-middle"><?= $key['request_no']; ?></td>
-                        <td class="text-center align-middle"><?= $key['request_current_handler']; ?></td>
+                        <td class="text-center align-middle">
+                            <?php
+                            if ($key['request_current_handler'] == "user") {
+                                echo "Forwarded to Nodal Officer";
+                            } else if ($key['request_current_handler'] == 'none') {
+                                echo "RTI Completed";
+                            }
+                            ?>
+                        </td>
                         <td class="text-center align-middle"><?= $array['department_name']; ?></td>
                         <td class="text-center align-middle"><?= $key['request_status']; ?></td>
                         <td class="text-center align-middle"><?= $key['request_text']; ?></td>
                         <?php
-                        if ($key['request_status'] != "Reject") {
+                        if ($key['request_status'] != "Rejected") {
                             if ($key['request_is_base_pay'] != 1 && $key['request_is_add_pay'] == 0) {
                         ?>
                                 <td class="text-center align-middle">
@@ -79,29 +87,108 @@ if (empty($_POST['captcha'])) {
                                 <td class="text-center align-middle">
                                     <a class="btn btn-dark mx-2" href="./uploads/<?= $docRow['document_title'] ?>" target="_blank">Download Attachment</a>
                                 </td>
-                        <?php
-                            }else{
-                                ?>
+                            <?php
+                            } else {
+                            ?>
                                 <td class="text-center align-middle">No payment needed yet</td>
                                 <td class="text-center align-middle">NA</td>
 
-                                <?php
+                            <?php
                             }
-                        }else{
+                        } else {
                             ?>
                             <td class="text-center align-middle">NA</td>
                             <td class="text-center align-middle">NA</td>
-                            <?php
+                        <?php
                         }
                         ?>
                     </tr>
                 </tbody>
             </table>
-        <?php
+            <br>
+            <?php
+            $sql = $conn->prepare("SELECT * FROM tblactivity WHERE activity_request_no = ? ORDER BY activity_id");
+            $sql->bindParam(1, $reqNo);
+            $sql->execute();
+            if ($sql->rowCount() > 0) {
+            ?>
+                <p>Activity Details: </p>
+                <table class="table table-bordered align-middle">
+                    <thead>
+                        <tr class="bg-dark text-light">
+                            <th>#</th>
+                            <th>Activity From</th>
+                            <th>Activity To</th>
+                            <th>Activity Remarks</th>
+                            <th>Activity Status</th>
+                            <th>Activity Time</th>
+                            <th>Documents</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        $j = 1;
+                        while ($row = $sql->fetch(PDO::FETCH_ASSOC)) {
+                        ?>
+                            <tr>
+                                <td><?= $j++ ?></td>
+                                <td><?= $row['activity_from']; ?></td>
+                                <td>
+                                    <?php
+                                    if (is_numeric($row['activity_to'])) {
+                                        $id = $row['activity_to'];
+                                        $officer = $conn->prepare("SELECT * FROM tblofficer WHERE officer_id = ?");
+                                        $officer->bindParam(1, $id);
+                                        $officer->execute();
+                                        $orow = $officer->fetch(PDO::FETCH_ASSOC);
+                                        echo $orow['officer_name'];
+                                    } else {
+                                        echo $row['activity_to'];
+                                    }
+                                    ?>
+                                </td>
+                                <td><?= $row['activity_remarks']; ?></td>
+                                <td><?= $row['activity_status']; ?></td>
+                                <td><?= $row['activity_time']; ?></td>
+                                <td>
+                                    <?php
+                                    $docs = $row['activity_documents'];
+                                    if ($docs != "") {
+
+                                        $sql2 = $conn->prepare("SELECT * FROM tbldocument WHERE document_id IN ($docs)");
+                                        $sql2->execute();
+                                        $docRow = $sql2->fetch(PDO::FETCH_ASSOC);
+                                        $i = 1;
+                                        if (empty($docRow)) {
+                                    ?>
+                                            <label for="">No Attachments</label>
+                                            <?php
+                                        } else {
+                                            do {
+                                            ?>
+                                                <a class="btn btn-dark mx-2" href="../uploads/<?php echo $docRow['document_title'] ?>" target="_blank">View <?= $i++ ?></a>
+                                            <?php
+                                            } while ($docRow = $sql2->fetch(PDO::FETCH_ASSOC));
+                                            ?>
+                                        <?php
+                                        }
+                                    } else {
+                                        ?>
+                                        No Attachments
+                                    <?php
+                                    } ?>
+
+                                </td>
+                            </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
+            <?php
+            }
         } else {
             unset($_POST['viewStatus']);
             session_unset();
-        ?>
+            ?>
             <p>Request Details:</p>
             <table class="table table-bordered">
                 <thead>

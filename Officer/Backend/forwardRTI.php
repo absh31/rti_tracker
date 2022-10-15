@@ -1,6 +1,7 @@
 <?php
 session_start();
 include '../../connection.php';
+// print_r($_POST);
 if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SESSION['auth']))) {
     if (isset($_POST['forwardRTI'])) {
         $reqNo = $_POST['reqNo'];
@@ -111,7 +112,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
             echo "<script>window.open('../pendingRTI.php','_self')</script>";
         }
     } else if (isset($_POST['closeRTI'])) {
-        // print_r($_POST);
+        print_r($_POST);
         $reqNo = $_POST['reqNo'];
         $checkSql = $conn->prepare("SELECT * FROM tblactivity WHERE activity_request_no = ? ORDER BY activity_id DESC");
         $checkSql->bindParam(1, $reqNo);
@@ -163,6 +164,36 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
             $toOfficerName = 'Applicant';
             $remark = $_POST['remarks'];
             $status = 'Application closed successfully';
+            if ($completeSql->execute()) {
+                $sql = $conn->prepare("INSERT INTO tblactivity (activity_request_no, activity_from, activity_to, activity_remarks, activity_status, activity_type) VALUES (?,?,?,?,?,?)");
+                $sql->bindParam(1, $reqNo);
+                $sql->bindParam(2, $fromOfficerName);
+                $sql->bindParam(3, $toOfficerName);
+                $sql->bindParam(4, $remark);
+                $sql->bindParam(5, $status);
+                $sql->bindParam(6, $activityType);
+                if ($sql->execute()) {
+                    echo "<script>window.alert(`RTI closed successfully!`)</script>";
+                    echo "<script>window.open('../pendingRTI.php','_self')</script>";
+                } else {
+                    echo "<script>window.alert(`Something went wrong!`)</script>";
+                    echo "<script>window.open('../forwardRTI.php?reqNo" . $reqN . "','_self')</script>";
+                }
+            }
+        }else{
+            $confirm = 1;
+            $currentHandler = "none";
+            $activityType = "Rejected";
+            $status = "Rejected";
+            $completeSql = $conn->prepare("UPDATE tblrequest SET request_completed = ?, request_current_handler = ?, request_status = ? WHERE request_no = ?");
+            $completeSql->bindParam(1, $confirm);
+            $completeSql->bindParam(2, $currentHandler);
+            $completeSql->bindParam(3, $activityType);
+            $completeSql->bindParam(4, $reqNo);
+            $fromOfficerName = 'Nodal Officer';
+            $toOfficerName = 'Applicant';
+            $remark = $_POST['remarks'];
+            $status = 'Application Rejected successfully';
             if ($completeSql->execute()) {
                 $sql = $conn->prepare("INSERT INTO tblactivity (activity_request_no, activity_from, activity_to, activity_remarks, activity_status, activity_type) VALUES (?,?,?,?,?,?)");
                 $sql->bindParam(1, $reqNo);

@@ -187,7 +187,20 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                                             ?>
                                         </div>
                                         <br>
+                                        <div class="form-group" id="fullNameDiv">
+                                            <label for='name'><span class="text-danger">*</span> Is application fees paid?</label>
+                                            <input type="text" class="form-control" name="reqNo" value="Not Applicable" disabled>
+                                        </div>
+                                        <br>
                                     </div>
+                                <?php
+                                } else {
+                                ?>
+                                    <div class="form-group" id="fullNameDiv">
+                                        <label for='name'><span class="text-danger">*</span> Is application fees paid?</label>
+                                        <input type="text" class="form-control" name="reqNo" value="<?php echo $row['request_is_base_pay'] == 0 ? "Not Paid" : "Paid"; ?>" disabled>
+                                    </div>
+                                    <br>
                                 <?php
                                 }
                                 ?>
