@@ -147,7 +147,17 @@ if (empty($_POST['captcha'])) {
                                     }
                                     ?>
                                 </td>
-                                <td><?= $row['activity_remarks']; ?></td>
+                                <td>
+                                    <?php
+                                        if($row['activity_to']=="Applicant"){
+                                            echo $row['activity_remarks']; 
+                
+                                        }
+                                        else
+                                            echo "none";
+                                     
+                                     ?>
+                                </td>
                                 <td><?= $row['activity_status']; ?></td>
                                 <td><?= $row['activity_time']; ?></td>
                                 <td>
