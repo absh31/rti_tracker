@@ -14,14 +14,20 @@ if (!isset($_POST['personalRTI'])) {
         if ($sql->rowCount() > 0) {
             $otp = rand(100000, 999999);
             $_SESSION['otpExisting'] = $otp;
-
-            echo "<script>alert('Your OTP for verification is: " . $otp . "')</script>";
-            echo "<script>window.open('../personalVerify.php','_self')</script>";
+            $subject = "Email validation for RTI APPLICATION";
+            $msg = "Your OTP for validation is: " . $otp;
+            if (mail($email, $subject, $msg)) {
+                echo "<script>alert('OTP sent to your registered email id!')</script>";
+                echo "<script>window.open('../personalVerify.php','_self')</script>";
+            }else{
+                echo "<script>alert('Something went wrong, please try again later!')</script>";
+                echo "<script>window.open('../instructionsRTI.php','_self')</script>";
+            }
         } else {
             echo "<script>alert('No user found!')</script>";
             echo "<script>window.open('../instructionsRTI.php','_self')</script>";
         }
-    }else{
+    } else {
         echo "<script>window.open('../submitRTI.php','_self')</script>";
     }
 }
