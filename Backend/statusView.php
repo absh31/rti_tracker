@@ -70,7 +70,7 @@ if (empty($_POST['captcha'])) {
                                 </td>
                                 <td class="text-center align-middle">None</td>
                             <?php
-                            } else if ($key['request_is_add_pay'] == "0" && $key['request_add_pay'] != "") {
+                            } else if ($key['request_is_add_pay'] == "0" && $key['request_add_pay'] != "0") {
                             ?>
                                 <td class="text-center align-middle">
                                     <a href="./Transactions/payRequest.php?requestNo=<?= $reqNo ?>&payType=add">Pay Now</a>
@@ -83,7 +83,7 @@ if (empty($_POST['captcha'])) {
                                 $docSql->execute();
                                 $docRow = $docSql->fetch(PDO::FETCH_ASSOC);
                             ?>
-                                <td class="text-center align-middle">Paid</td>
+                                <td class="text-center align-middle"><a class="btn btn-success" href="./Backend/downloadReceipt.php?reqNo=<?=$reqNo ?>&reqEmail=<?=$key['applicant_email']?>">Download Receipt</a> </td>
                                 <td class="text-center align-middle">
                                     <a class="btn btn-dark mx-2" href="./uploads/<?= $docRow['document_title'] ?>" target="_blank">Download Attachment</a>
                                 </td>
