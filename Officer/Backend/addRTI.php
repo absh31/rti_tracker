@@ -124,7 +124,7 @@ if (!isset($_POST['personalRTI'])) {
         $reqCountry = $_POST['country'];
         $reqState = $_POST['state'];
         $reqPlaceType = $_POST['status'];
-        
+
         $sql = $conn->prepare("INSERT INTO `tblrequest` (`request_applicant_id`, `request_department_id`, `request_no`, `request_from_bpl`, `request_bpl_no`, `request_bpl_yoi`, `request_bpl_ia`, `request_bpl_file`, `request_address`, `request_pincode`, `request_country`, `request_state`, `request_place_type`, `request_text`, `request_mode`, `request_base_pay`, `request_is_base_pay`, `request_current_handler`, `request_is_appealed`, `request_status`, `request_completed`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         $sql->bindParam(1, $appId);
         $sql->bindParam(2, $deptId);
@@ -156,17 +156,46 @@ if (!isset($_POST['personalRTI'])) {
                 $doc_sql->bindParam(3, $docBPL_path);
                 $doc_sql->bindParam(4, $doc_type);
                 if ($doc_sql->execute()) {
+                    $from = "Nodal Officer";
+                    $to = "Nodal Officer";
+                    $type = "Filed";
+                    $status = "Application Added successfully";
+
+                    $activity_sql = $conn->prepare("INSERT INTO tblactivity (activity_request_no, activity_from, activity_to, activity_type, activity_status) VALUES(?,?,?,?,?)");
+                    $activity_sql->bindParam(1, $requestNo);
+                    $activity_sql->bindParam(2, $from);
+                    $activity_sql->bindParam(3, $to);
+                    $activity_sql->bindParam(4, $type);
+                    $activity_sql->bindParam(5, $status);
+                    if ($activity_sql->execute()) {
+                        echo "<script>alert('Your request is filed successfully! Your Request Reference number is: " . $requestNo . "')</script>";
+                        echo "<script>window.open('../dashboard.php', '_self')</script>";
+                    } else {
+                        echo "<script>alert('Something went wrong!')</script>";
+                        echo '<script>window.open("../addRTI.php","_self")</script>';
+                    }
+                }
+            } else {
+                $from = "Nodal Officer";
+                $to = "Nodal Officer";
+                $type = "Filed";
+                $status = "Application Added successfully";
+
+                $activity_sql = $conn->prepare("INSERT INTO tblactivity (activity_request_no, activity_from, activity_to, activity_type, activity_status) VALUES(?,?,?,?,?)");
+                $activity_sql->bindParam(1, $requestNo);
+                $activity_sql->bindParam(2, $from);
+                $activity_sql->bindParam(3, $to);
+                $activity_sql->bindParam(4, $type);
+                $activity_sql->bindParam(5, $status);
+                if ($activity_sql->execute()) {
                     echo "<script>alert('Your request is filed successfully! Your Request Reference number is: " . $requestNo . "')</script>";
                     echo "<script>window.open('../dashboard.php', '_self')</script>";
                 } else {
                     echo "<script>alert('Something went wrong!')</script>";
                     echo '<script>window.open("../addRTI.php","_self")</script>';
                 }
-            }else{
-                echo "<script>alert('Your request is filed successfully! Your Request Reference number is: " . $requestNo . "')</script>";
-                echo "<script>window.open('../dashboard.php', '_self')</script>";
             }
-        }else{
+        } else {
             echo '<script>alert("Something went Wrong!");</script>';
             echo '<script>window.open("../addRTI.php","_self")</script>';
         }

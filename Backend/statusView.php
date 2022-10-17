@@ -122,7 +122,7 @@ if (empty($_POST['captcha'])) {
                             <th>Activity Remarks</th>
                             <th>Activity Status</th>
                             <th>Activity Time</th>
-                            <th>Documents</th>
+                            <!-- <th>Documents</th> -->
                         </tr>
                     </thead>
                     <tbody>
@@ -160,7 +160,7 @@ if (empty($_POST['captcha'])) {
                                 </td>
                                 <td><?= $row['activity_status']; ?></td>
                                 <td><?= $row['activity_time']; ?></td>
-                                <td>
+                                <!-- <td>
                                     <?php
                                     $docs = $row['activity_documents'];
                                     if ($docs != "") {
@@ -188,7 +188,7 @@ if (empty($_POST['captcha'])) {
                                     <?php
                                     } ?>
 
-                                </td>
+                                </td> -->
                             </tr>
                         <?php } ?>
                     </tbody>

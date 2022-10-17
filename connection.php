@@ -10,3 +10,4 @@ try {
     header('location: error.php');
     die();
 }
+?>

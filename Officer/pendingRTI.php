@@ -179,7 +179,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                             $ThisTime = date("Y-m-d H:i:s");
                             $completed = 0;
                             // print_r($key);
-                            $sql = $conn->prepare("SELECT * FROM tblrequest r, tblactivity a WHERE a.activity_to = ? AND r.request_department_id = ?  AND r.request_completed = ? AND r.request_no = a.activity_request_no ORDER BY a.activity_id DESC");
+                            $sql = $conn->prepare("SELECT * FROM tblrequest r, tblactivity a WHERE r.request_no = a.activity_request_no AND a.activity_to = ? AND r.request_department_id = ?  AND r.request_completed = ?  ORDER BY a.activity_id DESC");
                             $sql->bindParam(1, $key['officer_id']);
                             $sql->bindParam(2, $key['officer_department_id']);
                             $sql->bindParam(3, $completed);
@@ -196,7 +196,14 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                                             <td class="text-center"><?php echo $exp_date = date('d-m-Y', strtotime($row['request_time'] . ' + 30 days')) ?>
                                                 <?php
                                                 $diff = date_diff(date_create($ThisTime), date_create($exp_date));
-                                                if ($diff->days <= 10) {
+                                                if ($diff->days == 0) {
+                                                ?>
+                                                    <span class="text-danger">
+                                                        RTI EXPIRED
+                                                    </span>
+
+                                                <?php
+                                                } else if ($diff->days <= 10) {
                                                 ?>
                                                     <span class="text-danger">
                                                         (<?= $diff->format('%a day(s) left'); ?>)
