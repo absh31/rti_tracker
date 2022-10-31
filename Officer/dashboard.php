@@ -13,6 +13,33 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
         // echo $key['officer_id'];
         include "../nav.php";
         include './nav.php';
+        $depts = $conn->prepare("SELECT department_name, department_id FROM tbldepartment WHERE is_active = 1");
+        $depts->execute();
+        $deptRTI = array();
+        $monRTI = array();
+        while ($deptsarr = $depts->fetch(PDO::FETCH_ASSOC)) {
+            $rticount = $conn->prepare("SELECT COUNT(*) AS RTICOUNT FROM tblrequest WHERE request_department_id = ?");
+            $rticount->bindParam(1, $deptsarr['department_id']);
+            $rticount->execute();
+            $cnt = $rticount->fetch(PDO::FETCH_ASSOC);
+            $data = ['label' => $deptsarr['department_name'], 'y' => $cnt['RTICOUNT']];
+            array_push($deptRTI, $data);
+        }
+        print_r($deptRTI);
+        $thisMM = date("m");
+        for ($i = $thisMM - 6; $i <= $thisMM; $i++) {
+            if ($i >= 10)
+                $time = "____-$i%";
+            else
+                $time = "____-_$i%";
+            $months = $conn->prepare("SELECT COUNT(*) AS MONCOUNT FROM tblrequest WHERE request_time LIKE ?");
+            $months->bindParam(1, $time);
+            $months->execute();
+            $cnt = $months->fetch(PDO::FETCH_ASSOC);
+            $data = ['label' => date("F", mktime(0, 0, 0, $i, 10)), 'y' => $cnt['MONCOUNT']];
+            array_push($monRTI, $data);
+        }
+        print_r($monRTI);
 ?>
         <br>
         <div class="container-fluid px-5">
@@ -97,13 +124,76 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                 </div>
             </div>
             <br>
+            <br>
+            <div class="row">
+                <div class="col">
+                    <div class="card">
+                        <h4 class="card-header">RTI Received by Departments</h4>
+                        <div class="card-body" style="height: 450px;">
+                            <div id="chartContainer"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card">
+                        <h4 class="card-header">RTI history</h4>
+                        <div class="card-body" style="height: 450px;">
+                            <div id="chartContainer1"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <br><br>
-
-        <?php include '../footer.php'; ?>
+        <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 
         <script>
-           
+            window.onload = function() {
+                var chart = new CanvasJS.Chart("chartContainer", {
+                    animationEnabled: true,
+                    theme: "theme2",
+                    subtitles: [{
+                        text: "RTI Application Count"
+                    }],
+
+                    data: [{
+                        type: "pie",
+                        indexLabel: "#percent%",
+                        percentFormatString: "#0.##",
+                        indexLabel: "{label} (#percent%)",
+                        // toolTipContent: "{label} ({y} (#percent%))",
+                        dataPoints: <?php echo json_encode($deptRTI, JSON_NUMERIC_CHECK); ?>
+                    }]
+                });
+                chart.render();
+                //CanvasJS spline chart to show orders from Jan 2015 to Dec 2015
+                var ordersSplineChart = new CanvasJS.Chart("chartContainer1", {
+                    animationEnabled: true,
+                    backgroundColor: "transparent",
+                    theme: "theme2",
+                    toolTip: {
+                        borderThickness: 0,
+                        cornerRadius: 0
+                    },
+                    axisX: {
+                        labelFontSize: 14,
+                        lineThickness: 2
+                    },
+                    axisY: {
+                        gridThickness: 0,
+                        labelFontSize: 14,
+                        lineThickness: 2
+                    },
+                    data: [{
+                        type: "spline",
+                        dataPoints: <?php echo json_encode($monRTI, JSON_NUMERIC_CHECK); ?>
+                    }]
+                });
+                ordersSplineChart.render();
+            }
+        </script>
+        <?php include '../footer.php'; ?>
+        <script>
             document.getElementById("dash-nav").style.fontWeight = 600;
         </script>
         </body>
