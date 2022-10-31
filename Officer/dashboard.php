@@ -25,7 +25,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
             $data = ['label' => $deptsarr['department_name'], 'y' => $cnt['RTICOUNT']];
             array_push($deptRTI, $data);
         }
-        print_r($deptRTI);
+        // print_r($deptRTI);
         $thisMM = date("m");
         for ($i = $thisMM - 6; $i <= $thisMM; $i++) {
             if ($i >= 10)
@@ -39,7 +39,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
             $data = ['label' => date("F", mktime(0, 0, 0, $i, 10)), 'y' => $cnt['MONCOUNT']];
             array_push($monRTI, $data);
         }
-        print_r($monRTI);
+        // print_r($monRTI);
 ?>
         <br>
         <div class="container-fluid px-5">
