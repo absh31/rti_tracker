@@ -17,8 +17,9 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
         <div class="container-fluid px-5">
             <div class="row">
                 <div class="col">
-                    <h5>Forward RTIs</h5>
-                    <table class="table table-striped table-bordered" id="pending">
+                    <h5>Pending RTIs</h5>
+                    <p>Below is the list of RTIs which needs to be forwarded to conerned Departmental Officer.</p>
+                    <table class="table table-striped table-bordered align-middle" id="pending">
                         <thead>
                             <tr class="bg-dark text-light">
                                 <td class="text-center">#</td>
@@ -76,8 +77,9 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
             <br>
             <div class="row">
                 <div class="col">
-                    <h5>Received RTIs</h5>
-                    <table class="table table-striped table-bordered" id="received">
+                    <h5>Reverted RTIs</h5>
+                    <p>Below is the list of reverted RTIs from the Departmental Officers.</p>
+                    <table class="table table-striped table-bordered align-middle" id="received">
                         <thead>
                             <tr class="bg-dark text-light">
                                 <td class="text-center">#</td>

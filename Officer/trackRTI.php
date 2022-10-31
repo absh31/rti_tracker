@@ -84,6 +84,8 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                                         if (!empty($row2)){
                                             if($row2['activity_to'] == 'Applicant'){
                                                 echo "Reverted back to the applicant";
+                                            }else if($row2['activity_to'] == 'Nodal Officer'){
+                                                echo "Forwarded to Nodal Officer"; 
                                             }else{
                                                 $sql3 = $conn->prepare("SELECT * FROM tblofficer o, tbldepartment d WHERE o.officer_department_id = d.department_id AND o.officer_id = ?");
                                                 $sql3->bindParam(1, $row2['activity_to']);
@@ -92,7 +94,6 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                                                 if(!empty($row3))
                                                     echo $row2['activity_status'] . " (".$row3['officer_name'].") (".$row3['department_name'].")";
                                             }
-                                            // echo $row2['activity_type'] . " to " . $row3['officer_name'] . " of Dept - " . $row3['department_name'] ;
                                         }else{
                                             echo "<span class='text-danger'>NO INFO AVAILABLE </span>";
                                         }

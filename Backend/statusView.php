@@ -31,7 +31,9 @@ if (empty($_POST['captcha'])) {
             $sql2->execute();
             $array = $sql2->fetch(PDO::FETCH_ASSOC);
 ?>
-            <p>Request Details:</p>
+            <b>
+                <p>Request Details:</p>
+            </b>
             <table class="table table-bordered" id="rtiStatus">
                 <thead>
                     <tr class="bg-dark text-light">
@@ -83,7 +85,7 @@ if (empty($_POST['captcha'])) {
                                 $docSql->execute();
                                 $docRow = $docSql->fetch(PDO::FETCH_ASSOC);
                             ?>
-                                <td class="text-center align-middle"><a class="btn btn-success" href="./Backend/downloadReceipt.php?reqNo=<?=$reqNo ?>&reqEmail=<?=$key['applicant_email']?>">Download Receipt</a> </td>
+                                <td class="text-center align-middle"><a class="btn btn-success" href="./Backend/downloadReceipt.php?reqNo=<?= $reqNo ?>&reqEmail=<?= $key['applicant_email'] ?>">Download Receipt</a> </td>
                                 <td class="text-center align-middle">
                                     <a class="btn btn-dark mx-2" href="./uploads/<?= $docRow['document_title'] ?>" target="_blank">Download Attachment</a>
                                 </td>
@@ -112,7 +114,9 @@ if (empty($_POST['captcha'])) {
             $sql->execute();
             if ($sql->rowCount() > 0) {
             ?>
-                <p>Activity Details: </p>
+                <b>
+                    <p>Activity Details: </p>
+                </b>
                 <table class="table table-bordered align-middle">
                     <thead>
                         <tr class="bg-dark text-light">
@@ -149,14 +153,12 @@ if (empty($_POST['captcha'])) {
                                 </td>
                                 <td>
                                     <?php
-                                        if($row['activity_to']=="Applicant"){
-                                            echo $row['activity_remarks']; 
-                
-                                        }
-                                        else
-                                            echo "none";
-                                     
-                                     ?>
+                                    if ($row['activity_to'] == "Applicant") {
+                                        echo $row['activity_remarks'];
+                                    } else
+                                        echo "none";
+
+                                    ?>
                                 </td>
                                 <td><?= $row['activity_status']; ?></td>
                                 <td><?= $row['activity_time']; ?></td>

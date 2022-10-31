@@ -26,7 +26,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                         <div id="wrapper">
                             <div class="mb-4">
                                 <div class="form-group" id="fullNameDiv">
-                                    <label for='name'><span class="text-danger">*</span> Request Numebr :</label>
+                                    <label for='name'><span class="text-danger">*</span> Request Number :</label>
                                     <input type="text" class="form-control" name="reqNo" value="<?= $reqNo ?>" disabled>
                                 </div>
                                 <br>

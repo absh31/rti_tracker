@@ -159,7 +159,7 @@ if (!isset($_POST['personalRTI'])) {
                     $from = "Nodal Officer";
                     $to = "Nodal Officer";
                     $type = "Filed";
-                    $status = "Application Added successfully";
+                    $status = "Application filed successfully";
 
                     $activity_sql = $conn->prepare("INSERT INTO tblactivity (activity_request_no, activity_from, activity_to, activity_type, activity_status) VALUES(?,?,?,?,?)");
                     $activity_sql->bindParam(1, $requestNo);
@@ -179,7 +179,7 @@ if (!isset($_POST['personalRTI'])) {
                 $from = "Nodal Officer";
                 $to = "Nodal Officer";
                 $type = "Filed";
-                $status = "Application Added successfully";
+                $status = "Application filed successfully";
 
                 $activity_sql = $conn->prepare("INSERT INTO tblactivity (activity_request_no, activity_from, activity_to, activity_type, activity_status) VALUES(?,?,?,?,?)");
                 $activity_sql->bindParam(1, $requestNo);

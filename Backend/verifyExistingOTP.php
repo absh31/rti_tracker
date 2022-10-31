@@ -12,9 +12,8 @@ if (!isset($_POST['personalRTI'])) {
     } else {
         echo '<script>alert("Wrong OTP");</script>';
         echo $_POST['otp'];
-        echo $_POST['otpExisting'];
-
-        exit;
+        echo $_SESSION['otpExisting'];
+        // exit;
         echo '<script>window.open("../personalVerify.php","_self")</script>';
     }
 }
