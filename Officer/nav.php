@@ -27,7 +27,7 @@
                             <a id="pend-nav" class="nav-link" aria-current="page" href="./pendingRTI.php">Pending RTI</a>
                         </li>
                         <li class="nav-item">
-                            <a id="trck-nav" class="nav-link" aria-current="page" href="./trackRTI.php">Track RTI</a>
+                            <a id="trck-nav" class="nav-link" aria-current="page" href="./trackRTI.php">RTI History</a>
                         </li>
                     </ul>
                     <a href="../logout.php">
@@ -63,7 +63,7 @@
                             <a id="pend-nav" class="nav-link" aria-current="page" href="./pendingRTI.php">Pending RTI</a>
                         </li>
                         <li class="nav-item">
-                            <a id="trck-nav" class="nav-link" aria-current="page" href="dashboard.php">Track RTI</a>
+                            <a id="trck-nav" class="nav-link" aria-current="page" href="./trackRTI.php">RTI History</a>
                         </li>
                     </ul>
                     <a href="../logout.php">

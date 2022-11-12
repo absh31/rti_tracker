@@ -6,7 +6,7 @@ $reqEmail = $_GET['reqEmail'];
 
 <?php
 include '../connection.php';
-try{
+try {
     $sql = $conn->prepare("SELECT tblapplicant.applicant_email, tblrequest.* FROM tblapplicant INNER JOIN tblrequest 
     ON tblapplicant.applicant_id = tblrequest.request_applicant_id
     WHERE tblrequest.request_no = ? AND tblapplicant.applicant_email = ?");
@@ -14,9 +14,7 @@ try{
     $sql->bindParam(2, $reqEmail);
     $sql->execute();
     $key = $sql->fetch(PDO::FETCH_ASSOC);
-    
-}
-catch (Exception $e) {
+} catch (Exception $e) {
     echo "<script>alert('Something went wrong!');</script>";
 }
 ?>
@@ -81,27 +79,27 @@ catch (Exception $e) {
 </head>
 
 <body>
-    <div class="container justify-content-center" id="receipt">
-        <div class="row text-center mx-auto">
-            <div class="col-md-2">
-               
+    <div class="container" id="receipt">
+        <div class="row d-flex justify-content-between text-center">
+            <div class="col">
+                <img src="http:\\localhost\rti_tracker\uploads\images\logo2.png">
             </div>
-            <div class="col-md-10 p-4">
-                <div>
-                    <h2 class="title">RTI Receipt</h2>
-                    <h6 class="address">Nr. Visat Petrol Pump, Ahmedabad Gandhinagar Highway, Chandkheda,
-                        Ahmedabad - 382424</h6>
-                </div>
+            <div class="col pt-3">
+                <h2 class="text-dark align-middle" style="font-weight: 800; color:black;">RTI TRACKER</h2>
+            </div>
+            <div class="col">
+                <img src="http:\\localhost\rti_tracker\uploads\images\logo1.png">
             </div>
         </div>
+        <br>
         <div class="row mx-auto text-center">
-            <h5 style="font-weight : 600">e-Receipt</h5>
+            <h5 style="font-weight : 600">Payment Receipt</h5>
         </div>
         <div class="row mx-auto my-4">
             <table class="table">
                 <tbody>
                     <tr>
-                        <th scope="row">Tracking ID</th>
+                        <th scope="row">RTI Reference Number</th>
                         <td><?= $key['request_no'] ?></td>
                     </tr>
                     <tr>
@@ -124,11 +122,11 @@ catch (Exception $e) {
                         <th scope="row">Request Text</th>
                         <td><?= $key['request_text'] ?></td>
                     </tr>
-                    
+
                     <tr>
                         <th scope="row">Fees Paid</th>
-                        <td><span style="font-family :Arial, Helvetica, sans-serif">₹</span> 
-                        <?= $key['request_base_pay']+$key['request_add_pay']?>
+                        <td> ₹
+                            <?php echo $key['request_base_pay'] . ' (Application Fees) + ₹ ' . $key['request_add_pay'] . ' (Additional Fees)' ?>
                         </td>
                     </tr>
                     <tr>
@@ -161,4 +159,5 @@ catch (Exception $e) {
         }
     </script>
 </body>
+
 </html>

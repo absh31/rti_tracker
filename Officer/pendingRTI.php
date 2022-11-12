@@ -9,10 +9,10 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
     $sql->bindParam(3, $_SESSION['password']);
     $sql->execute();
     $key = $sql->fetch(PDO::FETCH_ASSOC);
-    include '../nav.php';
-    include './nav.php';
     if ($key['role_id'] == 3) {
-?>
+        include '../nav.php';
+        include './nav.php';
+        ?>
         <br>
         <div class="container-fluid px-5">
             <div class="row">
@@ -26,6 +26,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                                 <td class="text-center">RTI reference number</td>
                                 <td class="text-center">RTI issue date</td>
                                 <td class="text-center">RTI expiring date</td>
+                                <td class="text-center">Request department</td>
                                 <td class="text-center">Action</td>
                             </tr>
                         </thead>
@@ -60,6 +61,15 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                                             </span>
                                         <?php
                                         }
+                                        ?>
+                                    </td>
+                                    <td class="text-center">
+                                        <?php
+                                        $dept = $conn->prepare("SELECT department_name FROM tbldepartment WHERE department_id = ?");
+                                        $dept->bindParam(1, $row['request_department_id']);
+                                        $dept->execute();
+                                        $deptr = $dept->fetch(PDO::FETCH_ASSOC);
+                                        echo $deptr['department_name'];
                                         ?>
                                     </td>
                                     <td class="text-center">
@@ -119,7 +129,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                                             </span>
                                         <?php
                                         } else {
-                                        ?>
+                                            ?>
                                             <span>
                                                 (<?= $diff->format('%a day(s) left'); ?>)
                                             </span>
@@ -155,16 +165,18 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
             document.getElementById("trck-nav").classList.remove("active")
         </script>
     <?php
-    } else if ($key['role_id'] != 3) {
+    } else if ($key['officer_role_id'] != 3) {
         //OFFICER
+        include '../nav.php';
+        include './nav.php';
     ?>
         <br>
         <div class="container-fluid px-5">
             <div class="row">
                 <div class="col">
                     <h5>Pending RTIs</h5>
-                    <br>
-                    <table class="table table-striped table-bordered" id="pending1">
+                    <p>Below is the list of RTIs which needs to be worked upon.</p>
+                    <table class="table table-striped align-middle table-bordered" id="pending1">
                         <thead>
                             <tr class="bg-dark text-light">
                                 <td class="text-center">#</td>

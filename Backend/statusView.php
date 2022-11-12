@@ -57,6 +57,8 @@ if (empty($_POST['captcha'])) {
                                 echo "Forwarded to Nodal Officer";
                             } else if ($key['request_current_handler'] == 'none') {
                                 echo "RTI Completed";
+                            } else if ($key['request_current_handler'] == 'Nodal Officer') {
+                                echo "At Nodal Officer";
                             }
                             ?>
                         </td>
@@ -64,7 +66,7 @@ if (empty($_POST['captcha'])) {
                         <td class="text-center align-middle"><?= $key['request_status']; ?></td>
                         <td class="text-center align-middle"><?= $key['request_text']; ?></td>
                         <?php
-                        if ($key['request_status'] != "Rejected") {
+                        if ($key['request_status'] != "Rejected" && $key['request_current_handler'] == 'none') {
                             if ($key['request_is_base_pay'] != 1 && $key['request_is_add_pay'] == 0) {
                         ?>
                                 <td class="text-center align-middle">
@@ -85,7 +87,7 @@ if (empty($_POST['captcha'])) {
                                 $docSql->execute();
                                 $docRow = $docSql->fetch(PDO::FETCH_ASSOC);
                             ?>
-                                <td class="text-center align-middle"><a class="btn btn-success" href="./Backend/downloadReceipt.php?reqNo=<?= $reqNo ?>&reqEmail=<?= $key['applicant_email'] ?>">Download Receipt</a> </td>
+                                <td class="text-center align-middle"><a class="btn btn-success" target="_blank" href="./Backend/downloadReceipt.php?reqNo=<?= $reqNo ?>&reqEmail=<?= $key['applicant_email'] ?>">Download Receipt</a> </td>
                                 <td class="text-center align-middle">
                                     <a class="btn btn-dark mx-2" href="./uploads/<?= $docRow['document_title'] ?>" target="_blank">Download Attachment</a>
                                 </td>

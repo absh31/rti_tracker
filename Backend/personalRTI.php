@@ -57,7 +57,7 @@ if (!isset($_POST['personalRTI'])) {
                 echo "<script>window.open('../submitRTI.php','_self')</script>";
             }
 
-            if ($_POST['educationalStatus'] == 'Literate' || $_POST['status'] == 'Illiterate')
+            if ($_POST['educationalStatus'] == 'Literate' || $_POST['educationalStatus'] == 'Illiterate')
                 $_SESSION['educationalStatus'] = $_POST['educationalStatus'];
             else {
                 echo "<script>alert('Invalid educational status selected!')</script>";
