@@ -7,26 +7,26 @@ if (!isset($_SESSION['otpVerified'])) {
     echo '<script>window.open("./index.php","_self")</script>';
 } else {
     include './connection.php';
-    if (isset($_SESSION['existingUser'])) {
-        // print_r($_POST);
-        $name = $_SESSION['name'] = $_POST['name'];
-        $email = $_SESSION['email'] = $_POST['email'];
-        $mobileNumber = $_SESSION['mobileNumber'] = $_POST['mobileNumber'];
-        $phoneNumber = $_SESSION['phoneNumber'] = $_POST['phoneNumber'];
-        $gender = $_SESSION['gender'] = $_POST['gender'];
-        $address = $_SESSION['address'] = $_POST['address'];
-        $pincode = $_SESSION['pincode'] = $_POST['pincode'];
-        $country = $_SESSION['country'] = $_POST['country'];
-        $countryName = $_SESSION['countryName'] = $_POST['countryName'];
-        if ($country == "Other") {
-            $country = $countryName;
-            $_SESSION['country'] = $country = $_POST['country'];
-        }
-        $state = $_SESSION['state'] = $_POST['state'];
-        $status = $_SESSION['status'] = $_POST['status'];
-        $eduStatus = $_SESSION['educationalStatus'] = $_POST['educationalStatus'];
-        $edu = $_SESSION['education'] = $_POST['education'];
+    // if (isset($_SESSION['existingUser'])) {
+    // print_r($_POST);
+    $name = $_SESSION['name'] = $_POST['name'];
+    $email = $_SESSION['email'] = $_POST['email'];
+    $mobileNumber = $_SESSION['mobileNumber'] = $_POST['mobileNumber'];
+    $phoneNumber = $_SESSION['phoneNumber'] = $_POST['phoneNumber'];
+    $gender = $_SESSION['gender'] = $_POST['gender'];
+    $address = $_SESSION['address'] = $_POST['address'];
+    $pincode = $_SESSION['pincode'] = $_POST['pincode'];
+    $country = $_SESSION['country'] = $_POST['country'];
+    $countryName = $_SESSION['countryName'] = $_POST['countryName'];
+    if ($country == "Other") {
+        $country = $countryName;
+        $_SESSION['country'] = $country = $_POST['country'];
     }
+    $state = $_SESSION['state'] = $_POST['state'];
+    $status = $_SESSION['status'] = $_POST['status'];
+    $eduStatus = $_SESSION['educationalStatus'] = $_POST['educationalStatus'];
+    $edu = $_SESSION['education'] = $_POST['education'];
+    // }
 ?>
     <form method="POST" enctype="multipart/form-data" id="register" action="./Backend/requestRTI.php">
         <div class="container-fluid px-5">

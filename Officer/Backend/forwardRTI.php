@@ -116,7 +116,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
             echo "<script>window.open('../pendingRTI.php','_self')</script>";
         }
     } else if (isset($_POST['closeRTI'])) {
-        print_r($_POST);
+        // print_r($_POST);
         $reqNo = $_POST['reqNo'];
         $checkSql = $conn->prepare("SELECT * FROM tblactivity WHERE activity_request_no = ? ORDER BY activity_id DESC");
         $checkSql->bindParam(1, $reqNo);
@@ -125,7 +125,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
         // print_r($arr);
         // exit;
         if($arr['activity_to'] == "Nodal Officer" && $arr['activity_type'] == "Rejected"){
-            $confirm = $_POST['confirm'];
+            $confirm = 1;
             $currentHandler = "none";
             $activityType = "Rejected";
             $status = "Rejected";
@@ -155,7 +155,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                 }
             }
         }else if($arr['activity_to'] == "Nodal Officer" && $arr['activity_type'] == "Revert"){
-            $confirm = $_POST['confirm'];
+            $confirm = 1;
             $currentHandler = "none";
             $activityType = "Closed";
             $status = "Completed";

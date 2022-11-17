@@ -54,7 +54,13 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                                     <td class="text-center"><?php echo $exp_date = date('d-m-Y', strtotime($row['request_time'] . ' + 30 days')) ?>
                                         <?php
                                         $diff = date_diff(date_create($ThisTime), date_create($exp_date));
-                                        if ($diff->days <= 10) {
+                                        if ($row['request_completed'] == 1) {
+                                        ?>
+                                            <span class="text-success">
+                                                (RTI completed)
+                                            </span>
+                                        <?php
+                                        } else if ($diff->days <= 10) {
                                         ?>
                                             <span class="text-danger">
                                                 (<?= $diff->format('%a day(s) left'); ?>)
@@ -73,7 +79,11 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                                         <?php
                                         if (!empty($row2)) {
                                             if ($row2['activity_to'] == 'Applicant') {
-                                                echo "Reverted back to the applicant";
+                                        ?>
+                                                <span class="text-success">
+                                                    Reverted back to the applicant
+                                                </span>
+                                        <?php
                                             } else if ($row2['activity_to'] == 'Nodal Officer') {
                                                 echo "Forwarded to Nodal Officer";
                                             } else {

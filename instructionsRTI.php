@@ -46,8 +46,8 @@ include './nav.php';
     </div>
     <form action="./Backend/existingUser.php" method="POST">
         <div class="row">
-            <div class="col-6">
-                <div class="mb-3">
+            <div class="col-3">
+                <!-- <div class="mb-3">
                     <div class="radio d-md-flex">
                         <label for="file" class="col-form-label"><span class="text-danger">*</span> Have you file a RTI before?</label>
                         <div class="form-check mx-md-5 my-2">
@@ -57,15 +57,15 @@ include './nav.php';
                             <input type="radio" name="existing" checked id="noRadio" onclick="hideEmail()" value="no">&nbsp;&nbsp;No
                         </div>
                     </div>
-                </div>
-                <div class="mb-3" id="emailDiv" style="display: none;">
-                    <label for="reqEmail" class="form-label"><span class="text-danger">*</span> Email ID</label>
+                </div> -->
+                <div class="mb-3" id="emailDiv">
+                    <label for="reqEmail" class="form-label"><span class="text-danger">*</span> Enter your Email ID: </label>
                     <input type="email" class="form-control" id="reqEmail" name="reqEmail">
                     <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
                 </div>
                 <div class="mb-3">
                     <div class="form-group">
-                        <button class="btn btn-dark text-light" type="submit" name="personalRTI">Submit</button>
+                        <button class="btn btn-dark text-light" type="submit" name="personalRTI">Verify</button>
                     </div>
                 </div>
             </div>
@@ -82,14 +82,14 @@ include './nav.php';
     document.getElementById("history-nav").classList.remove("active");
     document.getElementById("contact-nav").classList.remove("active");
 
-    const showEmail = function (){
-        document.getElementById("emailDiv").style.display = 'block';
-        document.getElementById("reqEmail").setAttribute("required", '')
-    }
-    const hideEmail = function (){
-        document.getElementById("emailDiv").style.display = 'none';
-        document.getElementById("reqEmail").removeAttribute("required")
-    }
+    // const showEmail = function (){
+    //     document.getElementById("emailDiv").style.display = 'block';
+    //     document.getElementById("reqEmail").setAttribute("required", '')
+    // }
+    // const hideEmail = function (){
+    //     document.getElementById("emailDiv").style.display = 'none';
+    //     document.getElementById("reqEmail").removeAttribute("required")
+    // }
 </script>
 <?php
 include './footer.php';

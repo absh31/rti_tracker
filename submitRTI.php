@@ -3,7 +3,7 @@ session_start();
 include './header.php';
 include './nav.php';
 include './connection.php';
-if (isset($_SESSION['existingUser']) && $_SESSION['existingUser'] == 1) {
+if (isset($_SESSION['existingUser']) && $_SESSION['existingUser'] == 1 && $_SESSION['otpVerified'] == 1) {
     $email = $_SESSION['email'];
     $sql = $conn->prepare("SELECT * FROM tblapplicant WHERE applicant_email = ?");
     $sql->bindParam(1, $email);
@@ -320,7 +320,7 @@ if (isset($_SESSION['existingUser']) && $_SESSION['existingUser'] == 1) {
 
     </html>
 <?php
-} else {
+} else if (isset($_SESSION['otpVerified']) && $_SESSION['otpVerified'] == 1) {
 ?>
     <div class="container-fluid px-5">
         <br>
@@ -328,7 +328,7 @@ if (isset($_SESSION['existingUser']) && $_SESSION['existingUser'] == 1) {
             <div class="col-8">
                 <h5>Online RTI Form</h5>
                 <p style="font-size: 20px;">Personal Details</p>
-                <form method="POST" enctype="multipart/form-data" id="register" action="./Backend/personalRTI.php">
+                <form method="POST" enctype="multipart/form-data" id="register" action="./submitRequest.php">
                     <div class="mb-4 pt-3 apply">
                         <div class="headingsall">
 
@@ -342,7 +342,7 @@ if (isset($_SESSION['existingUser']) && $_SESSION['existingUser'] == 1) {
 
                             <div class="form-group" id="emailAddDiv">
                                 <label for='email'><span class="text-danger">*</span> Email Address :</label>
-                                <input type="email" name="email" id="email" class="form-control" required>
+                                <input type="email" name="email" id="email" value="" class="form-control" required>
                             </div>
                         </div>
                         <br>

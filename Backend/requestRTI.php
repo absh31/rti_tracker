@@ -19,7 +19,24 @@ if (!isset($_POST['requestRTI'])) {
             echo "<script>window.open('./submitRequest.php','_self')</script>";
         } else {
             $email = $_SESSION['email'];
-            echo $email;
+            if ($_SESSION['existingUser'] != 1) {
+                $name = $_SESSION['name'];
+                $mobileNumber = $_SESSION['mobileNumber'];
+                $phoneNumber = $_SESSION['phoneNumber'];
+                $gender = $_SESSION['gender'];
+                $eduStatus = $_SESSION['educationalStatus'];
+                $edu = $_SESSION['education'];
+                $sql = $conn->prepare("INSERT INTO `tblapplicant` (`applicant_name`, `applicant_email`, `applicant_mobile`, `applicant_phone`, `applicant_gender`, `applicant_education`, `applicant_more_education`) VALUES (?, ?, ?, ?, ?, ?, ?)");
+                $sql->bindParam(1, $name);
+                $sql->bindParam(2, $email);
+                $sql->bindParam(3, $mobileNumber);
+                $sql->bindParam(4, $phoneNumber);
+                $sql->bindParam(5, $gender);
+                $sql->bindParam(6, $eduStatus);
+                $sql->bindParam(7, $edu);
+                $sql->execute();
+            }
+
             $sql = $conn->prepare('SELECT * FROM `tblapplicant` WHERE `applicant_email` = ?');
             $sql->bindParam(1, $email);
             $sql->execute();
@@ -161,11 +178,11 @@ if (!isset($_POST['requestRTI'])) {
                 $type = "Filed";
                 $status = "Application filed successfully";
                 $document = "NULL";
-                if ($upload_status){
+                if ($upload_status) {
                     $doc_sql = $conn->prepare("SELECT * FROM tbldocument WHERE document_request_id = ?");
                     $doc_sql->bindParam(1, $requestNo);
                     $doc_sql->execute();
-                    $doc_row = $doc_sql->fetch(PDO::FETCH_ASSOC); 
+                    $doc_row = $doc_sql->fetch(PDO::FETCH_ASSOC);
                     $document = $doc_row['document_id'];
                 }
                 $activity_sql = $conn->prepare("INSERT INTO tblactivity (activity_request_no, activity_from, activity_to, activity_type, activity_status, activity_documents) VALUES(?,?,?,?,?,?)");
@@ -175,10 +192,10 @@ if (!isset($_POST['requestRTI'])) {
                 $activity_sql->bindParam(4, $type);
                 $activity_sql->bindParam(5, $status);
                 $activity_sql->bindParam(6, $document);
-                if($activity_sql->execute()){
+                if ($activity_sql->execute()) {
                     echo "<script>alert('Your request is filed successfully! Your Request Reference number is: " . $requestNo . "')</script>";
                     echo "<script>window.open('../responseRTI.php', '_self')</script>";
-                }else{
+                } else {
                     echo "<script>alert('Something went wrong!')</script>";
                     echo '<script>window.open(".../submitRequest.php","_self")</script>';
                 }
