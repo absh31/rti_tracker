@@ -343,6 +343,7 @@ if (isset($_SESSION['existingUser']) && $_SESSION['existingUser'] == 1 && $_SESS
                             <div class="form-group" id="emailAddDiv">
                                 <label for='email'><span class="text-danger">*</span> Email Address :</label>
                                 <input type="email" value="<?= $_SESSION['email'] ?>" name="email" id="email" class="form-control" readonly required>
+                                <input type="hidden" value="<?= $_SESSION['email'] ?>" name="email" id="email" class="form-control" required>
                                 <!-- <input type="email" name="email" id="email" value="" class="form-control" required> -->
                             </div>
                         </div>

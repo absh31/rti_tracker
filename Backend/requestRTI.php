@@ -19,7 +19,9 @@ if (!isset($_POST['requestRTI'])) {
     //         echo "<script>window.open('./submitRequest.php','_self')</script>";
     //     } else {
     $email = $_SESSION['email'];
-    if (isset($_SESSION['existingUser']) && $_SESSION['existingUser'] != 1) {
+    echo "<pre>";
+    print_r($_SESSION);
+    if (!isset($_SESSION['existingUser'])) {
         $name = $_SESSION['name'];
         $mobileNumber = $_SESSION['mobileNumber'];
         $phoneNumber = $_SESSION['phoneNumber'];
@@ -112,12 +114,12 @@ if (!isset($_POST['requestRTI'])) {
         }
     }
 
+    $upload_status1 = false;
     if ($isBPL == "Yes") {
         $bplCard = $_POST['bplCard'];
         $YOI = $_POST['YOI'];
         $issueAuth = $_POST['issueAuth'];
         $docBPL = $_FILES['docBPL']['name'];
-        $upload_status1 = false;
 
         if ($docBPL != "") {
             $ImageName_tmp_error = $_FILES['docBPL']['error'];

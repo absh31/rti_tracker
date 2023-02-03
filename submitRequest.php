@@ -10,7 +10,7 @@ if (!isset($_SESSION['otpVerified'])) {
     // if (isset($_SESSION['existingUser'])) {
     // print_r($_POST);
     $name = $_SESSION['name'] = $_POST['name'];
-    $email = $_SESSION['email'] = $_POST['email'];
+    $email = $_SESSION['email'];
     $mobileNumber = $_SESSION['mobileNumber'] = $_POST['mobileNumber'];
     $phoneNumber = $_SESSION['phoneNumber'] = $_POST['phoneNumber'];
     $gender = $_SESSION['gender'] = $_POST['gender'];
