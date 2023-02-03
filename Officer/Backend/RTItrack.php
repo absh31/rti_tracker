@@ -13,7 +13,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
     if ($sql->rowCount() > 0) {
 ?>
         <h5>Activity Details:</h5>
-        <table class="table table-bordered align-middle">
+        <table class="table table-hover table-bordered align-middle">
             <thead>
                 <tr class="bg-dark text-light">
                     <th>#</th>

@@ -118,8 +118,8 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
         ?>
 
         <script>
-            document.getElementById("dash-nav").classList.remove("active");
-            document.getElementById("trck-nav").classList.add("active");
+            document.getElementById("dash-nav").classList.remove("active")
+            document.getElementById("trck-nav").classList.add("active")
             document.getElementById("trck-nav").style.fontWeight = 600;
 
             $(document).ready(function() {
@@ -267,7 +267,6 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                     $('.spinner-border').prop("hidden", null);
                     $('.btn-spinner-border').prop("disabled", true);
                     var reqNo = $(this).attr('id')
-                    console.log(reqNo)
                     $.ajax({
                         type: "POST",
                         url: "./Backend/RTItrack.php",
@@ -277,13 +276,8 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                         success: function(response) {
                             $('.spinner-border').prop("hidden", true);
                             $('.btn-spinner-border').prop("disabled", false);
-                            console.log(response);
-                            // $("#table_id").dataTable().fnDestroy();
-                            // $("#table_id").DataTable();
                             $('#responseData').html(response);
                             allData = response;
-                            // $("#table_id").DataTable();
-                            // $("#export_to_excel").show();
                         }
                     })
                 })

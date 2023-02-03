@@ -83,7 +83,9 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                                     echo $count['activeRti'];
                                     ?>
                                 </h5>
-                                <p class="card-text text-center" style="font-size: 20px; font-weight: 500;">Active</p>
+                                <a class="stretched-link" style="text-decoration: none;" href="./activeRTI.php">
+                                    <p class="card-text text-center text-dark" style="font-size: 20px; font-weight: 500;">Active</p>
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -97,7 +99,6 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                                     $sql->bindParam(1, $type);
                                     $sql->execute();
                                     $count = $sql->fetch();
-                                    //$count['pendingRti'];
                                     ?>
                                     <?= $count['pendingRti'] ?>
                                 </h5>
@@ -209,10 +210,10 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
             for ($i =  0; $i < 6; $i++) {
                 if ($thisMM >= 10)
                     $time = "____-$thisMM%";
-                else if($thisMM == 0){
+                else if ($thisMM == 0) {
                     $thisMM = 12;
                     $time = "____-$thisMM%";
-                }else
+                } else
                     $time = "____-_$thisMM%";
 
                 // echo $time;
@@ -243,8 +244,10 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                             <div class="card-body text-dark">
                                 <h5 class="card-title text-center font-weight-bold" style="font-size: 60px;">
                                     <?php
-                                    $sql = $conn->prepare("SELECT COUNT(*) AS totalRti FROM tblrequest WHERE request_department_id = ?");
+                                    $type = 'user';
+                                    $sql = $conn->prepare("SELECT COUNT(*) AS totalRti FROM tblrequest WHERE request_department_id = ? AND request_current_handler != ?");
                                     $sql->bindParam(1, $key['officer_department_id']);
+                                    $sql->bindParam(2, $type);
                                     $sql->execute();
                                     $count = $sql->fetch();
                                     echo $count['totalRti'];
@@ -254,31 +257,12 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                             </div>
                         </div>
                     </div>
-                    <!-- <div class="col-sm">
-                        <div class="card">
-                            <div class="card-body text-dark">
-                                <h5 class="card-title text-center font-weight-bold" style="font-size: 60px;">
-                                    <?php
-                                    $type = 'user';
-                                    $type1 = 'none';
-                                    $sql = $conn->prepare("SELECT COUNT(*) AS activeRti FROM tblrequest WHERE request_current_handler = ?");
-                                    // $sql->bindParam(1, $type);
-                                    $sql->bindParam(1, $key['officer_department_id']);
-                                    $sql->execute();
-                                    $count = $sql->fetch();
-                                    echo $count['activeRti'];
-                                    ?>
-                                </h5>
-                                <p class="card-text text-center" style="font-size: 20px; font-weight: 500;">Active</p>
-                            </div>
-                        </div>
-                    </div> -->
                     <div class="col-sm">
                         <div class="card">
                             <div class="card-body" style="text-decoration: none;">
                                 <h5 class="card-title text-center text-danger font-weight-bold" style="font-size: 60px; color: #003975; text-decoration: none;">
                                     <?php
-                                    $type = '%'.$key['officer_id'].'%';
+                                    $type = '%' . $key['officer_id'] . '%';
                                     $sql = $conn->prepare("SELECT COUNT(*) AS pendingRti FROM tblrequest WHERE request_current_handler LIKE ?");
                                     $sql->bindParam(1, $type);
                                     $sql->execute();
@@ -296,11 +280,32 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                     <div class="col-sm">
                         <div class="card">
                             <div class="card-body">
+                                <h5 class="card-title text-center text-secondary font-weight-bold" style="font-size: 60px; color: #003975;">
+                                    <?php
+                                    $type = 'Nodal Officer';
+                                    $flag = 0;
+                                    $sql = $conn->prepare("SELECT COUNT(*) AS completedRti FROM tblrequest WHERE request_current_handler = ? AND request_department_id = ? AND request_completed = ?");
+                                    $sql->bindParam(1, $type);
+                                    $sql->bindParam(2, $key['officer_department_id']);
+                                    $sql->bindParam(3, $flag);
+                                    $sql->execute();
+                                    $count = $sql->fetch();
+                                    echo $count['completedRti'];
+                                    ?>
+                                </h5>
+                                <p class="card-text text-center text-secondary" style="font-size: 20px; font-weight: 500;">Reverted</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                        <div class="card">
+                            <div class="card-body">
                                 <h5 class="card-title text-center text-success font-weight-bold" style="font-size: 60px; color: #003975;">
                                     <?php
-                                    $type = 'none';
-                                    $sql = $conn->prepare("SELECT COUNT(*) AS completedRti FROM tblrequest WHERE request_current_handler = ?");
+                                    $type = 1;
+                                    $sql = $conn->prepare("SELECT COUNT(*) AS completedRti FROM tblrequest WHERE request_completed = ? AND request_department_id = ?");
                                     $sql->bindParam(1, $type);
+                                    $sql->bindParam(2, $key['officer_department_id']);
                                     $sql->execute();
                                     $count = $sql->fetch();
                                     echo $count['completedRti'];

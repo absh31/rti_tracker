@@ -262,6 +262,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                                     <h5>Forward to Department</h5>
                                     <br>
                                     <input class="form-control" type="text" name="reqNo" value="<?php echo $_GET['reqNo'] ?>" hidden required>
+                                    <input class="form-control" type="text" name="email" value="<?= $row['applicant_email'] ?>" hidden required>
                                     <tr>
                                         <td>Department Name</td>
                                         <td>

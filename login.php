@@ -36,7 +36,7 @@ include "nav.php";
                     <select class="form-control" required="required" name="type" id="admin_type" style="border : 2px solid black; opacity : 0.7">
                         <option value="" disabled selected>Select Login Type</option>
                         <?php
-                        $sql = $conn->prepare("SELECT * FROM `tblrole`");
+                        $sql = $conn->prepare("SELECT * FROM `tblrole` WHERE role_id != 2");
                         $sql->execute();
                         while ($key = $sql->fetch(PDO::FETCH_ASSOC)) {
                         ?>
@@ -57,11 +57,16 @@ include "nav.php";
                     <input name="password" type="password" class="form-control" required="required" placeholder="Enter Password" style="border : 2px solid black; opacity : 0.7">
                 </div>
                 <div class="form-group mt-4">
-                    <div class="g-recaptcha" data-theme="dark" data-sitekey="6Lewa-AZAAAAAMS-ZF5qUSZWezNJ1L9wQ5Iu13IU"></div>
+                    <div class="g-recaptcha" style="transform: scale(1.0); -webkit-transform: scale(0.9); transform-origin: 0 0; -webkit-transform-origin: 0 0;" data-theme="dark" data-sitekey="6Lewa-AZAAAAAMS-ZF5qUSZWezNJ1L9wQ5Iu13IU"></div>
                     <span class="text-danger" id="recaptcha_error"></span>
                 </div>
-                <div class="col-md-6 mx-auto my-4 text-center">
-                    <input type="submit" name="AuthLogin" class="btn text-light py-2 px-5" style="background-color : black" value="Login" />
+                <div class="row">
+                    <div class="col mt-4 text-center">
+                        <input type="submit" name="AuthLogin" class="w-100 btn text-light py-2 px-5" style="background-color : black" value="Login" />
+                    </div>
+                    <div class="col mt-4 text-center">
+                        <a href="./forgotPassword.php" class="w-100 btn text-dark py-2 px-5" style="background-color: darkgrey;"> Forgot password </a>
+                    </div>
                 </div>
             </form>
         </div>

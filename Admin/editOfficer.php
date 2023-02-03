@@ -33,6 +33,14 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                         <tbody>
                             <input class="form-control" type="text" name="officerId" id="dept_name" value="<?php echo $officer['officer_id'] ?>" hidden required>
                             <tr>
+                                <td>Officer UserName</td>
+                                <td><input class="form-control" type="text" name="officerUName" value="<?php echo $officer['officer_username'] ?>" required></td>
+                            </tr>
+                            <tr>
+                                <td>Officer Password</td>
+                                <td><input class="form-control" type="password" name="officerPass" placeholder="Enter new password"></td>
+                            </tr>
+                            <tr>
                                 <td>Officer Name</td>
                                 <td><input class="form-control" type="text" name="officerName" id="officer_name" value="<?php echo $officer['officer_name'] ?>" required></td>
                             </tr>

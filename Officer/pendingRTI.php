@@ -10,6 +10,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
     $sql->execute();
     $key = $sql->fetch(PDO::FETCH_ASSOC);
     if ($key['role_id'] == 3) {
+        // NODAL
         include '../nav.php';
         include './nav.php';
         ?>
@@ -158,11 +159,9 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
         </div>
         <br><br>
         <script>
+            document.getElementById("dash-nav").classList.remove("active")
             document.getElementById("pend-nav").style.fontWeight = 600;
             document.getElementById("pend-nav").classList.add("active");
-            document.getElementById("dash-nav").classList.remove("active")
-            document.getElementById("add-nav").classList.remove("active")
-            document.getElementById("trck-nav").classList.remove("active")
         </script>
     <?php
     } else if ($key['officer_role_id'] != 3) {
@@ -192,13 +191,15 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                             $i = 1;
                             $ThisTime = date("Y-m-d H:i:s");
                             $completed = 0;
-                            // print_r($key);
-                            $sql = $conn->prepare("SELECT * FROM tblrequest r, tblactivity a WHERE r.request_no = a.activity_request_no AND a.activity_to = ? AND r.request_department_id = ?  AND r.request_completed = ?  ORDER BY a.activity_id DESC");
+                            $dept = "%".$key['officer_id']."%";
+                            $sql = $conn->prepare("SELECT * FROM tblrequest r, tblactivity a WHERE r.request_no = a.activity_request_no AND a.activity_to = ? AND r.request_current_handler LIKE ?  AND r.request_completed = ?  ORDER BY a.activity_id DESC");
                             $sql->bindParam(1, $key['officer_id']);
-                            $sql->bindParam(2, $key['officer_department_id']);
+                            $sql->bindParam(2, $dept);
                             $sql->bindParam(3, $completed);
                             $sql->execute();
                             if (!empty($row = $sql->fetch(PDO::FETCH_ASSOC))) {
+                                // echo "<pre>";
+                                // print_r($row);
                                 $officers = explode(',', $row['request_current_handler']);
                                 if (in_array($key['officer_id'], $officers)) {
                                     do {

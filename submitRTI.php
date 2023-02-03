@@ -194,13 +194,13 @@ if (isset($_SESSION['existingUser']) && $_SESSION['existingUser'] == 1 && $_SESS
 
                         </div>
                         <br>
-                        <div class="headingsall">
+                        <!-- <div class="headingsall">
                             <div class="form-group">
                                 <div class="g-recaptcha" data-theme="dark" data-sitekey="6Lewa-AZAAAAAMS-ZF5qUSZWezNJ1L9wQ5Iu13IU"></div>
                                 <span class="text-danger" id="recaptcha_error"></span>
                             </div>
                         </div>
-                        <br>
+                        <br> -->
                         <div class="headingsall">
                             <div class="form-group">
                                 <button class="btn btn-dark text-light" type="submit" name="personalRTI">Submit</button>
@@ -497,13 +497,13 @@ if (isset($_SESSION['existingUser']) && $_SESSION['existingUser'] == 1 && $_SESS
 
                         </div>
                         <br>
-                        <div class="headingsall">
+                        <!-- <div class="headingsall">
                             <div class="form-group">
                                 <div class="g-recaptcha" data-theme="dark" data-sitekey="6Lewa-AZAAAAAMS-ZF5qUSZWezNJ1L9wQ5Iu13IU"></div>
                                 <span class="text-danger" id="recaptcha_error"></span>
                             </div>
                         </div>
-                        <br>
+                        <br> -->
                         <div class="headingsall">
                             <div class="form-group">
                                 <button class="btn btn-dark text-light" type="submit" name="personalRTI">Submit</button>

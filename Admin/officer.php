@@ -75,9 +75,9 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                     var id = $(this).attr("id");
                     $.ajax({
                         type: "POSt",
-                        url: "Backend/deleteDept.php",
+                        url: "Backend/deleteOfficer.php",
                         data: {
-                            deptId: id
+                            officer_id: id
                         },
                         success: function(response) {
                             window.location.reload();

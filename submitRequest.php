@@ -109,6 +109,15 @@ if (!isset($_SESSION['otpVerified'])) {
                             <label for='text'>Text for RTI Application :</label>
                             <textarea name="reqText" id="reqText" class="form-control" rows="5" oninput="validateTextarea(this)"></textarea>
                         </div>
+                        <br>
+                    </div>
+                    <div class="headingsall">
+                        <div class="form-group">
+                            <label>Sample attachment :</label>
+                            <input type="file" accept="image/jpe,image/png,image/jpeg,image/jpg,application/pdf" name="docSample" class="form-control">
+                            <label class="mt-2 text-danger">Supported file formats: jpe, png, jpeg, jpg, pdf <br>Maximum file size: 2 MB</label>
+                        </div>
+                        <br>
                     </div>
                     <br>
                     <div class="headingsall">

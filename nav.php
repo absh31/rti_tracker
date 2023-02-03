@@ -1,8 +1,7 @@
 <body>
     <script src='https://www.google.com/recaptcha/api.js'></script>
     <?php
-    // echo $_SERVER['PHP_SELF'];
-    if ($_SERVER['PHP_SELF'] != '/rti_tracker/login.php' && !isset($key)) {
+    if ($_SERVER['PHP_SELF'] != '/rti_tracker/login.php' && $_SERVER['PHP_SELF'] != '/rti_tracker/forgotPassword.php' && !isset($key)) {
     ?>
         <div class="container-fluid" style="background-color : #D9D9D9">
             <div class="row mx-4 py-2">

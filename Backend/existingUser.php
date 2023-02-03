@@ -17,25 +17,25 @@ if (!isset($_POST['personalRTI'])) {
         $_SESSION['otp'] = $otp;
         $subject = "Email validation for RTI APPLICATION";
         $msg = "Your OTP for validation is: " . $otp;
-        if (mail($email, $subject, $msg)) {
-            echo "<script>alert('OTP has been sent to your entered email id!')</script>";
+        // if (mail($email, $subject, $msg)) {
+            echo "<script>alert('OTP has $otp been sent to your entered email id!')</script>";
             echo "<script>window.open('../personalVerify.php','_self')</script>";
-        } else {
+        // } else {
             echo "<script>alert('Mail couldnt be send, please try again later!')</script>";
             echo "<script>window.open('../instructionsRTI.php','_self')</script>";
-        }
+        // }
     } else {
         $otp = rand(100000, 999999);
         $_SESSION['otp'] = $otp;
         $subject = "Email validation for RTI APPLICATION";
         $msg = "Your OTP for validation is: " . $otp;
-        if (mail($email, $subject, $msg)) {
-            echo "<script>alert('OTP has been sent to your entered email id!')</script>";
+        // if (mail($email, $subject, $msg)) {
+            echo "<script>alert('OTP has $otp been sent to your entered email id!')</script>";
             echo "<script>window.open('../personalVerify.php','_self')</script>";
-        } else {
+        // } else {
             echo "<script>alert('Mail couldnt be send, please try again later!')</script>";
             echo "<script>window.open('../instructionsRTI.php','_self')</script>";
-        }
+        // }
         echo "<script>alert('No users found, start with new application!')</script>";
         echo "<script>window.open('../submitRTI.php','_self')</script>";
     }

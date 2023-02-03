@@ -8,7 +8,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
     $sql->execute();
     $key = $sql->fetch(PDO::FETCH_ASSOC);
     include '../nav.php';
-include './nav.php';
+    include './nav.php';
 ?>
     <br>
     <div class="container-fluid px-5">
@@ -265,6 +265,14 @@ include './nav.php';
                         <br>
                         <div class="headingsall">
                             <div class="form-group">
+                                <label>Sample attachment :</label>
+                                <input type="file" accept="image/jpe,image/png,image/jpeg,image/jpg,application/pdf" name="docSample" class="form-control">
+                                <label class="mt-2 text-danger">Supported file formats: jpe, png, jpeg, jpg, pdf <br>Maximum file size: 2 MB</label>
+                            </div>
+                            <br>
+                        </div>
+                        <div class="headingsall">
+                            <div class="form-group">
                                 <div class="g-recaptcha" data-theme="dark" data-sitekey="6Lewa-AZAAAAAMS-ZF5qUSZWezNJ1L9wQ5Iu13IU"></div>
                                 <span class="text-danger" id="recaptcha_error"></span>
                             </div>
@@ -285,11 +293,9 @@ include './nav.php';
     <br><br>
     <?php include '../footer.php'; ?>
     <script type="text/javascript">
-        document.getElementById("add-nav").style.fontWeight = 600;
-        document.getElementById("add-nav").classList.add("active");
         document.getElementById("dash-nav").classList.remove("active")
-        document.getElementById("pend-nav").classList.remove("active")
-        document.getElementById("trck-nav").classList.remove("active")
+        document.getElementById("add-nav").classList.add("active")
+        document.getElementById("add-nav").style.fontWeight = 600
 
         function showBpl(input) {
             var value = input.value

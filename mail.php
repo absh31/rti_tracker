@@ -1,14 +1,14 @@
 <?php
 // (A) SET MAIL DATA
-// $to = "mihirsomeshwara0712@gmail.com";
-// $subject = "Test Email";
-// $message = "This is a test email message.";
+$to = "mihirsomeshwara0712@gmail.com";
+$subject = "Test Email";
+$message = "This is a test email message.";
 
-// // (B) SEND!
-// echo mail($to, $subject, $message)
-//   ? "OK" : "ERROR";
+// (B) SEND!
+echo mail($to, $subject, $message)
+  ? "OK" : "ERROR";
 ?>
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html>
 
 <head>
@@ -93,4 +93,4 @@
 
 </body>
 
-</html>
+</html> -->

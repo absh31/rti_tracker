@@ -69,7 +69,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
             }
         }
         for ($j = 0; $j < $count; $j++) {
-            if($total > 0){
+            if ($total > 0) {
                 $total = (int)$total;
                 $docSql = $conn->prepare("SELECT * FROM tbldocument WHERE document_request_id = ? ORDER BY document_id DESC LIMIT ?");
                 $docSql->bindParam(1, $reqNo);
@@ -102,9 +102,9 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                 echo "<script>window.open('../forwardRTI.php?reqNo=" . $reqNo . "','_self')</script>";
             }
         }
-        
+
         $totalOfficers = implode(",", $toOfficerName);
-        
+
         $updateSql = $conn->prepare("UPDATE tblrequest SET request_current_handler = ? WHERE request_no = ?");
         $updateSql->bindParam(1, $totalOfficers);
         $updateSql->bindParam(2, $reqNo);
@@ -124,7 +124,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
         $arr = $checkSql->fetch(PDO::FETCH_ASSOC);
         // print_r($arr);
         // exit;
-        if($arr['activity_to'] == "Nodal Officer" && $arr['activity_type'] == "Rejected"){
+        if ($arr['activity_to'] == "Nodal Officer" && $arr['activity_type'] == "Rejected") {
             $confirm = 1;
             $currentHandler = "none";
             $activityType = "Rejected";
@@ -154,7 +154,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                     echo "<script>window.open('../forwardRTI.php?reqNo" . $reqN . "','_self')</script>";
                 }
             }
-        }else if($arr['activity_to'] == "Nodal Officer" && $arr['activity_type'] == "Revert"){
+        } else if ($arr['activity_to'] == "Nodal Officer" && $arr['activity_type'] == "Revert") {
             $confirm = 1;
             $currentHandler = "none";
             $activityType = "Closed";
@@ -178,13 +178,36 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                 $sql->bindParam(6, $activityType);
                 if ($sql->execute()) {
                     echo "<script>window.alert(`RTI closed successfully!`)</script>";
-                    echo "<script>window.open('../pendingRTI.php','_self')</script>";
+                    $to = $_POST['email'];
+                    // exit;
+                    $subject = 'ALERT :: RTI Application completed';
+                    $msg =
+                        "<!DOCTYPE html>
+                    <html>
+                    <body>
+                    
+                      <h3>Dear citizen, your requested information is prepared. Please open the following link, enter required information and do necessary payments. Then you will be able to download your information. 
+                      <br>
+                      <br>
+                      <span style='color:red'>Your request reference number: $reqNo <br>
+                      Note: use this for downloading your information. </span>
+                      </h3>
+
+                      <h3><a href='localhost/rti_tracker/viewStatus.php' target='_blank'>Click here</a></h3>
+                      </body>
+                    </html>";
+                    $headers = "MIME-Version: 1.0" . "\r\n";
+                    $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
+                    if(mail($to, $subject, $msg, $headers)){
+                        echo "<script>window.open('../pendingRTI.php','_self')</script>";
+                    }else
+                        echo "<script>window.alert(`Something went wrong!`)</script>";
                 } else {
                     echo "<script>window.alert(`Something went wrong!`)</script>";
                     echo "<script>window.open('../forwardRTI.php?reqNo" . $reqN . "','_self')</script>";
                 }
             }
-        }else{
+        } else {
             $confirm = 1;
             $currentHandler = "none";
             $activityType = "Rejected";
