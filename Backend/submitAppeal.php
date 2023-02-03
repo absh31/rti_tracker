@@ -5,19 +5,19 @@ if (!isset($_POST['submitAppeal'])) {
     echo '<script>alert("Bad Request");</script>';
     echo '<script>window.open("../index.php","_self")</script>';
 } else {
-    if (empty($_POST['g-recaptcha-response'])) {
-        echo "<script>alert('Captcha Error. Try Again')</script>";
-        echo "<script>window.open('./submitRTI.php','_self')</script>";
-    } else {
-        $secret_key = '6Lewa-AZAAAAAP729KyiNYyJGV7TnGheI0WUlf6p';
-        $response = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . $secret_key . '&response=' . $_POST['g-recaptcha-response']);
+    // if (empty($_POST['g-recaptcha-response'])) {
+    //     echo "<script>alert('Captcha Error. Try Again')</script>";
+    //     echo "<script>window.open('./submitRTI.php','_self')</script>";
+    // } else {
+    //     $secret_key = '6Lewa-AZAAAAAP729KyiNYyJGV7TnGheI0WUlf6p';
+    //     $response = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . $secret_key . '&response=' . $_POST['g-recaptcha-response']);
 
-        $response_data = json_decode($response);
+    //     $response_data = json_decode($response);
 
-        if (!$response_data->success) {
-            echo "<script>alert('Captcha Error. Try Again')</script>";
-            echo "<script>window.open('./submitRTI.php','_self')</script>";
-        } else {
+    //     if (!$response_data->success) {
+    //         echo "<script>alert('Captcha Error. Try Again')</script>";
+    //         echo "<script>window.open('./submitRTI.php','_self')</script>";
+    //     } else {
             $reqNo = $_SESSION['reqNo'];
             $reqId = $_SESSION['reqId'];
             $appealReason = $_POST['appealReason'];
@@ -37,6 +37,6 @@ if (!isset($_POST['submitAppeal'])) {
                 unset($_POST['submitAppeal']);
                 echo '<script>window.open("../submitAppealForm.php","_self")</script>';
             }
-        }
-    }
+    //     }
+    // }
 }

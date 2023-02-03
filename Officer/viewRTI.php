@@ -362,13 +362,13 @@ include './nav.php';
                                 </div>
                             </div>
                             <br>
-                            <div class="headingsall">
+                            <!-- <div class="headingsall">
                                 <div class="form-group">
                                     <div class="g-recaptcha" data-theme="dark" data-sitekey="6Lewa-AZAAAAAMS-ZF5qUSZWezNJ1L9wQ5Iu13IU"></div>
                                     <span class="text-danger" id="recaptcha_error"></span>
                                 </div>
                             </div>
-                            <br>
+                            <br> -->
                             <div class="headingsall">
                                 <div class="form-group">
                                     <button class="btn btn-danger text-light" type="submit" name="rejectRTI">Reject</button>

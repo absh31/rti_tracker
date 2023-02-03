@@ -342,7 +342,8 @@ if (isset($_SESSION['existingUser']) && $_SESSION['existingUser'] == 1 && $_SESS
 
                             <div class="form-group" id="emailAddDiv">
                                 <label for='email'><span class="text-danger">*</span> Email Address :</label>
-                                <input type="email" name="email" id="email" value="" class="form-control" required>
+                                <input type="email" value="<?= $_SESSION['email'] ?>" name="email" id="email" class="form-control" readonly required>
+                                <!-- <input type="email" name="email" id="email" value="" class="form-control" required> -->
                             </div>
                         </div>
                         <br>
@@ -350,8 +351,9 @@ if (isset($_SESSION['existingUser']) && $_SESSION['existingUser'] == 1 && $_SESS
 
                             <div class="form-group" id="confirmEmailAddDiv">
                                 <label for='email'><span class="text-danger">*</span> Confirm Email :</label>
-                                <input type="email" name="confirmEmail" id="confirmEmail" class="form-control" required oninput="compareEmail(this)">
-                                <span class="text-danger" style="display: none;" id="hiddenSpan">Email doesn't match!</span>
+                                <!-- <input type="email" name="confirmEmail" id="confirmEmail" class="form-control" required oninput="compareEmail(this)"> -->
+                                <input type="email" value="<?= $_SESSION['email'] ?>" name="email" id="email" class="form-control" readonly required>
+                                <!-- <span class="text-danger" style="display: none;" id="hiddenSpan">Email doesn't match!</span> -->
                             </div>
                         </div>
                         <br>
