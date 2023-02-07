@@ -275,7 +275,7 @@ if (!isset($_POST['requestRTI'])) {
         $activity_sql->bindParam(6, $document);
         if ($activity_sql->execute()) {
             echo "<script>alert('Your request is filed successfully! Your Request Reference number is: " . $requestNo . "')</script>";
-            // echo "<script>window.open('../responseRTI.php', '_self')</script>";
+            echo "<script>window.open('../responseRTI.php', '_self')</script>";
         } else {
             echo "<script>alert('Something went wrong!')</script>";
             echo '<script>window.open(".../submitRequest.php","_self")</script>';

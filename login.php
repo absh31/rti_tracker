@@ -36,7 +36,7 @@ include "nav.php";
                     <select class="form-control" required="required" name="type" id="admin_type" style="border : 2px solid black; opacity : 0.7">
                         <option value="" disabled selected>Select Login Type</option>
                         <?php
-                        $sql = $conn->prepare("SELECT * FROM `tblrole` WHERE role_id != 2");
+                        $sql = $conn->prepare("SELECT * FROM `tblrole`");
                         $sql->execute();
                         while ($key = $sql->fetch(PDO::FETCH_ASSOC)) {
                         ?>

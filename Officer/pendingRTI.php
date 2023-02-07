@@ -13,10 +13,16 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
         // NODAL
         include '../nav.php';
         include './nav.php';
-        ?>
+?>
         <br>
         <div class="container-fluid px-5">
-            <div class="row">
+            <div class="row px-3 text-center divHide" style="font-size : 18px; font-family : Poppins; font-weight : bold">
+                <div class="col py-2 active1" style="border : 1px solid black" id="pendingLink">Pending RTIs</div>
+                <div class="col py-2" style="border : 1px solid black" id="revertLink">Reverted RTIs</div>
+                <div class="col py-2" style="border : 1px solid black" id="appealLink">Appealed RTIs</div>
+            </div>
+            <br>
+            <div class="row" id="pendingDiv">
                 <div class="col">
                     <h5>Pending RTIs</h5>
                     <p>Below is the list of RTIs which needs to be forwarded to conerned Departmental Officer.</p>
@@ -85,12 +91,11 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                     </table>
                 </div>
             </div>
-            <br>
-            <div class="row">
+            <div class="row" id="revertDiv">
                 <div class="col">
                     <h5>Reverted RTIs</h5>
                     <p>Below is the list of reverted RTIs from the Departmental Officers.</p>
-                    <table class="table table-striped table-bordered align-middle" id="received">
+                    <table class="table table-striped table-bordered align-middle" id="reverted">
                         <thead>
                             <tr class="bg-dark text-light">
                                 <td class="text-center">#</td>
@@ -109,16 +114,17 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                             $type = "Filed";
                             // $ThisTime = date("Y-m-d H:i:s");
                             $completed = 0;
-                            $sql = $conn->prepare("SELECT * FROM tblrequest r, tblactivity a WHERE r.request_no = a.activity_request_no AND a.activity_to = ? AND a.activity_type != ? AND r.request_completed = ?");
+                            $sql = $conn->prepare("SELECT * FROM tblrequest r, tblactivity a WHERE r.request_no = a.activity_request_no AND a.activity_to = ? AND a.activity_type != ? AND r.request_completed = ? AND r.request_current_handler = ? AND a.activity_from != 'appellate' AND a.activity_completed = 0");
                             $sql->bindParam(1, $currentHandler);
                             $sql->bindParam(2, $type);
                             $sql->bindParam(3, $completed);
+                            $sql->bindParam(4, $currentHandler);
                             $sql->execute();
                             while ($row = $sql->fetch(PDO::FETCH_ASSOC)) {
                             ?>
                                 <tr>
                                     <td class="text-center"><?= $i ?></td>
-                                    <td class="text-center"><?= $row['request_no'] ?></td>
+                                    <td class="text-center text-danger"><?= $row['request_no'] ?></td>
                                     <td class="text-center"><?= date('d-m-Y', strtotime($row['request_time'])) ?></td>
                                     <td class="text-center"><?php echo $exp_date = date('d-m-Y', strtotime($row['request_time'] . ' + 30 days')) ?>
                                         <?php
@@ -130,7 +136,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                                             </span>
                                         <?php
                                         } else {
-                                            ?>
+                                        ?>
                                             <span>
                                                 (<?= $diff->format('%a day(s) left'); ?>)
                                             </span>
@@ -140,10 +146,79 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                                     </td>
                                     <td class="text-center"><?= $row['activity_remarks'] ?></td>
                                     <td class="text-center"><?= $row['activity_type'] ?></td>
-                                    <!-- <td class="text-center">
-                                        <a href="./forwardRTI.php?reqNo=<?= $row['request_no'] ?>&confirm=0" target="_blank" class="btn btn-outline-success">Forward</a>
-                                        <a href="./forwardRTI.php?reqNo=<?= $row['request_no'] ?>&confirm=1" target="_blank" class="btn btn-outline-danger" style="margin-left: 15px;">Close RTI</a>
-                                    </td> -->
+                                    <td class="text-center">
+                                        <a href="./forwardRTI.php?reqNo=<?= $row['request_no'] ?>" target="_blank" class="btn btn-outline-success">View</a>
+                                    </td>
+                                </tr>
+                            <?php
+                                $i++;
+                            }
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row" id="appealDiv">
+                <div class="col">
+                    <h5>Appealed RTIs</h5>
+                    <p>Below is the list of Frst Appealed RTIs.</p>
+                    <table class="table table-striped table-bordered align-middle" id="appealed">
+                        <thead>
+                            <tr class="bg-dark text-light">
+                                <td class="text-center">#</td>
+                                <td class="text-center">RTI reference number</td>
+                                <td class="text-center">RTI issue date (NEW)</td>
+                                <td class="text-center">RTI expiring date</td>
+                                <td class="text-center">Appeal Reason</td>
+                                <td class="text-center">Appeal Remarks</td>
+                                <td class="text-center">RTI Status</td>
+                                <td class="text-center">Action</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            $i = 1;
+                            $currentHandler = "Nodal Officer";
+                            // $to = "Appellate ";
+                            $type = "Filed";
+                            // $ThisTime = date("Y-m-d H:i:s");
+                            $completed = 1;
+                            $sql = $conn->prepare("SELECT * FROM tblrequest r, tblactivity a, tblappeal ap WHERE r.request_no = a.activity_request_no AND a.activity_to = ? AND r.request_no = ap.appeal_request_no AND a.activity_is_appealed = 1 AND a.activity_completed = 0");
+                            $sql->bindParam(1, $currentHandler);
+                            $sql->execute();
+                            while ($row = $sql->fetch(PDO::FETCH_ASSOC)) {
+                            ?>
+                                <tr>
+                                    <td class="text-center"><?= $i ?></td>
+                                    <td class="text-center text-danger"><?= $row['request_no'] ?></td>
+                                    <td class="text-center"><?= date('d-m-Y', strtotime($row['request_time'])) ?></td>
+                                    <td class="text-center"><?php echo $exp_date = date('d-m-Y', strtotime($row['request_time'] . ' + 30 days')) ?>
+                                        <?php
+                                        $diff = date_diff(date_create($ThisTime), date_create($exp_date));
+                                        if ($diff->days <= 10) {
+                                        ?>
+                                            <span class="text-danger">
+                                                (<?= $diff->format('%a day(s) left'); ?>)
+                                            </span>
+                                        <?php
+                                        } else if ($diff->days < 1) {
+                                        ?>
+                                            <span class="text-danger">
+                                                (<?= $diff->format('EXPIRED'); ?>)
+                                            </span>
+                                        <?php
+                                        } else {
+                                        ?>
+                                            <span>
+                                                (<?= $diff->format('%a day(s) left'); ?>)
+                                            </span>
+                                        <?php
+                                        }
+                                        ?>
+                                    </td>
+                                    <td class="text-center"><?= $row['appeal_reason'] ?></td>
+                                    <td class="text-center"><?= $row['activity_remarks'] ?></td>
+                                    <td class="text-center"><?= $row['activity_type'] ?></td>
                                     <td class="text-center">
                                         <a href="./forwardRTI.php?reqNo=<?= $row['request_no'] ?>" target="_blank" class="btn btn-outline-success">View</a>
                                     </td>
@@ -158,24 +233,70 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
             </div>
         </div>
         <br><br>
+        <?php include '../footer.php'; ?>
+
         <script>
+            $('#pending').DataTable();
+            $('#reverted').DataTable();
+            $('#appealed').DataTable();
+            $('#pendingDiv').show();
+            $('#revertDiv').hide();
+            $('#appealDiv').hide();
+            $('#pendingLink').click(function() {
+                $('#pendingDiv').show(function() {
+                    $('#pendLink').addClass('active1')
+                });
+                $('#revertDiv').hide(function() {
+                    $('#revertLink').removeClass('active1')
+                });
+                $('#appealDiv').hide(function() {
+                    $('#appealLink').removeClass('active1')
+                });
+            })
+            $('#revertLink').click(function() {
+                $('#revertDiv').show(function() {
+                    $('#revertLink').addClass('active1')
+                });
+                $('#pendingDiv').hide(function() {
+                    $('#pendingLink').removeClass('active1')
+                });
+                $('#appealDiv').hide(function() {
+                    $('#appealLink').removeClass('active1')
+                });
+            })
+            $('#appealLink').click(function() {
+                $('#appealDiv').show(function() {
+                    $('#appealLink').addClass('active1')
+                });
+                $('#pendingDiv').hide(function() {
+                    $('#pendingLink').removeClass('active1')
+                });
+                $('#revertDiv').hide(function() {
+                    $('#revertLink').removeClass('active1')
+                });
+            })
             document.getElementById("dash-nav").classList.remove("active")
             document.getElementById("pend-nav").style.fontWeight = 600;
             document.getElementById("pend-nav").classList.add("active");
         </script>
     <?php
-    } else if ($key['officer_role_id'] != 3) {
+    } else if ($key['officer_role_id'] == 4) {
         //OFFICER
         include '../nav.php';
         include './nav.php';
     ?>
         <br>
         <div class="container-fluid px-5">
-            <div class="row">
+            <div class="row px-3 text-center divHide" style="font-size : 18px; font-family : Poppins; font-weight : bold">
+                <div class="col py-2 active1" style="border : 1px solid black" id="pendingLink">Pending RTIs</div>
+                <div class="col py-2" style="border : 1px solid black" id="appealLink">Appealed RTIs</div>
+            </div>
+            <br>
+            <div class="row" id="pendingDiv">
                 <div class="col">
                     <h5>Pending RTIs</h5>
                     <p>Below is the list of RTIs which needs to be worked upon.</p>
-                    <table class="table table-striped align-middle table-bordered" id="pending1">
+                    <table class="table table-striped align-middle table-bordered" id="pending">
                         <thead>
                             <tr class="bg-dark text-light">
                                 <td class="text-center">#</td>
@@ -191,8 +312,8 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                             $i = 1;
                             $ThisTime = date("Y-m-d H:i:s");
                             $completed = 0;
-                            $dept = "%".$key['officer_id']."%";
-                            $sql = $conn->prepare("SELECT * FROM tblrequest r, tblactivity a WHERE r.request_no = a.activity_request_no AND a.activity_to = ? AND r.request_current_handler LIKE ?  AND r.request_completed = ?  ORDER BY a.activity_id DESC");
+                            $dept = "%" . $key['officer_id'] . "%";
+                            $sql = $conn->prepare("SELECT * FROM tblrequest r, tblactivity a WHERE r.request_no = a.activity_request_no AND a.activity_to = ? AND r.request_current_handler LIKE ?  AND r.request_completed = ? AND r.request_is_appealed = 0 ORDER BY a.activity_id DESC");
                             $sql->bindParam(1, $key['officer_id']);
                             $sql->bindParam(2, $dept);
                             $sql->bindParam(3, $completed);
@@ -248,9 +369,176 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                     </table>
                 </div>
             </div>
+            <div class="row" id="appealDiv">
+                <div class="col">
+                    <h5>Appealed RTIs</h5>
+                    <p>Below is the list of RTIs which needs to be worked upon.</p>
+                    <table class="table table-striped align-middle table-bordered" id="appeal">
+                        <thead>
+                            <tr class="bg-dark text-light">
+                                <td class="text-center">#</td>
+                                <td class="text-center">RTI reference number</td>
+                                <td class="text-center">RTI issue date</td>
+                                <td class="text-center">RTI expiring date</td>
+                                <td class="text-center">RTI Remarks</td>
+                                <td class="text-center">Action</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            $i = 1;
+                            $ThisTime = date("Y-m-d H:i:s");
+                            $completed = 0;
+                            $dept = "%" . $key['officer_id'] . "%";
+                            $sql = $conn->prepare("SELECT * FROM tblrequest r, tblactivity a WHERE r.request_no = a.activity_request_no AND a.activity_to = ? AND r.request_current_handler LIKE ? AND r.request_completed = ? AND a.activity_completed = 0 AND r.request_is_appealed = 1 ORDER BY a.activity_id DESC");
+                            $sql->bindParam(1, $key['officer_id']);
+                            $sql->bindParam(2, $dept);
+                            $sql->bindParam(3, $completed);
+                            $sql->execute();
+                            if (!empty($row = $sql->fetch(PDO::FETCH_ASSOC))) {
+                                // echo "<pre>";
+                                // print_r($row);
+                                // exit;
+                                $officers = explode(',', $row['request_current_handler']);
+                                if (in_array($key['officer_id'], $officers)) {
+                                    do {
+                            ?>
+                                        <tr>
+                                            <td class="text-center"><?= $i ?></td>
+                                            <td class="text-center"><?= $row['request_no'] ?></td>
+                                            <td class="text-center"><?= date('d-m-Y', strtotime($row['request_time'])) ?></td>
+                                            <td class="text-center"><?php echo $exp_date = date('d-m-Y', strtotime($row['request_time'] . ' + 30 days')) ?>
+                                                <?php
+                                                $diff = date_diff(date_create($ThisTime), date_create($exp_date));
+                                                if ($diff->days == 0) {
+                                                ?>
+                                                    <span class="text-danger">
+                                                        RTI EXPIRED
+                                                    </span>
+
+                                                <?php
+                                                } else if ($diff->days <= 10) {
+                                                ?>
+                                                    <span class="text-danger">
+                                                        (<?= $diff->format('%a day(s) left'); ?>)
+                                                    </span>
+                                                <?php
+                                                } else {
+                                                ?>
+                                                    <span>
+                                                        (<?= $diff->format('%a day(s) left'); ?>)
+                                                    </span>
+                                                <?php
+                                                }
+                                                ?>
+                                            </td>
+                                            <td class="text-center"><?= $row['activity_remarks'] ?></td>
+                                            <td class="text-center">
+                                                <a href="./viewRTI.php?reqNo=<?= $row['request_no'] ?>" target="_blank" id="revertButton" class="btn btn-dark">View</a>
+                                            </td>
+                                        </tr>
+                            <?php
+                                        $i++;
+                                    } while ($row = $sql->fetch(PDO::FETCH_ASSOC));
+                                }
+                            }
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
         <br><br>
+        <?php include '../footer.php'; ?>
+
         <script>
+            $('#pending').DataTable();
+            $('#appeal').DataTable();
+
+            $('#pendingDiv').show();
+            $('#appealDiv').hide();
+            $('#pendingLink').click(function() {
+                $('#pendingDiv').show(function() {
+                    $('#pendLink').addClass('active1')
+                });
+                $('#appealDiv').hide(function() {
+                    $('#appealLink').removeClass('active1')
+                });
+            })
+            $('#appealLink').click(function() {
+                $('#appealDiv').show(function() {
+                    $('#appealLink').addClass('active1')
+                });
+                $('#pendingDiv').hide(function() {
+                    $('#pendingLink').removeClass('active1')
+                });
+            })
+            document.getElementById("pend-nav").style.fontWeight = 600;
+            document.getElementById("pend-nav").classList.add("active");
+            document.getElementById("dash-nav").classList.remove("active")
+        </script>
+    <?php
+    } else if ($key['officer_role_id'] == 2) {
+        //APPELLATE
+        include '../nav.php';
+        include './nav.php';
+    ?>
+        <br>
+        <div class="container-fluid px-5">
+            <div class="row">
+                <div class="col">
+                    <h5>Appealed RTIs</h5>
+                    <p>Below is the list of RTIs which needs to be worked upon.</p>
+                    <table class="table table-striped align-middle table-bordered" id="pending">
+                        <thead>
+                            <tr class="bg-dark text-light">
+                                <td class="text-center">#</td>
+                                <td class="text-center">RTI reference number</td>
+                                <td class="text-center">RTI issue date</td>
+                                <td class="text-center">RTI appeal date</td>
+                                <td class="text-center">Appeal Reason</td>
+                                <td class="text-center">Action</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php
+                            $i = 1;
+                            $ThisTime = date("Y-m-d H:i:s");
+                            $completed = 0;
+                            $sql = $conn->prepare("SELECT * FROM tblrequest req, tblappeal app WHERE app.appeal_request_no = req.request_no AND req.request_is_appealed = 1 AND req.request_current_handler = 'user'");
+                            // $sql->bindParam(1, $key['officer_id']);
+                            // $sql->bindParam(2, $dept);
+                            // $sql->bindParam(3, $completed);
+                            $sql->execute();
+                            if (!empty($row = $sql->fetch(PDO::FETCH_ASSOC))) {
+                                do {
+                            ?>
+                                    <tr>
+                                        <td class="text-center"><?= $i ?></td>
+                                        <td class="text-center"><?= $row['request_no'] ?></td>
+                                        <td class="text-center"><?= date('d-m-Y', strtotime($row['request_time'])) ?></td>
+                                        <td class="text-center"><?php echo $exp_date = date('d-m-Y', strtotime($row['appeal_time'] . ' + 30 days')) ?></td>
+                                        <td class="text-center"><?= $row['appeal_reason'] ?></td>
+                                        <td class="text-center">
+                                            <a href="./viewRTI.php?reqNo=<?= $row['request_no'] ?>" target="_blank" id="revertButton" class="btn btn-dark">View</a>
+                                        </td>
+                                    </tr>
+                            <?php
+                                    $i++;
+                                } while ($row = $sql->fetch(PDO::FETCH_ASSOC));
+                            }
+                            ?>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <br><br>
+        <?php include '../footer.php'; ?>
+
+        <script>
+            $('#pending').DataTable();
+
             document.getElementById("pend-nav").style.fontWeight = 600;
             document.getElementById("pend-nav").classList.add("active");
             document.getElementById("dash-nav").classList.remove("active")
@@ -258,13 +546,10 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
     <?php
     }
     ?>
-    <?php include '../footer.php'; ?>
 
     <script>
         $(document).ready(function() {
-            $('#pending').DataTable();
-            $('#pending1').DataTable();
-            $('#received').DataTable();
+
             $('#pending').on('click', '#rejectButton', function() {
                 var reqNo = $(this).attr('data-id')
                 reqNo = reqNo.toString()

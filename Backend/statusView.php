@@ -70,14 +70,14 @@ if ($sql->rowCount() > 0) {
                     if ($key['request_is_base_pay'] == 0) {
                 ?>
                         <td class="text-center align-middle">
-                            <a href="./Transactions/payRequest.php?requestNo=<?= $reqNo ?>&payType=base">Pay Now</a>
+                            <a href="./Transactions/payRequest.php?requestNo=<?= $reqNo ?>&payType=base">Pay Registration Fees Now</a>
                         </td>
                         <td class="text-center align-middle">None</td>
                     <?php
                     } else if ($key['request_is_add_pay'] == "0" && $key['request_add_pay'] != "0") {
                     ?>
                         <td class="text-center align-middle">
-                            <a href="./Transactions/payRequest.php?requestNo=<?= $reqNo ?>&payType=add">Pay Now</a>
+                            <a href="./Transactions/payRequest.php?requestNo=<?= $reqNo ?>&payType=add">Pay Additional Fees</a>
                         </td>
                         <td class="text-center align-middle">None</td>
                         <?php

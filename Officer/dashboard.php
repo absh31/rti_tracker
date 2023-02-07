@@ -11,6 +11,11 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
     $key = $sql->fetch(PDO::FETCH_ASSOC);
     if ($sql->rowCount() > 0) {
         // echo $key['officer_id'];
+        if ($key['officer_role_id'] == 2) {
+            //NODAL
+            include "../nav.php";
+            include './nav.php';
+        }
         if ($key['officer_role_id'] == 3) {
             //NODAL
             include "../nav.php";

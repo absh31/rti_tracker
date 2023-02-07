@@ -1,18 +1,27 @@
 <?php
 session_start();
 include '../../connection.php';
-if (!isset($_POST['rejectRTI']) && !isset($_POST['revertRTI'])) {
+if (!isset($_POST['rejectRTI']) && !isset($_POST['revertRTI']) && !isset($_POST['toNodal'])) {
     echo '<script>alert("Bad Request");</script>';
     echo '<script>window.open("../dashboard.php","_self")</script>';
 } else {
     if (isset($_POST['rejectRTI'])) {
+        $actId = $_POST['actId'];
         $reqNo = $_POST['reqNo'];
+
+        $updateSql = $conn->prepare("UPDATE tblactivity SET activity_completed = 1 WHERE activity_request_no = ?");
+        $updateSql->bindParam(1, $reqNo);
+        if ($updateSql->execute())
+            echo "<script> alert('Confirmed')</script>";
+
         $remarks = $_POST['remarksRTI'];
         $fromOfficerName = $_SESSION['officer_name'];
         $toOfficerName = "Nodal Officer";
         $activity_status = "RTI Rejected and returned to Nodal Officer.";
-        $docs = array();
+        $docs = "";
         $total = isset($_FILES["attachments"]) ? count($_FILES["attachments"]["name"]) : 0;
+        if ($_FILES["attachments"]["name"][0] == '')
+            $total = 0;
         $status = "YES";
 
         // (B) PROCESS FILE UPLOAD
@@ -93,14 +102,23 @@ if (!isset($_POST['rejectRTI']) && !isset($_POST['revertRTI'])) {
             echo '<script>window.open("../viewRTI.php?reqNo=".$reqNo."?id=' . $reqNo . '","_self")</script>';
         }
     } else if (isset($_POST['revertRTI'])) {
+        $actId = $_POST['actId'];
         $reqNo = $_POST['reqNo'];
+
+        $updateSql = $conn->prepare("UPDATE tblactivity SET activity_completed = 1 WHERE activity_request_no = ?");
+        $updateSql->bindParam(1, $reqNo);
+        if ($updateSql->execute())
+            echo "<script> alert('Confirmed')</script>";
         $remarks = $_POST['remarksRTI'];
         $fromOfficerName = $_SESSION['officer_name'];
         $toOfficerName = "Nodal Officer";
         $activity_status = "Reverted back to the Nodal Officer.";
         $fees = $_POST['addFees'];
-        $docs = array();
+        $docs = "";
         $total = isset($_FILES["attachments"]) ? count($_FILES["attachments"]["name"]) : 0;
+        if ($_FILES["attachments"]["name"][0] == '')
+            $total = 0;
+
         $status = "YES";
         // print_r($_FILES);
         // exit;
@@ -160,7 +178,7 @@ if (!isset($_POST['rejectRTI']) && !isset($_POST['revertRTI'])) {
                 }
             }
         }
-        if($total > 0){
+        if ($total > 0) {
             $total = (int)$total;
             $docSql = $conn->prepare("SELECT * FROM tbldocument WHERE document_request_id = ? ORDER BY document_id DESC LIMIT ?");
             $docSql->bindParam(1, $reqNo);
@@ -189,6 +207,33 @@ if (!isset($_POST['rejectRTI']) && !isset($_POST['revertRTI'])) {
             $sql2->execute();
             echo '<script>alert("Returned to the Nodal Officer successfully!");</script>';
             echo '<script>window.open("../dashboard.php","_self")</script>';
+        } else {
+            echo '<script>alert("Something went wrong!");</script>';
+            echo '<script>window.open("../viewRTI.php?reqNo=".$reqNo."?id=' . $reqNo . '","_self")</script>';
+        }
+    } else if (isset($_POST['toNodal'])) {
+        $reqNo = $_POST['reqNo'];
+        $remarks = $_POST['remarksRTI'];
+        $fromOfficerName = $_SESSION['officer_name'];
+        $toOfficerName = "Nodal Officer";
+        $activity_type = "Appeal Forward";
+        $activity_status = "Reverted back to the Nodal Officer for appeal.";
+        $sql = $conn->prepare("INSERT INTO tblactivity (activity_request_no, activity_from, activity_to, activity_remarks, activity_status, activity_type, activity_is_appealed) VALUES(?,?,?,?,?,?,1)");
+        $sql->bindParam(1, $reqNo);
+        $sql->bindParam(2, $fromOfficerName);
+        $sql->bindParam(3, $toOfficerName);
+        $sql->bindParam(4, $remarks);
+        $sql->bindParam(5, $activity_status);
+        $sql->bindParam(6, $activity_type);
+        if ($sql->execute()) {
+            $sql2 = $conn->prepare("UPDATE tblrequest SET request_current_handler = ?, request_completed = 0 WHERE request_no = ?");
+            $sql2->bindParam(1, $toOfficerName);
+            $sql2->bindParam(2, $reqNo);
+            // $sql2->bindParam(2, $fees);
+            if ($sql2->execute()) {
+                echo '<script>alert("Forwarded to the Nodal Officer successfully!");</script>';
+                echo '<script>window.open("../dashboard.php","_blank")</script>';
+            }
         } else {
             echo '<script>alert("Something went wrong!");</script>';
             echo '<script>window.open("../viewRTI.php?reqNo=".$reqNo."?id=' . $reqNo . '","_self")</script>';

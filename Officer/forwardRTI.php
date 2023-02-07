@@ -11,7 +11,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
     include './nav.php';
     if (!empty($_GET['reqNo'])) {
         $reqNo = $_GET['reqNo'];
-        $applicant_sql = $conn->prepare("SELECT * FROM tblapplicant a, tblrequest r WHERE a.applicant_id = r.request_applicant_id AND r.request_no = ?");
+        $applicant_sql = $conn->prepare("SELECT a.*,r.*,act.activity_id FROM tblapplicant a, tblrequest r, tblactivity act WHERE a.applicant_id = r.request_applicant_id AND r.request_no = ? AND act.activity_request_no = r.request_no AND act.activity_completed != 1");
         $applicant_sql->bindParam(1, $reqNo);
         $applicant_sql->execute();
         $row = $applicant_sql->fetch(PDO::FETCH_ASSOC);
@@ -263,6 +263,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                                     <br>
                                     <input class="form-control" type="text" name="reqNo" value="<?php echo $_GET['reqNo'] ?>" hidden required>
                                     <input class="form-control" type="text" name="email" value="<?= $row['applicant_email'] ?>" hidden required>
+                                    <input class="form-control" type="text" name="actId" value="<?= $row['activity_id'] ?>" required>
                                     <tr>
                                         <td>Department Name</td>
                                         <td>

@@ -4,16 +4,26 @@ include '../../connection.php';
 // print_r($_POST);
 if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SESSION['auth']))) {
     if (isset($_POST['forwardRTI'])) {
+        $actId = $_POST['actId'];
         $reqNo = $_POST['reqNo'];
+
+        $updateSql = $conn->prepare("UPDATE tblactivity SET activity_completed = 1 WHERE activity_request_no = ?");
+        $updateSql->bindParam(1, $reqNo);
+        if ($updateSql->execute())
+            echo "<script> alert('Confirmed')</script>";
+
         $activityType = "Forwarded";
         $fromOfficerName = $_SESSION['officer_name'];
         $toOfficerName = $_POST['officerName'];
         $remarks = $_POST['forwardRemarks'];
         $count = count($toOfficerName);
-        $docs = array();
+        $docs = "";
         $status = "YES";
 
         $total = isset($_FILES["attachments"]) ? count($_FILES["attachments"]["name"]) : 0;
+        if ($_FILES["attachments"]["name"][0] == '')
+            $total = 0;
+        echo $total;
         if ($_FILES["attachments"]["size"][0] > 0) {
             for ($i = 0; $i < $total; $i++) {
                 echo $i . " // " . $total;
@@ -110,14 +120,20 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
         $updateSql->bindParam(2, $reqNo);
         if ($updateSql->execute()) {
             echo "<script>window.alert(`Forwarded to concerned departments successfully!`)</script>";
-            echo "<script>window.open('../pendingRTI.php','_self')</script>";
+            // echo "<script>window.open('../pendingRTI.php','_self')</script>";
         } else {
             echo "<script>window.alert(`Something went wrong!`)</script>";
             echo "<script>window.open('../pendingRTI.php','_self')</script>";
         }
     } else if (isset($_POST['closeRTI'])) {
         // print_r($_POST);
+        $actId = $_POST['actId'];
         $reqNo = $_POST['reqNo'];
+        echo $actId;
+        $updateSql = $conn->prepare("UPDATE tblactivity SET activity_completed = 1 WHERE activity_request_no = ?");
+        $updateSql->bindParam(1, $reqNo);
+        if ($updateSql->execute())
+            echo "<script> alert('Confirmed')</script>";
         $checkSql = $conn->prepare("SELECT * FROM tblactivity WHERE activity_request_no = ? ORDER BY activity_id DESC");
         $checkSql->bindParam(1, $reqNo);
         $checkSql->execute();
@@ -198,9 +214,9 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                     </html>";
                     $headers = "MIME-Version: 1.0" . "\r\n";
                     $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
-                    if(mail($to, $subject, $msg, $headers)){
+                    if (mail($to, $subject, $msg, $headers)) {
                         echo "<script>window.open('../pendingRTI.php','_self')</script>";
-                    }else
+                    } else
                         echo "<script>window.alert(`Something went wrong!`)</script>";
                 } else {
                     echo "<script>window.alert(`Something went wrong!`)</script>";
@@ -222,7 +238,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
             $remark = $_POST['remarks'];
             $status = 'Application Rejected successfully';
             if ($completeSql->execute()) {
-                $sql = $conn->prepare("INSERT INTO tblactivity (activity_request_no, activity_from, activity_to, activity_remarks, activity_status, activity_type) VALUES (?,?,?,?,?,?)");
+                $sql = $conn->prepare("INSERT INTO tblactivity (activity_request_no, activity_from, activity_to, activity_remarks, activity_status, activity_type, activity_completed) VALUES (?,?,?,?,?,?,1)");
                 $sql->bindParam(1, $reqNo);
                 $sql->bindParam(2, $fromOfficerName);
                 $sql->bindParam(3, $toOfficerName);
