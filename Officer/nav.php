@@ -93,7 +93,7 @@
         $dept->execute();
         $row = $dept->fetch(PDO::FETCH_ASSOC);
         
-        $sql2 = $conn->prepare("SELECT * FROM tblnotifications WHERE `to` = ? AND is_deleted = 0 ORDER BY id DESC");
+        $sql2 = $conn->prepare("SELECT * FROM tblnotifications WHERE `to` = ? AND officer_del = 0 ORDER BY id DESC");
         $sql2->bindParam(1, $key['officer_id']);
         $sql2->execute();
         $count = $sql2->rowCount();

@@ -97,7 +97,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                     <div class="col-sm">
                         <div class="card">
                             <div class="card-body" style="text-decoration: none;">
-                                <h5 class="card-title text-center text-danger font-weight-bold" style="font-size: 60px; color: #003975; text-decoration: none;">
+                                <h5 class="card-title text-center text-danger font-weight-bold" style="font-size: 60px; text-decoration: none;">
                                     <?php
                                     $type = 'user';
                                     $sql = $conn->prepare("SELECT COUNT(*) AS pendingRti FROM tblrequest WHERE request_current_handler = ?");
@@ -116,7 +116,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                     <div class="col-sm">
                         <div class="card">
                             <div class="card-body">
-                                <h5 class="card-title text-center text-success font-weight-bold" style="font-size: 60px; color: #003975;">
+                                <h5 class="card-title text-center text-success font-weight-bold" style="font-size: 60px;">
                                     <?php
                                     $type = 'none';
                                     $sql = $conn->prepare("SELECT COUNT(*) AS completedRti FROM tblrequest WHERE request_current_handler = ?");
@@ -127,6 +127,21 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                                     ?>
                                 </h5>
                                 <p class="card-text text-center text-success" style="font-size: 20px; font-weight: 500;">Completed</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title text-center font-weight-bold" style="font-size: 60px;">
+                                    <?php
+                                    $sql = $conn->prepare("SELECT COUNT(*) AS appealedRti FROM tblrequest WHERE request_is_appealed = 1");
+                                    $sql->execute();
+                                    $count = $sql->fetch();
+                                    echo $count['appealedRti'];
+                                    ?>
+                                </h5>
+                                <p class="card-text text-center"  style="font-size: 20px; font-weight: 500;">Total Appeals</p>
                             </div>
                         </div>
                     </div>
@@ -265,7 +280,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                     <div class="col-sm">
                         <div class="card">
                             <div class="card-body" style="text-decoration: none;">
-                                <h5 class="card-title text-center text-danger font-weight-bold" style="font-size: 60px; color: #003975; text-decoration: none;">
+                                <h5 class="card-title text-center text-danger font-weight-bold" style="font-size: 60px; text-decoration: none;">
                                     <?php
                                     $type = '%' . $key['officer_id'] . '%';
                                     $sql = $conn->prepare("SELECT COUNT(*) AS pendingRti FROM tblrequest WHERE request_current_handler LIKE ?");
@@ -285,7 +300,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                     <div class="col-sm">
                         <div class="card">
                             <div class="card-body">
-                                <h5 class="card-title text-center text-secondary font-weight-bold" style="font-size: 60px; color: #003975;">
+                                <h5 class="card-title text-center text-secondary font-weight-bold" style="font-size: 60px;">
                                     <?php
                                     $type = 'Nodal Officer';
                                     $flag = 0;
@@ -305,7 +320,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                     <div class="col-sm">
                         <div class="card">
                             <div class="card-body">
-                                <h5 class="card-title text-center text-success font-weight-bold" style="font-size: 60px; color: #003975;">
+                                <h5 class="card-title text-center text-success font-weight-bold" style="font-size: 60px;">
                                     <?php
                                     $type = 1;
                                     $sql = $conn->prepare("SELECT COUNT(*) AS completedRti FROM tblrequest WHERE request_completed = ? AND request_department_id = ?");
@@ -375,6 +390,40 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
             </script>
 
         <?php
+        } else if ($key['officer_role_id'] == 2) {
+            // print_r($key);
+            // exit;
+            include "../nav.php";
+            include './nav.php';
+            $depts = $conn->prepare("SELECT department_name, department_id FROM tbldepartment WHERE department_id = ?");
+            $depts->bindParam(1, $key['officer_department_id']);
+            $depts->execute();
+            $monRTI = array();
+            $thisMM = 12;
+            // $thisMM = date("m");
+            for ($i =  0; $i < 6; $i++) {
+                if ($thisMM >= 10)
+                    $time = "____-$thisMM%";
+                else if ($thisMM == 0) {
+                    $thisMM = 12;
+                    $time = "____-$thisMM%";
+                } else
+                    $time = "____-_$thisMM%";
+
+                // echo $time;
+                $months = $conn->prepare("SELECT COUNT(*) AS MONCOUNT FROM tblrequest WHERE request_time LIKE ? AND request_department_id = ?");
+                $months->bindParam(1, $time);
+                $months->bindParam(2, $key['officer_department_id']);
+                $months->execute();
+                // echo $thisMM;
+                $cnt = $months->fetch(PDO::FETCH_ASSOC);
+                $data = ['label' => date("F", mktime(0, 0, 0, $thisMM, 10)), 'y' => $cnt['MONCOUNT']];
+                // print_r($data);
+                array_push($monRTI, $data);
+                $thisMM = ($thisMM - 1) % 12;
+            }
+            ?>
+            <?php
         }
         include '../footer.php'; ?>
         <script>

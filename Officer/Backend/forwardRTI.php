@@ -120,7 +120,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
         $updateSql->bindParam(2, $reqNo);
         if ($updateSql->execute()) {
             echo "<script>window.alert(`Forwarded to concerned departments successfully!`)</script>";
-            // echo "<script>window.open('../pendingRTI.php','_self')</script>";
+            echo "<script>window.open('../pendingRTI.php','_self')</script>";
         } else {
             echo "<script>window.alert(`Something went wrong!`)</script>";
             echo "<script>window.open('../pendingRTI.php','_self')</script>";

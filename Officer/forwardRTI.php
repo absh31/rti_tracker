@@ -263,7 +263,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                                     <br>
                                     <input class="form-control" type="text" name="reqNo" value="<?php echo $_GET['reqNo'] ?>" hidden required>
                                     <input class="form-control" type="text" name="email" value="<?= $row['applicant_email'] ?>" hidden required>
-                                    <input class="form-control" type="text" name="actId" value="<?= $row['activity_id'] ?>" required>
+                                    <input class="form-control" type="text" name="actId" value="<?= $row['activity_id'] ?>" hidden required>
                                     <tr>
                                         <td>Department Name</td>
                                         <td>

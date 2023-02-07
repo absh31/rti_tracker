@@ -17,9 +17,48 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
         <br>
         <div class="container-fluid px-5">
             <div class="row px-3 text-center divHide" style="font-size : 18px; font-family : Poppins; font-weight : bold">
-                <div class="col py-2 active1" style="border : 1px solid black" id="pendingLink">Pending RTIs</div>
-                <div class="col py-2" style="border : 1px solid black" id="revertLink">Reverted RTIs</div>
-                <div class="col py-2" style="border : 1px solid black" id="appealLink">Appealed RTIs</div>
+                <div class="col py-2 active1" style="cursor: pointer;border : 1px solid black" id="pendingLink">
+                    <?php
+                    $i = 1;
+                    $ThisTime = date("Y-m-d H:i:s");
+                    $reqCur = 'user';
+                    $pendingSql = $conn->prepare("SELECT * FROM tblrequest WHERE request_status = 'Requested' AND TIMESTAMPDIFF(DAY, `request_time`, ?) < 30 AND request_current_handler = ?");
+                    $pendingSql->bindParam(1, $ThisTime);
+                    $pendingSql->bindParam(2, $reqCur);
+                    $pendingSql->execute();
+                    ?>
+                    Pending RTIs <?php echo ($pendingSql->rowCount()) ? "(" . $pendingSql->rowCount() . ")" : ""; ?>
+                </div>
+                <div class="col py-2" style="border : 1px solid black; cursor: pointer;" id="revertLink">
+                    <?php
+                    $i = 1;
+                    $currentHandler = "Nodal Officer";
+                    $type = "Filed";
+                    // $ThisTime = date("Y-m-d H:i:s");
+                    $completed = 0;
+                    $revertSql = $conn->prepare("SELECT * FROM tblrequest r, tblactivity a WHERE r.request_no = a.activity_request_no AND a.activity_to = ? AND a.activity_type != ? AND r.request_completed = ? AND r.request_current_handler = ? AND a.activity_from != 'appellate' AND a.activity_completed = 0");
+                    $revertSql->bindParam(1, $currentHandler);
+                    $revertSql->bindParam(2, $type);
+                    $revertSql->bindParam(3, $completed);
+                    $revertSql->bindParam(4, $currentHandler);
+                    $revertSql->execute();
+                    ?>
+                    Reverted RTIs <?php echo ($revertSql->rowCount()) ? "(" . $revertSql->rowCount() . ")" : ""; ?>
+                </div>
+                <div class="col py-2" style="border : 1px solid black; cursor: pointer;" id="appealLink">
+                    <?php
+                    $i = 1;
+                    $currentHandler = "Nodal Officer";
+                    // $to = "Appellate ";
+                    $type = "Filed";
+                    // $ThisTime = date("Y-m-d H:i:s");
+                    $completed = 1;
+                    $appealSql = $conn->prepare("SELECT * FROM tblrequest r, tblactivity a, tblappeal ap WHERE r.request_no = a.activity_request_no AND a.activity_to = ? AND r.request_no = ap.appeal_request_no AND a.activity_is_appealed = 1 AND a.activity_completed = 0");
+                    $appealSql->bindParam(1, $currentHandler);
+                    $appealSql->execute();
+                    ?>
+                    Appealed RTIs <?php echo ($appealSql->rowCount()) ? "(" . $appealSql->rowCount() . ")" : ""; ?>
+                </div>
             </div>
             <br>
             <div class="row" id="pendingDiv">
@@ -39,20 +78,14 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                         </thead>
                         <tbody>
                             <?php
-                            $i = 1;
-                            $ThisTime = date("Y-m-d H:i:s");
-                            $reqCur = 'user';
-                            $sql = $conn->prepare("SELECT * FROM tblrequest WHERE request_status = 'Requested' AND TIMESTAMPDIFF(DAY, `request_time`, ?) < 30 AND request_current_handler = ?");
-                            $sql->bindParam(1, $ThisTime);
-                            $sql->bindParam(2, $reqCur);
-                            $sql->execute();
-                            while ($row = $sql->fetch(PDO::FETCH_ASSOC)) {
+                            while ($row = $pendingSql->fetch(PDO::FETCH_ASSOC)) {
                             ?>
                                 <tr>
                                     <td class="text-center"><?= $i ?></td>
                                     <td class="text-center"><?= $row['request_no'] ?></td>
                                     <td class="text-center"><?= date('d-m-Y', strtotime($row['request_time'])) ?></td>
-                                    <td class="text-center"><?php echo $exp_date = date('d-m-Y', strtotime($row['request_time'] . ' + 30 days')) ?>
+                                    <td class="text-center">
+                                        <?php echo $exp_date = date('d-m-Y', strtotime($row['request_time'] . ' + 30 days')) ?>
                                         <?php
                                         $diff = date_diff(date_create($ThisTime), date_create($exp_date));
                                         if ($diff->days <= 10) {
@@ -109,24 +142,14 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                         </thead>
                         <tbody>
                             <?php
-                            $i = 1;
-                            $currentHandler = "Nodal Officer";
-                            $type = "Filed";
-                            // $ThisTime = date("Y-m-d H:i:s");
-                            $completed = 0;
-                            $sql = $conn->prepare("SELECT * FROM tblrequest r, tblactivity a WHERE r.request_no = a.activity_request_no AND a.activity_to = ? AND a.activity_type != ? AND r.request_completed = ? AND r.request_current_handler = ? AND a.activity_from != 'appellate' AND a.activity_completed = 0");
-                            $sql->bindParam(1, $currentHandler);
-                            $sql->bindParam(2, $type);
-                            $sql->bindParam(3, $completed);
-                            $sql->bindParam(4, $currentHandler);
-                            $sql->execute();
-                            while ($row = $sql->fetch(PDO::FETCH_ASSOC)) {
+                            while ($row = $revertSql->fetch(PDO::FETCH_ASSOC)) {
                             ?>
                                 <tr>
                                     <td class="text-center"><?= $i ?></td>
                                     <td class="text-center text-danger"><?= $row['request_no'] ?></td>
                                     <td class="text-center"><?= date('d-m-Y', strtotime($row['request_time'])) ?></td>
-                                    <td class="text-center"><?php echo $exp_date = date('d-m-Y', strtotime($row['request_time'] . ' + 30 days')) ?>
+                                    <td class="text-center">
+                                        <?php echo $exp_date = date('d-m-Y', strtotime($row['request_time'] . ' + 30 days')) ?>
                                         <?php
                                         $diff = date_diff(date_create($ThisTime), date_create($exp_date));
                                         if ($diff->days <= 10) {
@@ -177,22 +200,14 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                         </thead>
                         <tbody>
                             <?php
-                            $i = 1;
-                            $currentHandler = "Nodal Officer";
-                            // $to = "Appellate ";
-                            $type = "Filed";
-                            // $ThisTime = date("Y-m-d H:i:s");
-                            $completed = 1;
-                            $sql = $conn->prepare("SELECT * FROM tblrequest r, tblactivity a, tblappeal ap WHERE r.request_no = a.activity_request_no AND a.activity_to = ? AND r.request_no = ap.appeal_request_no AND a.activity_is_appealed = 1 AND a.activity_completed = 0");
-                            $sql->bindParam(1, $currentHandler);
-                            $sql->execute();
-                            while ($row = $sql->fetch(PDO::FETCH_ASSOC)) {
+                            while ($row = $appealSql->fetch(PDO::FETCH_ASSOC)) {
                             ?>
                                 <tr>
                                     <td class="text-center"><?= $i ?></td>
                                     <td class="text-center text-danger"><?= $row['request_no'] ?></td>
                                     <td class="text-center"><?= date('d-m-Y', strtotime($row['request_time'])) ?></td>
-                                    <td class="text-center"><?php echo $exp_date = date('d-m-Y', strtotime($row['request_time'] . ' + 30 days')) ?>
+                                    <td class="text-center">
+                                        <?php echo $exp_date = date('d-m-Y', strtotime($row['request_time'] . ' + 30 days')) ?>
                                         <?php
                                         $diff = date_diff(date_create($ThisTime), date_create($exp_date));
                                         if ($diff->days <= 10) {
@@ -244,7 +259,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
             $('#appealDiv').hide();
             $('#pendingLink').click(function() {
                 $('#pendingDiv').show(function() {
-                    $('#pendLink').addClass('active1')
+                    $('#pendingLink').addClass('active1')
                 });
                 $('#revertDiv').hide(function() {
                     $('#revertLink').removeClass('active1')
@@ -288,8 +303,34 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
         <br>
         <div class="container-fluid px-5">
             <div class="row px-3 text-center divHide" style="font-size : 18px; font-family : Poppins; font-weight : bold">
-                <div class="col py-2 active1" style="border : 1px solid black" id="pendingLink">Pending RTIs</div>
-                <div class="col py-2" style="border : 1px solid black" id="appealLink">Appealed RTIs</div>
+                <div class="col py-2 active1" style="border : 1px solid black; cursor: pointer;" id="pendingLink">
+                    <?php
+                    $i = 1;
+                    $ThisTime = date("Y-m-d H:i:s");
+                    $completed = 0;
+                    $dept = "%" . $key['officer_id'] . "%";
+                    $pendingSql = $conn->prepare("SELECT * FROM tblrequest r, tblactivity a WHERE r.request_no = a.activity_request_no AND a.activity_to = ? AND r.request_current_handler LIKE ?  AND r.request_completed = ? AND r.request_is_appealed = 0 ORDER BY a.activity_id DESC");
+                    $pendingSql->bindParam(1, $key['officer_id']);
+                    $pendingSql->bindParam(2, $dept);
+                    $pendingSql->bindParam(3, $completed);
+                    $pendingSql->execute();
+                    ?>
+                    Pending RTIs <?php echo ($pendingSql->rowCount()) ? "(" . $pendingSql->rowCount() . ")" : ""; ?>
+                </div>
+                <div class="col py-2" style="border : 1px solid black; cursor: pointer;" id="appealLink">
+                    <?php
+                    $i = 1;
+                    $ThisTime = date("Y-m-d H:i:s");
+                    $completed = 0;
+                    $dept = "%" . $key['officer_id'] . "%";
+                    $appealSql = $conn->prepare("SELECT * FROM tblrequest r, tblactivity a WHERE r.request_no = a.activity_request_no AND a.activity_to = ? AND r.request_current_handler LIKE ? AND r.request_completed = ? AND a.activity_completed = 0 AND r.request_is_appealed = 1 ORDER BY a.activity_id DESC");
+                    $appealSql->bindParam(1, $key['officer_id']);
+                    $appealSql->bindParam(2, $dept);
+                    $appealSql->bindParam(3, $completed);
+                    $appealSql->execute();
+                    ?>
+                    Appealed RTIs <?php echo ($appealSql->rowCount()) ? "(" . $appealSql->rowCount() . ")" : ""; ?>
+                </div>
             </div>
             <br>
             <div class="row" id="pendingDiv">
@@ -309,16 +350,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                         </thead>
                         <tbody>
                             <?php
-                            $i = 1;
-                            $ThisTime = date("Y-m-d H:i:s");
-                            $completed = 0;
-                            $dept = "%" . $key['officer_id'] . "%";
-                            $sql = $conn->prepare("SELECT * FROM tblrequest r, tblactivity a WHERE r.request_no = a.activity_request_no AND a.activity_to = ? AND r.request_current_handler LIKE ?  AND r.request_completed = ? AND r.request_is_appealed = 0 ORDER BY a.activity_id DESC");
-                            $sql->bindParam(1, $key['officer_id']);
-                            $sql->bindParam(2, $dept);
-                            $sql->bindParam(3, $completed);
-                            $sql->execute();
-                            if (!empty($row = $sql->fetch(PDO::FETCH_ASSOC))) {
+                            if (!empty($row = $pendingSql->fetch(PDO::FETCH_ASSOC))) {
                                 // echo "<pre>";
                                 // print_r($row);
                                 $officers = explode(',', $row['request_current_handler']);
@@ -329,7 +361,8 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                                             <td class="text-center"><?= $i ?></td>
                                             <td class="text-center"><?= $row['request_no'] ?></td>
                                             <td class="text-center"><?= date('d-m-Y', strtotime($row['request_time'])) ?></td>
-                                            <td class="text-center"><?php echo $exp_date = date('d-m-Y', strtotime($row['request_time'] . ' + 30 days')) ?>
+                                            <td class="text-center">
+                                                <?php echo $exp_date = date('d-m-Y', strtotime($row['request_time'] . ' + 30 days')) ?>
                                                 <?php
                                                 $diff = date_diff(date_create($ThisTime), date_create($exp_date));
                                                 if ($diff->days == 0) {
@@ -361,7 +394,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                                         </tr>
                             <?php
                                         $i++;
-                                    } while ($row = $sql->fetch(PDO::FETCH_ASSOC));
+                                    } while ($row = $pendingSql->fetch(PDO::FETCH_ASSOC));
                                 }
                             }
                             ?>
@@ -386,19 +419,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                         </thead>
                         <tbody>
                             <?php
-                            $i = 1;
-                            $ThisTime = date("Y-m-d H:i:s");
-                            $completed = 0;
-                            $dept = "%" . $key['officer_id'] . "%";
-                            $sql = $conn->prepare("SELECT * FROM tblrequest r, tblactivity a WHERE r.request_no = a.activity_request_no AND a.activity_to = ? AND r.request_current_handler LIKE ? AND r.request_completed = ? AND a.activity_completed = 0 AND r.request_is_appealed = 1 ORDER BY a.activity_id DESC");
-                            $sql->bindParam(1, $key['officer_id']);
-                            $sql->bindParam(2, $dept);
-                            $sql->bindParam(3, $completed);
-                            $sql->execute();
-                            if (!empty($row = $sql->fetch(PDO::FETCH_ASSOC))) {
-                                // echo "<pre>";
-                                // print_r($row);
-                                // exit;
+                            if (!empty($row = $appealSql->fetch(PDO::FETCH_ASSOC))) {
                                 $officers = explode(',', $row['request_current_handler']);
                                 if (in_array($key['officer_id'], $officers)) {
                                     do {
@@ -407,7 +428,8 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                                             <td class="text-center"><?= $i ?></td>
                                             <td class="text-center"><?= $row['request_no'] ?></td>
                                             <td class="text-center"><?= date('d-m-Y', strtotime($row['request_time'])) ?></td>
-                                            <td class="text-center"><?php echo $exp_date = date('d-m-Y', strtotime($row['request_time'] . ' + 30 days')) ?>
+                                            <td class="text-center">
+                                                <?php echo $exp_date = date('d-m-Y', strtotime($row['request_time'] . ' + 30 days')) ?>
                                                 <?php
                                                 $diff = date_diff(date_create($ThisTime), date_create($exp_date));
                                                 if ($diff->days == 0) {
@@ -439,7 +461,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                                         </tr>
                             <?php
                                         $i++;
-                                    } while ($row = $sql->fetch(PDO::FETCH_ASSOC));
+                                    } while ($row = $appealSql->fetch(PDO::FETCH_ASSOC));
                                 }
                             }
                             ?>
@@ -517,7 +539,8 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                                         <td class="text-center"><?= $i ?></td>
                                         <td class="text-center"><?= $row['request_no'] ?></td>
                                         <td class="text-center"><?= date('d-m-Y', strtotime($row['request_time'])) ?></td>
-                                        <td class="text-center"><?php echo $exp_date = date('d-m-Y', strtotime($row['appeal_time'] . ' + 30 days')) ?></td>
+                                        <td class="text-center">
+                                            <?php echo $exp_date = date('d-m-Y', strtotime($row['appeal_time'] . ' + 30 days')) ?></td>
                                         <td class="text-center"><?= $row['appeal_reason'] ?></td>
                                         <td class="text-center">
                                             <a href="./viewRTI.php?reqNo=<?= $row['request_no'] ?>" target="_blank" id="revertButton" class="btn btn-dark">View</a>
