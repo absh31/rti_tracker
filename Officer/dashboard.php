@@ -252,29 +252,57 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
             $depts->bindParam(1, $key['officer_department_id']);
             $depts->execute();
             $monRTI = array();
-            $thisMM = 12;
-            // $thisMM = date("m");
-            for ($i =  0; $i < 6; $i++) {
-                if ($thisMM >= 10)
-                    $time = "____-$thisMM%";
-                else if ($thisMM == 0) {
-                    $thisMM = 12;
-                    $time = "____-$thisMM%";
-                } else
-                    $time = "____-_$thisMM%";
-
-                // echo $time;
-                $months = $conn->prepare("SELECT COUNT(*) AS MONCOUNT FROM tblrequest WHERE request_time LIKE ? AND request_department_id = ?");
-                $months->bindParam(1, $time);
-                $months->bindParam(2, $key['officer_department_id']);
-                $months->execute();
-                // echo $thisMM;
-                $cnt = $months->fetch(PDO::FETCH_ASSOC);
-                $data = ['label' => date("F", mktime(0, 0, 0, $thisMM, 10)), 'y' => $cnt['MONCOUNT']];
-                // print_r($data);
-                array_push($monRTI, $data);
-                $thisMM = ($thisMM - 1) % 12;
+            $thisMM = date("m");
+            $thisYR = date("Y");
+            $prevYR = $thisYR - 1;
+            if ($thisMM < 6) {
+                $val = $thisMM + 7;
+                for ($i = 1; $i <= 6; $i++) {
+                    $val = $val % 12;
+                    // echo $val;
+                    if ($val == 0)
+                        $time = "$prevYR-12-%";
+                    else if ($val >= 10)
+                        $time = "$prevYR-$val-%";
+                    else if ($val > $thisMM)
+                        $time = "$prevYR-0$val-%";
+                    else
+                        $time = "$thisYR-0$val-%";
+                    // echo $time;
+                    $months = $conn->prepare("SELECT COUNT(*) AS MONCOUNT FROM tblrequest WHERE request_time LIKE ? AND request_department_id = ?");
+                    $months->bindParam(1, $time);
+                    $months->bindParam(2, $key['officer_department_id']);
+                    $cnt = $months->fetch(PDO::FETCH_ASSOC);
+                    // print_r($cnt);
+                    $data = ['label' => date("F", mktime(0, 0, 0, $val, 10)), 'y' => $cnt['MONCOUNT']];
+                    // print_r($data);
+                    array_push($monRTI, $data);
+                    $val++;
+                }
             }
+
+            // $thisMM = date("m");
+            // for ($i =  0; $i < 6; $i++) {
+            //     if ($thisMM >= 10)
+            //         $time = "____-$thisMM%";
+            //     else if ($thisMM == 0) {
+            //         $thisMM = 12;
+            //         $time = "____-$thisMM%";
+            //     } else
+            //         $time = "____-_$thisMM%";
+
+            //     // echo $time;
+            //     $months = $conn->prepare("SELECT COUNT(*) AS MONCOUNT FROM tblrequest WHERE request_time LIKE ? AND request_department_id = ?");
+            //     $months->bindParam(1, $time);
+            //     $months->bindParam(2, $key['officer_department_id']);
+            //     $months->execute();
+            //     // echo $thisMM;
+            //     $cnt = $months->fetch(PDO::FETCH_ASSOC);
+            //     $data = ['label' => date("F", mktime(0, 0, 0, $thisMM, 10)), 'y' => $cnt['MONCOUNT']];
+            //     // print_r($data);
+            //     array_push($monRTI, $data);
+            //     $thisMM = ($thisMM - 1) % 12;
+            // }
         ?>
             <br>
             <div class="container-fluid px-5">
