@@ -9,13 +9,9 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
     $sql->bindParam(3, $_SESSION['password']);
     $sql->execute();
     $key = $sql->fetch(PDO::FETCH_ASSOC);
+    // print_r($key);
     if ($sql->rowCount() > 0) {
         // echo $key['officer_id'];
-        if ($key['officer_role_id'] == 2) {
-            //NODAL
-            include "../nav.php";
-            include './nav.php';
-        }
         if ($key['officer_role_id'] == 3) {
             //NODAL
             include "../nav.php";
@@ -33,19 +29,49 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                 array_push($deptRTI, $data);
             }
             // print_r($deptRTI);
+            $monRTI = array();
             $thisMM = date("m");
-            for ($i = $thisMM - 6; $i <= $thisMM; $i++) {
-                if ($i >= 10)
-                    $time = "____-$i%";
-                else
-                    $time = "____-_$i%";
-                $months = $conn->prepare("SELECT COUNT(*) AS MONCOUNT FROM tblrequest WHERE request_time LIKE ?");
-                $months->bindParam(1, $time);
-                $months->execute();
-                $cnt = $months->fetch(PDO::FETCH_ASSOC);
-                $data = ['label' => date("F", mktime(0, 0, 0, $i, 10)), 'y' => $cnt['MONCOUNT']];
-                array_push($monRTI, $data);
+            $thisYR = date("Y");
+            $prevYR = $thisYR - 1;
+            if ($thisMM < 6) {
+                $val = $thisMM + 7;
+                for ($i = 1; $i <= 6; $i++) {
+                    $val = $val % 12;
+                    // echo $val;
+                    if ($val == 0)
+                        $time = "$prevYR-12-%";
+                    else if ($val >= 10)
+                        $time = "$prevYR-$val-%";
+                    else if ($val > $thisMM)
+                        $time = "$prevYR-0$val-%";
+                    else
+                        $time = "$thisYR-0$val-%";
+                    // echo $time;
+                    $months = $conn->prepare("SELECT COUNT(*) AS MONCOUNT FROM tblrequest WHERE request_time LIKE ?");
+                    $months->bindParam(1, $time);
+                    $months->execute();
+                    $cnt = $months->fetch(PDO::FETCH_ASSOC);
+                    // print_r($cnt);
+                    $data = ['label' => date("F", mktime(0, 0, 0, $val, 10)), 'y' => $cnt['MONCOUNT']];
+                    // print_r($data);
+                    array_push($monRTI, $data);
+                    $val++;
+                }
             }
+            // $thisMM = date("m");
+            // for ($i = $thisMM - 6; $i <= $thisMM; $i++) {
+            //     if ($i >= 10)
+            //         $time = "____-$i%";
+            //     else
+            //         $time = "____-_$i%";
+            //     echo $time;
+            //     $months = $conn->prepare("SELECT COUNT(*) AS MONCOUNT FROM tblrequest WHERE request_time LIKE ?");
+            //     $months->bindParam(1, $time);
+            //     $months->execute();
+            //     $cnt = $months->fetch(PDO::FETCH_ASSOC);
+            //     $data = ['label' => date("F", mktime(0, 0, 0, $i, 10)), 'y' => $cnt['MONCOUNT']];
+            //     array_push($monRTI, $data);
+            // }
             // print_r($monRTI);
 ?>
             <br>
@@ -141,7 +167,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                                     echo $count['appealedRti'];
                                     ?>
                                 </h5>
-                                <p class="card-text text-center"  style="font-size: 20px; font-weight: 500;">Total Appeals</p>
+                                <p class="card-text text-center" style="font-size: 20px; font-weight: 500;">Total Appeals</p>
                             </div>
                         </div>
                     </div>
@@ -189,7 +215,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                         }]
                     });
                     chart.render();
-                    //CanvasJS spline chart to show orders from Jan 2015 to Dec 2015
+                    //CanvasJS spline chart to show orders
                     var ordersSplineChart = new CanvasJS.Chart("chartContainer1", {
                         animationEnabled: true,
                         backgroundColor: "transparent",
@@ -212,6 +238,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                             dataPoints: <?php echo json_encode($monRTI, JSON_NUMERIC_CHECK); ?>
                         }]
                     });
+                    console.log(ordersSplineChart)
                     ordersSplineChart.render();
                 }
             </script>
@@ -395,35 +422,84 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
             // exit;
             include "../nav.php";
             include './nav.php';
-            $depts = $conn->prepare("SELECT department_name, department_id FROM tbldepartment WHERE department_id = ?");
-            $depts->bindParam(1, $key['officer_department_id']);
-            $depts->execute();
             $monRTI = array();
-            $thisMM = 12;
-            // $thisMM = date("m");
-            for ($i =  0; $i < 6; $i++) {
-                if ($thisMM >= 10)
-                    $time = "____-$thisMM%";
-                else if ($thisMM == 0) {
-                    $thisMM = 12;
-                    $time = "____-$thisMM%";
-                } else
-                    $time = "____-_$thisMM%";
-
-                // echo $time;
-                $months = $conn->prepare("SELECT COUNT(*) AS MONCOUNT FROM tblrequest WHERE request_time LIKE ? AND request_department_id = ?");
-                $months->bindParam(1, $time);
-                $months->bindParam(2, $key['officer_department_id']);
-                $months->execute();
-                // echo $thisMM;
-                $cnt = $months->fetch(PDO::FETCH_ASSOC);
-                $data = ['label' => date("F", mktime(0, 0, 0, $thisMM, 10)), 'y' => $cnt['MONCOUNT']];
-                // print_r($data);
-                array_push($monRTI, $data);
-                $thisMM = ($thisMM - 1) % 12;
+            $thisMM = date("m");
+            $thisYR = date("Y");
+            $prevYR = $thisYR - 1;
+            if ($thisMM < 6) {
+                $val = $thisMM + 7;
+                for ($i = 1; $i <= 6; $i++) {
+                    $val = $val % 12;
+                    // echo $val;
+                    if ($val == 0)
+                        $time = "$prevYR-12-%";
+                    else if ($val >= 10)
+                        $time = "$prevYR-$val-%";
+                    else if ($val > $thisMM)
+                        $time = "$prevYR-0$val-%";
+                    else
+                        $time = "$thisYR-0$val-%";
+                    // echo $time;
+                    $months = $conn->prepare("SELECT COUNT(*) AS MONCOUNT, appeal_id FROM tblappeal WHERE appeal_time LIKE ?");
+                    $months->bindParam(1, $time);
+                    $months->execute();
+                    $cnt = $months->fetch(PDO::FETCH_ASSOC);
+                    // print_r($cnt);
+                    $data = ['label' => date("F", mktime(0, 0, 0, $val, 10)), 'y' => $cnt['MONCOUNT']];
+                    // print_r($data);
+                    array_push($monRTI, $data);
+                    $val++;
+                }
             }
-            ?>
-            <?php
+            // print_r($monRTI);
+            // exit;
+        ?>
+            <br>
+            <div class="container-fluid px-5">
+                <div class="row">
+                    <div class="col">
+                        <div class="card">
+                            <h4 class="card-header">Appeal history</h4>
+                            <div class="card-body" style="height: 450px;">
+                                <div id="chartContainer1"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <br><br>
+                </div>
+                <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+            </div>
+            <br><br>
+            <script>
+                window.onload = function() {
+                    //CanvasJS spline chart to show orders from Jan 2015 to Dec 2015
+                    var ordersSplineChart = new CanvasJS.Chart("chartContainer1", {
+                        animationEnabled: true,
+                        backgroundColor: "transparent",
+                        theme: "theme2",
+                        toolTip: {
+                            borderThickness: 0,
+                            cornerRadius: 0
+                        },
+                        axisX: {
+                            labelFontSize: 14,
+                            lineThickness: 2
+                        },
+                        axisY: {
+                            gridThickness: 0,
+                            labelFontSize: 14,
+                            lineThickness: 2
+                        },
+                        data: [{
+                            type: "spline",
+                            dataPoints: <?php echo json_encode($monRTI, JSON_NUMERIC_CHECK); ?>
+                        }]
+                    });
+                    console.log(ordersSplineChart)
+                    ordersSplineChart.render();
+                }
+            </script>
+        <?php
         }
         include '../footer.php'; ?>
         <script>

@@ -34,9 +34,9 @@ if (isset($_POST['AuthLogin'])) {
         $_SESSION['auth'] = $type;
 
         $today = date("Y-m-d H:i:s");
-        // $alert = $conn->prepare("SELECT * FROM tblrequest WHERE DATEDIFF(?, request_time) > 15");
-        $alert = $conn->prepare("SELECT * FROM tblrequest");
-        // $alert->bindParam(1, $today);
+        $alert = $conn->prepare("SELECT * FROM tblrequest WHERE DATEDIFF(?, request_time) > 15");
+        // $alert = $conn->prepare("SELECT * FROM tblrequest");
+        $alert->bindParam(1, $today);
         $alert->execute();
         if ($alert->rowCount() > 0) {
           $to = $row['officer_email'];
