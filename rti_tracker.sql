@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 07, 2023 at 04:19 PM
+-- Generation Time: Feb 08, 2023 at 06:25 PM
 -- Server version: 10.4.22-MariaDB
 -- PHP Version: 8.0.13
 
@@ -47,19 +47,6 @@ CREATE TABLE `tblactivity` (
 --
 
 INSERT INTO `tblactivity` (`activity_id`, `activity_request_id`, `activity_request_no`, `activity_is_appealed`, `activity_from`, `activity_to`, `activity_type`, `activity_remarks`, `activity_completed`, `activity_status`, `activity_time`, `activity_documents`) VALUES
-(18, 0, '20230204080946', '0', 'Applicant', 'Nodal Officer', 'Filed', '', 0, 'Application filed successfully', '2023-02-04 19:09:46', '10'),
-(19, 0, '20230204080946', '0', 'nodal', '5', 'Forwarded', 'Get it done', 0, 'Forwarded to Departmental Officer Vaishnavi Barot', '2023-02-04 19:10:56', '10'),
-(20, 0, '20230204080946', '0', 'Vaishnavi Barot', 'Nodal Officer', 'Revert', 'ALL DONE', 0, 'Reverted back to the Nodal Officer.', '2023-02-04 19:11:29', '11'),
-(21, 0, '20230204080946', '0', 'Nodal Officer', 'Applicant', 'Closed', 'FINAL SUBMIT BY NODAL', 0, 'Application closed successfully', '2023-02-04 19:11:52', NULL),
-(22, 0, '20230204082135', '0', 'Applicant', 'Nodal Officer', 'Filed', '', 0, 'Application filed successfully', '2023-02-04 19:21:35', '12'),
-(23, 0, '20230204082135', '0', 'nodal', '6', 'Forwarded', 'Get data fast', 0, 'Forwarded to Departmental Officer Mihir Someshwara', '2023-02-05 10:43:29', '12'),
-(24, 0, '20230204082537', '0', 'Applicant', 'Nodal Officer', 'Filed', '', 0, 'Application filed successfully', '2023-02-04 19:25:37', ''),
-(25, 0, '20230204082537', '0', 'nodal', '6', 'Forwarded', 'Railway data', 0, 'Forwarded to Departmental Officer Dharmit Shah', '2023-02-04 19:28:32', NULL),
-(26, 0, '20230204082537', '0', 'Dharmit Shah', 'Nodal Officer', 'Revert', 'done done', 1, 'Reverted back to the Nodal Officer.', '2023-02-05 11:27:52', '13'),
-(27, 0, '20230204082537', '0', 'Nodal Officer', 'Applicant', 'Closed', 'ALl done', 0, 'Application closed successfully', '2023-02-04 19:32:46', NULL),
-(28, 0, '20230204082537', '1', 'Appellate', 'Nodal Officer', 'Appeal Forward', 'reverted appplication', 0, 'Reverted back to the Nodal Officer for appeal.', '2023-02-05 10:51:15', NULL),
-(29, 0, '20230204082537', '1', 'nodal', '6', 'Forwarded', 'get done again', 0, 'Forwarded to Departmental Officer Dharmit Shah', '2023-02-05 10:51:20', ''),
-(30, 0, '20230204082537', '1', 'Dharmit Shah', 'Nodal Officer', 'Revert', 'done again', 0, 'Reverted back to the Nodal Officer.', '2023-02-05 10:58:25', '14'),
 (31, 0, '20230205125750', '0', 'Applicant', 'Nodal Officer', 'Filed', '', 1, 'Application filed successfully', '2023-02-05 12:01:50', ''),
 (32, 0, '20230205125750', '0', 'nodal', '10', 'Forwarded', 'get data fast', 1, 'Forwarded to Departmental Officer Abhi Shah', '2023-02-05 12:08:09', ''),
 (33, 0, '20230205125750', '0', 'Abhi Shah', 'Nodal Officer', 'Revert', 'first data done', 1, 'Reverted back to the Nodal Officer.', '2023-02-05 12:10:08', '15'),
@@ -67,7 +54,9 @@ INSERT INTO `tblactivity` (`activity_id`, `activity_request_id`, `activity_reque
 (35, 0, '20230205125750', '1', 'Appellate Officer', 'Nodal Officer', 'Appeal Forward', 'appealed rti', 1, 'Reverted back to the Nodal Officer for appeal.', '2023-02-05 12:38:24', NULL),
 (36, 0, '20230205125750', '0', 'nodal', '10', 'Forwarded', '', 1, 'Forwarded to Departmental Officer Abhi Shah', '2023-02-05 12:50:34', ''),
 (37, 0, '20230205125750', '0', 'Abhi Shah', 'Nodal Officer', 'Revert', 'done again', 1, 'Reverted back to the Nodal Officer.', '2023-02-05 12:51:08', '16'),
-(38, 0, '20230205125750', '0', 'Nodal Officer', 'Applicant', 'Closed', 'CLOSe again', 0, 'Application closed successfully', '2023-02-05 12:51:08', NULL);
+(38, 0, '20230205125750', '0', 'Nodal Officer', 'Applicant', 'Closed', 'CLOSe again', 0, 'Application closed successfully', '2023-02-05 12:51:08', NULL),
+(39, 0, '20230207052436', '0', 'Applicant', 'Nodal Officer', 'Filed', '', 1, 'Application filed successfully', '2023-02-07 16:32:13', ''),
+(40, 0, '20230207052436', '0', 'nodal', '6', 'Forwarded', 'get data fast', 0, 'Forwarded to Departmental Officer Dharmit Shah', '2023-02-07 16:32:13', '');
 
 -- --------------------------------------------------------
 
@@ -90,7 +79,6 @@ CREATE TABLE `tblappeal` (
 --
 
 INSERT INTO `tblappeal` (`appeal_id`, `appeal_request_no`, `appeal_reason`, `appeal_completed`, `appeal_time`, `appeal_remarks`, `appeal_other`) VALUES
-(3, '20230204082537', 'ABC', '0', '2023-02-04 19:34:33', '', ''),
 (4, '20230205125750', 'PQR', '0', '2023-02-05 12:12:24', '', '');
 
 -- --------------------------------------------------------
@@ -167,11 +155,6 @@ CREATE TABLE `tbldocument` (
 --
 
 INSERT INTO `tbldocument` (`document_id`, `document_request_id`, `document_title`, `document_path`, `document_type`, `document_remarks`, `document_other`) VALUES
-(10, '20230204080946', 'e4da3b7fbbce2345d7772b0674a318d5_attachment.pdf', '../bplFiles/e4da3b7fbbce2345d7772b0674a318d5_attachment.pdf', 'sample doc', '', ''),
-(11, '20230204080946', '22de11b8ba2c0ca610fd5ebb1bb0688b_attachment1.pdf', '../../uploads/22de11b8ba2c0ca610fd5ebb1bb0688b_attachment1.pdf', 'attachment', '', ''),
-(12, '20230204082135', 'e4da3b7fbbce2345d7772b0674a318d5_attachment.pdf', '../bplFiles/e4da3b7fbbce2345d7772b0674a318d5_attachment.pdf', 'sample doc', '', ''),
-(13, '20230204082537', 'bf264f60593dd822a327a927d35c2ef8_attachment1.pdf', '../../uploads/bf264f60593dd822a327a927d35c2ef8_attachment1.pdf', 'attachment', '', ''),
-(14, '20230204082537', 'bf264f60593dd822a327a927d35c2ef8_attachment1.jpg', '../../uploads/bf264f60593dd822a327a927d35c2ef8_attachment1.jpg', 'attachment', '', ''),
 (15, '20230205125750', '07f5061b0773dd2114e51bb406c70fb0_attachment1.pdf', '../../uploads/07f5061b0773dd2114e51bb406c70fb0_attachment1.pdf', 'attachment', '', ''),
 (16, '20230205125750', '07f5061b0773dd2114e51bb406c70fb0_attachment1.pdf', '../../uploads/07f5061b0773dd2114e51bb406c70fb0_attachment1.pdf', 'attachment', '', '');
 
@@ -188,8 +171,16 @@ CREATE TABLE `tblnotifications` (
   `msg` varchar(256) NOT NULL,
   `request_no` varchar(256) NOT NULL,
   `time` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `is_deleted` tinyint(1) NOT NULL DEFAULT 0
+  `nodal_del` tinyint(1) NOT NULL DEFAULT 0,
+  `officer_del` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `tblnotifications`
+--
+
+INSERT INTO `tblnotifications` (`id`, `from`, `to`, `msg`, `request_no`, `time`, `nodal_del`, `officer_del`) VALUES
+(1, 'Nodal Officer', '6', 'jaldi karo\r\n', '20230207052436', '2023-02-07 18:14:21', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -219,10 +210,10 @@ CREATE TABLE `tblofficer` (
 INSERT INTO `tblofficer` (`officer_id`, `officer_department_id`, `officer_role_id`, `officer_username`, `officer_password`, `officer_name`, `officer_email`, `officer_mobile`, `officer_last_login`, `officer_last_ip`, `officer_other`, `is_active`) VALUES
 (1, '', '1', 'admin', 'b18a8d2ac7e157f755aa632a60296506', 'admin', 'abhishah3102@gmail.com', '7041308465', '2023-01-31 22-57-37', '::1', '', 1),
 (2, '', '2', 'appellate', 'b18a8d2ac7e157f755aa632a60296506', 'Appellate Officer', 'mihirsomeshwara0712@gmail.com', '7041308465', '2023-02-05 17-44-05', '::1', '', 1),
-(3, '', '3', 'nodal', 'b18a8d2ac7e157f755aa632a60296506', 'nodal', 'mihirsomeshwara0712@gmail.com', '7041308465', '2023-02-05 16-01-42', '::1', '', 1),
+(3, '', '3', 'nodal', 'b18a8d2ac7e157f755aa632a60296506', 'nodal', 'mihirsomeshwara0712@gmail.com', '7041308465', '2023-02-07 20-50-59', '::1', '', 1),
 (4, '1', '4', 'education', 'd0bb80aabb8619b6e35113f02e72752b', 'Mihir Someshwara', 'mihirsomeshwara0712@gmail.com', '7041308465', '2023-02-05 00-26-39', '::1', 'edit done', 1),
 (5, '2', '4', 'roads', 'c8e66b33fa1e9e0a922075366ecde908', 'Vaishnavi Barot', 'asdf@asf.com', '1321321321', '2023-02-05 00-41-08', '::1', '', 1),
-(6, '4', '4', 'rail', '70036b7bb753dee338a8a6baa67e2103', 'Dharmit Shah', 'dharmit.shah2001@gmail.com', '9327191260', '2023-02-05 16-02-41', '::1', '', 1),
+(6, '4', '4', 'rail', '70036b7bb753dee338a8a6baa67e2103', 'Dharmit Shah', 'dharmit.shah2001@gmail.com', '9327191260', '2023-02-07 21-59-47', '::1', '', 1),
 (7, '5', '4', 'dahd', 'dahd', 'Diti Soni', 'soniditi0105@gmail.com', '9327191260', '2022-12-09 00-28-35', '::1', '', 0),
 (8, '6', '4', 'consumer', '1005b14bd29466723ace30d26f602f5b', 'Bhavika Balasra', 'bhavikabalasra12@gmail.com', '9327191260', '', '', '', 1),
 (10, '7', '4', 'defence', '302109d01bd6ec86b692560b314d4658', 'Abhi Shah', 'mihirsomeshwara0712@gmail.com', '9327191260', '2023-02-05 17-32-08', '::1', '', 1),
@@ -270,10 +261,8 @@ CREATE TABLE `tblrequest` (
 --
 
 INSERT INTO `tblrequest` (`request_id`, `request_applicant_id`, `request_department_id`, `request_no`, `request_from_bpl`, `request_bpl_no`, `request_bpl_yoi`, `request_bpl_ia`, `request_bpl_file`, `request_address`, `request_pincode`, `request_country`, `request_state`, `request_place_type`, `request_text`, `request_mode`, `request_base_pay`, `request_is_base_pay`, `request_add_pay`, `request_is_add_pay`, `request_current_handler`, `request_is_appealed`, `request_status`, `request_completed`, `request_last_update_time`, `request_time`, `request_summary`, `request_other`) VALUES
-(5, 5, 3, '20230204080946', 'No', 'NULL', 'NULL', 'NULL', 'NULL', '18 Maharaj Jagdish Park society part -2, Baherampura, Ahmedabad', '987987', 'India', 'Gujarat', 'Urban', 'Health Data', 'Online', '20', '1', '120', '1', 'none', '0', 'Application closed successfully', '1', '2023-02-04 19:09:46', '2023-02-04 19:09:46', '', ''),
-(6, 5, 1, '20230204082135', 'No', 'NULL', 'NULL', 'NULL', 'NULL', '18 Maharaj Jagdish Park society part -2, Baherampura, Ahmedabad', '987987', 'India', 'Gujarat', 'Urban', 'Test education', 'Online', '20', '1', '0', '0', '6', '0', 'Requested', '0', '2023-02-04 19:21:35', '2023-02-04 19:21:35', '', ''),
-(7, 5, 4, '20230204082537', 'No', 'NULL', 'NULL', 'NULL', 'NULL', '18 Maharaj Jagdish Park society part -2, Baherampura, Ahmedabad', '987987', 'India', 'Gujarat', 'Urban', 'Railway data', 'Online', '20', '1', '60', '0', 'Nodal Officer', '1', 'Appealed', '0', '2023-02-04 19:25:37', '2023-02-04 19:25:37', '', ''),
-(8, 5, 7, '20230205125750', 'No', 'NULL', 'NULL', 'NULL', 'NULL', '18 Maharaj Jagdish Park society part -2, Baherampura, Ahmedabad', '987987', 'India', 'Gujarat', 'Urban', 'New defence data', 'Online', '20', '1', '60', '1', 'none', '1', 'Application closed successfully', '1', '2023-02-05 11:57:50', '2023-02-05 11:57:50', '', '');
+(8, 5, 7, '20230205125750', 'No', 'NULL', 'NULL', 'NULL', 'NULL', '18 Maharaj Jagdish Park society part -2, Baherampura, Ahmedabad', '987987', 'India', 'Gujarat', 'Urban', 'New defence data', 'Online', '20', '1', '60', '1', 'none', '1', 'Application closed successfully', '1', '2023-02-05 11:57:50', '2023-02-05 11:57:50', '', ''),
+(9, 5, 4, '20230207052436', 'No', 'NULL', 'NULL', 'NULL', 'NULL', '18 Maharaj Jagdish Park society part -2, Baherampura, Ahmedabad', '987987', 'India', 'Gujarat', 'Urban', 'Get all rail data', 'Online', '20', '1', '0', '0', '6', '0', 'Requested', '0', '2023-02-07 16:24:36', '2023-02-07 16:24:36', '', '');
 
 -- --------------------------------------------------------
 
@@ -396,7 +385,7 @@ ALTER TABLE `tbltransaction`
 -- AUTO_INCREMENT for table `tblactivity`
 --
 ALTER TABLE `tblactivity`
-  MODIFY `activity_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `activity_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT for table `tblappeal`
@@ -426,7 +415,7 @@ ALTER TABLE `tbldocument`
 -- AUTO_INCREMENT for table `tblnotifications`
 --
 ALTER TABLE `tblnotifications`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `tblofficer`
@@ -438,7 +427,7 @@ ALTER TABLE `tblofficer`
 -- AUTO_INCREMENT for table `tblrequest`
 --
 ALTER TABLE `tblrequest`
-  MODIFY `request_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `request_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `tblrole`
