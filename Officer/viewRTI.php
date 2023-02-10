@@ -240,7 +240,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                             <div class="headingsall">
                                 <div class="form-group" id="textDiv">
                                     <label for='text'>Attachments for RTI Application :</label>
-                                    <input class="form-control" type="file" name="attachments[]" required multiple>
+                                    <input class="form-control" type="file" name="attachments[]" multiple>
                                 </div>
                             </div>
                             <br>
@@ -249,7 +249,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
 
                                 <div class="form-group" id="phoneDiv">
                                     <label for='addFees'>Fees amount :</label>
-                                    <input type="text" name="addFees" inputmode="numeric" id="addFees" class="form-control" oninput="validateNumber(this)" required>
+                                    <input type="text" name="addFees" inputmode="numeric" id="addFees" class="form-control" oninput="validateNumber(this)">
                                 </div>
                             </div>
                             <br>
@@ -273,22 +273,22 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
             </div>
         </div>
         <script>
-            const validateTextarea = function(usr) {
-                var regexp = /^[A-Za-z0-9.,\w-\n ]+$/;
-                var input = usr.value
-                if (input != "") {
-                    if (regexp.test(input)) {
-                        if (input.length > 3000) {
-                            alert("Maximum characters limit reached!")
-                            usr.value = input.slice(0, 3000);
-                        } else
-                            return true
-                    } else {
-                        alert("Special characters are not allowed!")
-                        usr.value = null;
-                    }
-                }
-            }
+            // const validateTextarea = function(usr) {
+            //     var regexp = /^[A-Za-z0-9.,\w-\n ]+$/;
+            //     var input = usr.value
+            //     if (input != "") {
+            //         if (regexp.test(input)) {
+            //             if (input.length > 3000) {
+            //                 alert("Maximum characters limit reached!")
+            //                 usr.value = input.slice(0, 3000);
+            //             } else
+            //                 return true
+            //         } else {
+            //             alert("Special characters are not allowed!")
+            //             usr.value = null;
+            //         }
+            //     }
+            // }
             const validateNumber = function(usr) {
                 var regexp = /^[0-9 ]+$/;
                 var input = usr.value

@@ -6,7 +6,7 @@
         <nav class="navbar sticky-top navbar-expand-lg px-0 navbar-dark" id="navigation" style="background-color : black">
             <div class="container-fluid px-5">
                 <!-- <a class="navbar-brand fw-bold" href="./index.php">GURUKRUPA ENTERPRISE</a> -->
-                <a class="navbar-brand" href="index.php" style="font-weight: 800;">
+                <a class="navbar-brand"  style="font-weight: 800;">
                     <!-- <img src="logo.png" width="45"height="45" class="d-inline-block align-text-center" style="margin-right:2px;"> -->
                     APPELLATE LOGIN
                 </a>
@@ -45,7 +45,7 @@
         <nav class="navbar sticky-top navbar-expand-lg px-0 navbar-dark" id="navigation" style="background-color : black">
             <div class="container-fluid px-5">
                 <!-- <a class="navbar-brand fw-bold" href="./index.php">GURUKRUPA ENTERPRISE</a> -->
-                <a class="navbar-brand" href="index.php" style="font-weight: 800;">
+                <a class="navbar-brand" style="font-weight: 800;">
                     <!-- <img src="logo.png" width="45"height="45" class="d-inline-block align-text-center" style="margin-right:2px;"> -->
                     <?php
                     echo $key['officer_role_id'] == "1" ? "ADMIN LOGIN" : ($key['officer_role_id'] == "3" ? "NODAL LOGIN" : ($key['officer_role_id'] == "4" ? "DEPARTMENT LOGIN" : ""));
@@ -101,7 +101,7 @@
         <nav class="navbar sticky-top navbar-expand-lg px-0 navbar-dark" id="navigation" style="background-color : black">
             <div class="container-fluid px-5">
                 <!-- <a class="navbar-brand fw-bold" href="./index.php">GURUKRUPA ENTERPRISE</a> -->
-                <a class="navbar-brand" href="index.php" style="font-weight: 600;">
+                <a class="navbar-brand" style="font-weight: 600;">
                     <!-- <img src="logo.png" width="45"height="45" class="d-inline-block align-text-center" style="margin-right:2px;"> -->
                     <?php echo strtoupper($row['department_name']); ?>
 

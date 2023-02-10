@@ -272,6 +272,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                     $months = $conn->prepare("SELECT COUNT(*) AS MONCOUNT FROM tblrequest WHERE request_time LIKE ? AND request_department_id = ?");
                     $months->bindParam(1, $time);
                     $months->bindParam(2, $key['officer_department_id']);
+                    $months->execute();
                     $cnt = $months->fetch(PDO::FETCH_ASSOC);
                     // print_r($cnt);
                     $data = ['label' => date("F", mktime(0, 0, 0, $val, 10)), 'y' => $cnt['MONCOUNT']];
@@ -281,6 +282,35 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                 }
             }
 
+            // $monRTI = array();
+            // $thisMM = date("m");
+            // $thisYR = date("Y");
+            // $prevYR = $thisYR - 1;
+            // if ($thisMM < 6) {
+            //     $val = $thisMM + 7;
+            //     for ($i = 1; $i <= 6; $i++) {
+            //         $val = $val % 12;
+            //         // echo $val;
+            //         if ($val == 0)
+            //             $time = "$prevYR-12-%";
+            //         else if ($val >= 10)
+            //             $time = "$prevYR-$val-%";
+            //         else if ($val > $thisMM)
+            //             $time = "$prevYR-0$val-%";
+            //         else
+            //             $time = "$thisYR-0$val-%";
+            //         // echo $time;
+            //         $months = $conn->prepare("SELECT COUNT(*) AS MONCOUNT FROM tblrequest WHERE request_time LIKE ?");
+            //         $months->bindParam(1, $time);
+            //         $months->execute();
+            //         $cnt = $months->fetch(PDO::FETCH_ASSOC);
+            //         // print_r($cnt);
+            //         $data = ['label' => date("F", mktime(0, 0, 0, $val, 10)), 'y' => $cnt['MONCOUNT']];
+            //         // print_r($data);
+            //         array_push($monRTI, $data);
+            //         $val++;
+            //     }
+            // }
             // $thisMM = date("m");
             // for ($i =  0; $i < 6; $i++) {
             //     if ($thisMM >= 10)
@@ -437,7 +467,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                         },
                         data: [{
                             type: "spline",
-                            dataPoints: <?php echo json_encode(array_reverse($monRTI), JSON_NUMERIC_CHECK); ?>
+                            dataPoints: <?php echo json_encode(($monRTI), JSON_NUMERIC_CHECK); ?>
                         }]
                     });
                     ordersSplineChart.render();
