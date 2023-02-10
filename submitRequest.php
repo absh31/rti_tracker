@@ -17,6 +17,7 @@ if (!isset($_SESSION['otpVerified'])) {
     $address = $_SESSION['address'] = $_POST['address'];
     $pincode = $_SESSION['pincode'] = $_POST['pincode'];
     $country = $_SESSION['country'] = $_POST['country'];
+    $aadhar = $_SESSION['aadharNumber'] = $_POST['aadharNumber'];
     $countryName = $_SESSION['countryName'] = $_POST['countryName'];
     if ($country == "Other") {
         $country = $countryName;

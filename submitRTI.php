@@ -67,6 +67,14 @@ if (isset($_SESSION['existingUser']) && $_SESSION['existingUser'] == 1 && $_SESS
                         <br>
                         <div class="headingsall">
 
+                            <div class="form-group" id="phoneDiv">
+                                <label for='aadharNumber'>Aadhar Card No.:</label>
+                                <input type="text" value="<?= $applicant['applicant_aadhar'] ?>" name="aadharNumber" minlength="12" maxlength="12" inputmode="numeric" id="aadharCard" class="form-control" oninput="validateAadhar(this)" required>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="headingsall">
+
                             <div class="radio d-md-flex">
                                 <label for="s_name" class="col-form-label"><span class="text-danger">*</span> Gender:</label>
                                 <div class="form-check mx-md-5 my-2">
@@ -245,12 +253,29 @@ if (isset($_SESSION['existingUser']) && $_SESSION['existingUser'] == 1 && $_SESS
             var input = usr.value
             if (input != "") {
                 if (regexp.test(input)) {
-                    if (input[0] == "0" || input[0] == "1" || input[0] == "2" || input[0] == "3" || input[0] == "4" || input[0] == "5"){
+                    if (input[0] == "0" || input[0] == "1" || input[0] == "2" || input[0] == "3" || input[0] == "4" || input[0] == "5") {
                         alert("Mobile number must start from 6, 7, 8 or 9!")
                         usr.value = "";
                     } else if (input.length > 10) {
                         alert("Mobile number should contain only 10 digits!")
                         usr.value = input.slice(0, 10);
+                    } else
+                        return true
+                } else {
+                    alert("Only numbers are allowed!")
+                    usr.value = null;
+                }
+            }
+        }
+
+        const validateAadhar = function(usr) {
+            var regexp = /^[0-9 ]+$/;
+            var input = usr.value
+            if (input != "") {
+                if (regexp.test(input)) {
+                    if (input.length > 12) {
+                        alert("Aadhar Card should contain only 12 digits!")
+                        usr.value = input.slice(0, 12);
                     } else
                         return true
                 } else {
@@ -266,7 +291,7 @@ if (isset($_SESSION['existingUser']) && $_SESSION['existingUser'] == 1 && $_SESS
             console.log(input)
             if (input != "") {
                 if (regexp.test(input)) {
-                    if (input[0] == "0"){
+                    if (input[0] == "0") {
                         alert("Pincode should not start from 0!")
                         usr.value = input.slice(0, 6);
                     } else if (input.length > 6) {
@@ -373,6 +398,14 @@ if (isset($_SESSION['existingUser']) && $_SESSION['existingUser'] == 1 && $_SESS
                             <div class="form-group" id="phoneDiv">
                                 <label for='phoneNumber'>Phone Number :</label>
                                 <input type="text" name="phoneNumber" minlength="10" maxlength="10" inputmode="numeric" id="phoneNumber" class="form-control" oninput="validateNumber(this)">
+                            </div>
+                        </div>
+                        <br>
+                        <div class="headingsall">
+
+                            <div class="form-group" id="phoneDiv">
+                                <label for='aadharNumber'>Aadhar Card No.:</label>
+                                <input type="text" name="aadharNumber" minlength="12" maxlength="12" inputmode="numeric" id="aadharCard" class="form-control" oninput="validateAadhar(this)" required>
                             </div>
                         </div>
                         <br>
@@ -551,7 +584,7 @@ if (isset($_SESSION['existingUser']) && $_SESSION['existingUser'] == 1 && $_SESS
             var input = usr.value
             if (input != "") {
                 if (regexp.test(input)) {
-                    if (input[0] == "0" || input[0] == "1" || input[0] == "2" || input[0] == "3" || input[0] == "4" || input[0] == "5"){
+                    if (input[0] == "0" || input[0] == "1" || input[0] == "2" || input[0] == "3" || input[0] == "4" || input[0] == "5") {
                         alert("Mobile number must start from 6, 7, 8 or 9!")
                         usr.value = "";
                     } else if (input.length > 10) {
@@ -572,7 +605,7 @@ if (isset($_SESSION['existingUser']) && $_SESSION['existingUser'] == 1 && $_SESS
             console.log(input)
             if (input != "") {
                 if (regexp.test(input)) {
-                    if (input[0] == "0"){
+                    if (input[0] == "0") {
                         alert("Pincode should not start from 0!")
                         usr.value = "";
                     } else if (input.length > 6) {

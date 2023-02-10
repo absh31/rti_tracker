@@ -1,3 +1,4 @@
+<link href="./Backend/timeline.css" rel="stylesheet">
 <?php
 session_start();
 include "./header.php";

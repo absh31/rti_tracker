@@ -28,7 +28,8 @@ if (!isset($_POST['requestRTI'])) {
         $gender = $_SESSION['gender'];
         $eduStatus = $_SESSION['educationalStatus'];
         $edu = $_SESSION['education'];
-        $sql = $conn->prepare("INSERT INTO `tblapplicant` (`applicant_name`, `applicant_email`, `applicant_mobile`, `applicant_phone`, `applicant_gender`, `applicant_education`, `applicant_more_education`) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        $aadhar = $_SESSION['aadharNumber'];
+        $sql = $conn->prepare("INSERT INTO `tblapplicant` (`applicant_name`, `applicant_email`, `applicant_mobile`, `applicant_phone`, `applicant_gender`, `applicant_education`, `applicant_more_education`, `applicant_aadhar`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
         $sql->bindParam(1, $name);
         $sql->bindParam(2, $email);
         $sql->bindParam(3, $mobileNumber);
@@ -36,6 +37,7 @@ if (!isset($_POST['requestRTI'])) {
         $sql->bindParam(5, $gender);
         $sql->bindParam(6, $eduStatus);
         $sql->bindParam(7, $edu);
+        $sql->bindParam(8, $aadhar);
         $sql->execute();
     }
 
