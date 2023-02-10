@@ -217,27 +217,29 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                                         <?php
                                         $docType = 'attachment';
                                         $activity_to = "Nodal Officer";
-                                        $sql1 = $conn->prepare("SELECT * FROM tblactivity WHERE activity_request_no = ? AND activity_to = ?");
+                                        $sql1 = $conn->prepare("SELECT * FROM tblactivity WHERE activity_request_no = ? AND activity_to = ? ORDER BY activity_id DESC");
                                         $sql1->bindParam(1, $reqNo);
                                         $sql1->bindParam(2, $activity_to);
                                         $sql1->execute();
                                         $a1 = $sql1->fetch(PDO::FETCH_ASSOC);
+                                        // print_r($a1);
                                         if (!empty($a1)) {
                                             $docs = $a1['activity_documents'];
-                                            $sql2 = $conn->prepare("SELECT * FROM tbldocument WHERE document_id IN ('$docs') AND document_type = '$docType'");
-                                            $sql2->execute();
-                                            $docRow = $sql2->fetch(PDO::FETCH_ASSOC);
+                                            $docids = explode(',', $docs);
                                             $i = 1;
-                                            if (!empty($docRow)) {
-                                                do {
-                                        ?>
-                                                    <a class="btn btn-dark mx-2" href="../uploads/<?php echo $docRow['document_title'] ?>" target="_blank">View Attachment <?= $i++ ?></a>
-                                                <?php
-                                                } while ($docRow = $sql2->fetch(PDO::FETCH_ASSOC));
-                                            } else {
-                                                ?>
-                                                No Attachmentss
+                                            foreach ($docids as $docId) {
+                                                $sql2 = $conn->prepare("SELECT * FROM tbldocument WHERE document_id = $docId AND document_type = '$docType'");
+                                                $sql2->execute();
+                                                $docRow = $sql2->fetch(PDO::FETCH_ASSOC);
+                                                if (!empty($docRow)) {
+                                                    ?>
+                                                        <a class="btn btn-dark mx-2" href="../uploads/<?php echo $docRow['document_title'] ?>" target="_blank">View Attachment <?= $i++ ?></a>
+                                                        <?php
+                                                } else {
+                                                    ?>
+                                                    No Attachmentss
                                             <?php
+                                                }
                                             }
                                             ?>
                                         <?php
