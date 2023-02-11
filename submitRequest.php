@@ -1,5 +1,6 @@
 <?php
 session_start();
+include './crypto.php';
 include './header.php';
 include './nav.php';
 if (!isset($_SESSION['otpVerified'])) {
@@ -17,7 +18,7 @@ if (!isset($_SESSION['otpVerified'])) {
     $address = $_SESSION['address'] = $_POST['address'];
     $pincode = $_SESSION['pincode'] = $_POST['pincode'];
     $country = $_SESSION['country'] = $_POST['country'];
-    $aadhar = $_SESSION['aadharNumber'] = $_POST['aadharNumber'];
+    $aadhar = $_SESSION['aadharNumber'] = encryptAadhar($_POST['aadharNumber'], $ciphering, $encryption_key, $options, $encryption_iv);
     $countryName = $_SESSION['countryName'] = $_POST['countryName'];
     if ($country == "Other") {
         $country = $countryName;

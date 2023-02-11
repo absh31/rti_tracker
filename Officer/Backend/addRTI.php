@@ -1,5 +1,6 @@
 <?php
 session_start();
+include '../../crypto.php';
 include '../../connection.php';
 if (!isset($_POST['personalRTI'])) {
     echo '<script>alert("Bad Request");</script>';
@@ -22,6 +23,7 @@ if (!isset($_POST['personalRTI'])) {
     $status = $_POST['status'];
     $eduStatus = $_POST['educationalStatus'];
     $edu = $_POST['education'];
+    $aadhar = encryptAadhar($_POST['aadharNumber'], $ciphering, $encryption_key, $options, $encryption_iv);
     $sql = $conn->prepare("INSERT INTO `tblapplicant` (`applicant_name`, `applicant_email`, `applicant_mobile`, `applicant_phone`, `applicant_gender`, `applicant_education`, `applicant_more_education`) VALUES (?, ?, ?, ?, ?, ?, ?)");
     $sql->bindParam(1, $name);
     $sql->bindParam(2, $email);

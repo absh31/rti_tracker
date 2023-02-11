@@ -63,6 +63,14 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                         <br>
                         <div class="headingsall">
 
+                            <div class="form-group" id="phoneDiv">
+                                <label for='aadharNumber'>Aadhar Card No.:</label>
+                                <input type="text" name="aadharNumber" minlength="12" maxlength="12" inputmode="numeric" id="aadharCard" class="form-control" oninput="validateAadhar(this)" required>
+                            </div>
+                        </div>
+                        <br>
+                        <div class="headingsall">
+
                             <div class="radio d-md-flex">
                                 <label for="s_name" class="col-form-label"><span class="text-danger">*</span> Gender:</label>
                                 <div class="form-check mx-md-5 my-2">
@@ -333,7 +341,22 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                 }
             }
         }
-
+        const validateAadhar = function(usr) {
+            var regexp = /^[0-9 ]+$/;
+            var input = usr.value
+            if (input != "") {
+                if (regexp.test(input)) {
+                    if (input.length > 12) {
+                        alert("Aadhar Card should contain only 12 digits!")
+                        usr.value = input.slice(0, 12);
+                    } else
+                        return true
+                } else {
+                    alert("Only numbers are allowed!")
+                    usr.value = null;
+                }
+            }
+        }
         const validateNumber = function(usr) {
             var regexp = /^[0-9 ]+$/;
             var input = usr.value

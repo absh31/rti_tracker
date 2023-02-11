@@ -1,5 +1,6 @@
 <?php
 session_start();
+include '../crypto.php';
 include "../header.php";
 include '../connection.php';
 if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SESSION['auth']))) {
@@ -70,6 +71,14 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                                     <div class="form-group" id="phoneDiv">
                                         <label for='phoneNumber'>Phone Number :</label>
                                         <input disabled type="text" value="<?= $row['applicant_phone'] ?>" name="phoneNumber" minlength="10" maxlength="10" inputmode="numeric" id="phoneNumber" class="form-control" oninput="validateNumber(this)">
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="headingsall">
+
+                                    <div class="form-group" id="phoneDiv">
+                                        <label for='phoneNumber'>Aadhar Card No. :</label>
+                                        <input disabled type="text" value="<?= decryptAadhar($row['applicant_aadhar'], $ciphering, $encryption_key, $options, $encryption_iv) ?>" name="aadharNumber" minlength="12" maxlength="12" inputmode="numeric" id="aadharNumber" class="form-control" oninput="validateAadhar(this)">
                                     </div>
                                 </div>
                                 <br>
@@ -228,16 +237,18 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                                             $docids = explode(',', $docs);
                                             $i = 1;
                                             foreach ($docids as $docId) {
-                                                $sql2 = $conn->prepare("SELECT * FROM tbldocument WHERE document_id = $docId AND document_type = '$docType'");
+                                                $sql2 = $conn->prepare("SELECT * FROM tbldocument WHERE document_id = ? AND document_type = ?");
+                                                $sql2->bindParam(1, $docId);
+                                                $sql2->bindParam(2, $docType);
                                                 $sql2->execute();
                                                 $docRow = $sql2->fetch(PDO::FETCH_ASSOC);
                                                 if (!empty($docRow)) {
-                                                    ?>
-                                                        <a class="btn btn-dark mx-2" href="../uploads/<?php echo $docRow['document_title'] ?>" target="_blank">View Attachment <?= $i++ ?></a>
-                                                        <?php
+                                        ?>
+                                                    <a class="btn btn-dark mx-2" href="../uploads/<?php echo $docRow['document_title'] ?>" target="_blank">View Attachment <?= $i++ ?></a>
+                                                <?php
                                                 } else {
-                                                    ?>
-                                                    No Attachmentss
+                                                ?>
+                                                    No Attachments
                                             <?php
                                                 }
                                             }
@@ -245,7 +256,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                                         <?php
                                         } else {
                                         ?>
-                                            No Attachmentss
+                                            No Attachments
                                         <?php
                                         } ?>
                                     </div>
@@ -405,6 +416,22 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
                         }
                     })
                 });
+                const validateAadhar = function(usr) {
+                    var regexp = /^[0-9 ]+$/;
+                    var input = usr.value
+                    if (input != "") {
+                        if (regexp.test(input)) {
+                            if (input.length > 12) {
+                                alert("Aadhar Card should contain only 12 digits!")
+                                usr.value = input.slice(0, 12);
+                            } else
+                                return true
+                        } else {
+                            alert("Only numbers are allowed!")
+                            usr.value = null;
+                        }
+                    }
+                }
             </script>
             </body>
 

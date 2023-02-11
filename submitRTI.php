@@ -1,5 +1,6 @@
 <?php
 session_start();
+include './crypto.php';
 include './header.php';
 include './nav.php';
 include './connection.php';
@@ -69,7 +70,7 @@ if (isset($_SESSION['existingUser']) && $_SESSION['existingUser'] == 1 && $_SESS
 
                             <div class="form-group" id="phoneDiv">
                                 <label for='aadharNumber'>Aadhar Card No.:</label>
-                                <input type="text" value="<?= $applicant['applicant_aadhar'] ?>" name="aadharNumber" minlength="12" maxlength="12" inputmode="numeric" id="aadharCard" class="form-control" oninput="validateAadhar(this)" required>
+                                <input type="text" value="<?= decryptAadhar($applicant['applicant_aadhar'], $ciphering, $encryption_key, $options, $encryption_iv) ?>" name="aadharNumber" minlength="12" maxlength="12" inputmode="numeric" id="aadharCard" class="form-control" oninput="validateAadhar(this)" required disabled>
                             </div>
                         </div>
                         <br>
@@ -235,39 +236,7 @@ if (isset($_SESSION['existingUser']) && $_SESSION['existingUser'] == 1 && $_SESS
     ?>
     <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
     <script type="text/javascript">
-        const validateText = function(usr) {
-            var regexp = /^[A-Za-z0-9. ]+$/;
-            var input = usr.value
-            if (input != "") {
-                if (regexp.test(input)) {
-                    return true
-                } else {
-                    alert("Special characters are not allowed!")
-                    usr.value = null;
-                }
-            }
-        }
-
-        const validateNumber = function(usr) {
-            var regexp = /^[0-9 ]+$/;
-            var input = usr.value
-            if (input != "") {
-                if (regexp.test(input)) {
-                    if (input[0] == "0" || input[0] == "1" || input[0] == "2" || input[0] == "3" || input[0] == "4" || input[0] == "5") {
-                        alert("Mobile number must start from 6, 7, 8 or 9!")
-                        usr.value = "";
-                    } else if (input.length > 10) {
-                        alert("Mobile number should contain only 10 digits!")
-                        usr.value = input.slice(0, 10);
-                    } else
-                        return true
-                } else {
-                    alert("Only numbers are allowed!")
-                    usr.value = null;
-                }
-            }
-        }
-
+        
         const validateAadhar = function(usr) {
             var regexp = /^[0-9 ]+$/;
             var input = usr.value
@@ -285,61 +254,7 @@ if (isset($_SESSION['existingUser']) && $_SESSION['existingUser'] == 1 && $_SESS
             }
         }
 
-        const validatePincode = function(usr) {
-            var regexp = /^[0-9 ]+$/;
-            var input = usr.value
-            console.log(input)
-            if (input != "") {
-                if (regexp.test(input)) {
-                    if (input[0] == "0") {
-                        alert("Pincode should not start from 0!")
-                        usr.value = input.slice(0, 6);
-                    } else if (input.length > 6) {
-                        alert("Pincode should contain only 6 digits!")
-                        usr.value = input.slice(0, 6);
-                    } else
-                        return true
-                } else {
-                    alert("Only numbers are allowed!")
-                    usr.value = null;
-                }
-            }
-        }
-
-        const compareEmail = function(usr) {
-            var input1 = document.getElementById("email").value;
-            var input2 = usr.value
-            if (input1 == input2) {
-                document.getElementById("hiddenSpan").style.display = "none";
-            } else {
-                document.getElementById("hiddenSpan").style.display = "block";
-            }
-        }
-
-        const funShow = function() {
-            document.getElementById("countryDiv").style.display = "block";
-            const input = document.getElementById('countryName');
-            input.setAttribute('required', '');
-        }
-
-        const funHide = function() {
-            document.getElementById("countryDiv").style.display = "none";
-            const input = document.getElementById('countryName');
-            input.removeAttribute('required')
-        }
-
-        const validateTextarea = function(usr) {
-            var regexp = /^[A-Za-z0-9.,\w-\n ]+$/;
-            var input = usr.value
-            if (input != "") {
-                if (regexp.test(input))
-                    return true
-                else {
-                    alert("Special characters are not allowed!")
-                    usr.value = null;
-                }
-            }
-        }
+       
     </script>
     </body>
 
