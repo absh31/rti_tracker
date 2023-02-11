@@ -25,7 +25,7 @@ if ((isset($_SESSION['username']) && isset($_SESSION['password']) && isset($_SES
             <div class="col">
 
                 <?php
-                $dept_sql = $conn->prepare("SELECT * FROM tbldepartment WHERE is_active = 1");
+                $dept_sql = $conn->prepare("SELECT * FROM tbldepartment");
                 $dept_sql->execute();
                 $departments = $dept_sql->fetchAll(PDO::FETCH_ASSOC);
                 ?>

@@ -253,6 +253,20 @@ if (isset($_SESSION['existingUser']) && $_SESSION['existingUser'] == 1 && $_SESS
                 }
             }
         }
+        const validate = function(aadhar){
+            var aadharNumber = aadhar.value;
+            $.ajax({
+                type : "POST", 
+                url : './Backend/validateAadhar.php',
+                data : {
+                    aadharNumber : aadharNumber
+                },
+                success : function(response){
+                    console.log(response);
+                    
+                }
+            })
+        }
 
        
     </script>
@@ -320,7 +334,8 @@ if (isset($_SESSION['existingUser']) && $_SESSION['existingUser'] == 1 && $_SESS
 
                             <div class="form-group" id="phoneDiv">
                                 <label for='aadharNumber'>Aadhar Card No.:</label>
-                                <input type="text" name="aadharNumber" minlength="12" maxlength="12" inputmode="numeric" id="aadharCard" class="form-control" oninput="validateAadhar(this)" required>
+                                <input type="text" name="aadharNumber" minlength="12" maxlength="12" inputmode="numeric" id="aadharCard" class="form-control" oninput="validateAadhar(this)" onblur="validate(this)" required>
+                                <div id="validAadhar" style="color:green; font-size:12px" hidden>Verified</div>
                             </div>
                         </div>
                         <br>
@@ -493,7 +508,42 @@ if (isset($_SESSION['existingUser']) && $_SESSION['existingUser'] == 1 && $_SESS
                 }
             }
         }
-
+        const validateAadhar = function(usr) {
+            var regexp = /^[0-9 ]+$/;
+            var input = usr.value
+            if (input != "") {
+                if (regexp.test(input)) {
+                    if (input.length > 12) {
+                        alert("Aadhar Card should contain only 12 digits!")
+                        usr.value = input.slice(0, 12);
+                    } else
+                        return true
+                } else {
+                    alert("Only numbers are allowed!")
+                    usr.value = null;
+                }
+            }
+        }
+        const validate = function(aadhar){
+            var aadharNumber = aadhar.value;
+            $.ajax({
+                type : "POST", 
+                url : './Backend/validateAadhar.php',
+                data : {
+                    aadharNumber : aadharNumber
+                },
+                success : function(response){
+                    console.log(response);
+                    if (response == 0){
+                        alert('Enter Valid Aadhar Number!!!');
+                        return false;
+                    } else {
+                        $('#validAadhar').removeAttr('hidden');
+                        return true;
+                    }
+                }
+            })
+        }
         const validateNumber = function(usr) {
             var regexp = /^[0-9 ]+$/;
             var input = usr.value

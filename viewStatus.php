@@ -1,7 +1,6 @@
-<link href="./Backend/timeline.css" rel="stylesheet">
 <?php
 session_start();
-include "./header.php";
+include_once "./header.php";
 include "./nav.php";
 ?>
 <div class="container-fluid px-5">
@@ -37,7 +36,7 @@ include "./nav.php";
         </div>
     </div>
 </div>
-<br>
+<br><br><br><br><br><br><br><br><br>
 <?php
 include './footer.php';
 ?>

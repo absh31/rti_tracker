@@ -1,21 +1,20 @@
-<!-- <link href="./timeline.css" rel="stylesheet"> -->
 <?php
 session_start();
 include '../connection.php';
-    // if (empty($_POST['captcha'])) {
-    //     echo "<script>alert('Captcha Error1. Try Again')</script>";
-    //     echo "<script>window.open('./viewStatus.php','_self')</script>";
-    // } else {
-    //     $secret_key = '6Lewa-AZAAAAAP729KyiNYyJGV7TnGheI0WUlf6p';
-    //     $response = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . $secret_key . '&response=' . $_POST['captcha']);
+// if (empty($_POST['captcha'])) {
+//     echo "<script>alert('Captcha Error1. Try Again')</script>";
+//     echo "<script>window.open('./viewStatus.php','_self')</script>";
+// } else {
+//     $secret_key = '6Lewa-AZAAAAAP729KyiNYyJGV7TnGheI0WUlf6p';
+//     $response = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . $secret_key . '&response=' . $_POST['captcha']);
 
-    //     $response_data = json_decode($response);
+//     $response_data = json_decode($response);
 
-    //     if (!$response_data->success) {
-    //         echo "<script>alert('Captcha Error. Try Again')</script>";
-    //         echo "<script>window.open('./viewStatus.php','_self')</script>";
-    //     } else {
-    $reqNo = $_POST['reqNo'];
+//     if (!$response_data->success) {
+//         echo "<script>alert('Captcha Error. Try Again')</script>";
+//         echo "<script>window.open('./viewStatus.php','_self')</script>";
+//     } else {
+$reqNo = $_POST['reqNo'];
 $reqEmail = $_POST['reqEmail'];
 $sql = $conn->prepare("SELECT tblapplicant.applicant_email, tblrequest.* 
     FROM tblapplicant 
@@ -120,38 +119,6 @@ if ($sql->rowCount() > 0) {
         </tbody>
     </table>
     <br>
-    <div class="row mt-6 mb-6">
-        <ul class="timeline">
-            <?php
-// "SELECT tblapplicant.applicant_email, tblrequest.* 
-// FROM tblapplicant 
-// INNER JOIN tblrequest
-// ON tblapplicant.applicant_id = tblrequest.request_applicant_id
-// WHERE tblrequest.request_no = ? AND tblapplicant.applicant_email = ? ;"
-            $fileActSql = $conn->prepare("SELECT * FROM tblactivity WHERE activity_request_no = ?");
-            $fileActSql->bindParam(1, $reqNo);
-            $fileActSql->execute();
-            $fileActs = $fileActSql->fetchAll(PDO::FETCH_ASSOC);
-            $sr_no = 1;
-            foreach ($fileActs as $fileAct) {
-                // $actFromSql = $conn->prepare("SELECT officer_name FROM tblofficer WHERE officer_id = ?");
-                // $actFromSql->bindParam(1, $fileAct['activity_from']);
-                // $actFromSql->execute();
-                // $actFrom = $actFromSql->fetch(PDO::FETCH_ASSOC);
-                
-
-                // $actToSql = $conn->prepare("SELECT officer_name FROM tblofficer WHERE officer_id = ?");
-                // $actToSql->bindParam(1, $fileAct['activity_to']);
-                // $actToSql->execute();
-                // $actTo = $actToSql->fetch(PDO::FETCH_ASSOC);
-            ?>
-            <br>
-                <li data-year="<?= $fileAct['activity_type'] ?>" data-text="<?php echo "By " . $fileAct['activity_from'] . " To " . $fileAct['activity_to'] . " " . $fileAct['activity_time'] ?>"></li>
-            <?php
-            }
-            ?>
-        </ul>
-    </div>
     <?php
     $sql = $conn->prepare("SELECT * FROM tblactivity WHERE activity_request_no = ? ORDER BY activity_id");
     $sql->bindParam(1, $reqNo);
@@ -177,7 +144,7 @@ if ($sql->rowCount() > 0) {
                 <?php
                 $j = 1;
                 while ($row = $sql->fetch(PDO::FETCH_ASSOC)) {
-                ?>
+                    ?>
                     <tr>
                         <td><?= $j++ ?></td>
                         <td><?= $row['activity_from']; ?></td>
@@ -200,30 +167,30 @@ if ($sql->rowCount() > 0) {
                             if ($row['activity_to'] == "Applicant") {
                                 echo $row['activity_remarks'];
                             } else
-                                echo "none";
-
+                            echo "none";
+                            
                             ?>
                         </td>
                         <td><?= $row['activity_status']; ?></td>
                         <td><?= $row['activity_time']; ?></td>
                         <!-- <td>
-                                    <?php
+                            <?php
                                     $docs = $row['activity_documents'];
                                     if ($docs != "") {
-
+                                        
                                         $sql2 = $conn->prepare("SELECT * FROM tbldocument WHERE document_id IN ($docs)");
                                         $sql2->execute();
                                         $docRow = $sql2->fetch(PDO::FETCH_ASSOC);
                                         $i = 1;
                                         if (empty($docRow)) {
-                                    ?>
+                                            ?>
                                             <label for="">No Attachments</label>
                                             <?php
                                         } else {
                                             do {
-                                            ?>
+                                                ?>
                                                 <a class="btn btn-dark mx-2" href="./uploads/<?php echo $docRow['document_title'] ?>" target="_blank">View <?= $i++ ?></a>
-                                            <?php
+                                                <?php
                                             } while ($docRow = $sql2->fetch(PDO::FETCH_ASSOC));
                                             ?>
                                         <?php
@@ -231,10 +198,10 @@ if ($sql->rowCount() > 0) {
                                     } else {
                                         ?>
                                         No Attachments
-                                    <?php
+                                        <?php
                                     } ?>
 
-                                </td> -->
+</td> -->
                     </tr>
                 <?php } ?>
             </tbody>
@@ -263,7 +230,10 @@ if ($sql->rowCount() > 0) {
         </tbody>
     </table>
 
-<?php
+    <?php
     // }
     // }
 }
+?>
+<iframe src="statusTimeline.php?reqNo=<?= $reqNo; ?>" width="100%" height="45%"></iframe>
+<br><br><br><br><br><br><br>
